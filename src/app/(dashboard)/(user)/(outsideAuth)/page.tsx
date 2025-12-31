@@ -1,14 +1,11 @@
+import GlassWrapper from "@/components/molecules/GlassWrapper";
 import Dashboard from "@/components/pages/dashboard";
 import UspSlider from "@/components/pages/dashboard/UspSlider";
-import ProtectedLink from "@/routes/ProtectedLink";
 import { getAllGames, getSubGames, getUsp } from "@/serverApi/game";
 import { getBanners, getSubBanners } from "@/serverApi/pages";
 import Image from "next/image";
 import Link from "next/link";
 import DashboardProvider from "./DashboardProvider";
-import GlassWrapper from "@/components/molecules/GlassWrapper";
-import { Stack } from "@mui/material";
-import KycBanner from "@/components/pages/dashboard/userDashboard/verifyKyc/KycBanner";
 
 export const dynamic = "force-dynamic";
 
@@ -141,7 +138,7 @@ export default async function Home() {
                 className="dashboard-card1 col-span-1 flex justify-between px-10 gap-2 rounded-[24px]">
                 <div className="py-7 gap-6">
                   {subBanner.name && (
-                    <h1
+                    <h2
                       className="text-[40px] mb-[8px]"
                       style={{
                         color: "#FBD230",
@@ -150,7 +147,7 @@ export default async function Home() {
                       }}
                     >
                       {subBanner.name}
-                    </h1>
+                    </h2>
                   )}
                   {subBanner.description && (
                     <p

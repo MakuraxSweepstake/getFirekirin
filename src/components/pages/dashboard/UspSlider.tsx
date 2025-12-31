@@ -1,9 +1,9 @@
 "use client";
 
-import Image from "next/image";
-import React, { useEffect, useState, useRef } from "react";
-import { motion, useMotionValue, useTransform, animate } from "framer-motion";
 import GlassWrapper from "@/components/molecules/GlassWrapper";
+import { animate, motion, useMotionValue } from "framer-motion";
+import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
 
 interface UspItem {
     title: string;
@@ -40,9 +40,9 @@ export default function UspSlider({ uspData }: { uspData: UspItem[] }) {
 
     return (
         <section className="usp__slider w-full px-4 mt-8">
-            <h2 className="text-lg md:text-xl font-semibold mb-4">
+            <h1 className="text-lg md:text-xl font-semibold mb-4">
                 Top 10 Trending Games
-            </h2>
+            </h1>
 
             <div className="relative w-full overflow-hidden">
                 <motion.div

@@ -20,8 +20,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const urls: MetadataRoute.Sitemap = [
         {
             url: frontendUrl,
-            lastModified: new Date(),
-            changeFrequency: "monthly",
+            priority: 1
+            // lastModified: new Date(),
+            // changeFrequency: "monthly",
         },
     ];
 
@@ -29,8 +30,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     if (menuData?.data?.length) {
         const menuUrls: MetadataRoute.Sitemap = menuData.data.map((menu: any) => ({
             url: `${frontendUrl}/general/${menu.slug}`,
-            lastModified: new Date(),
-            changeFrequency: "weekly", 
+            // lastModified: new Date(),
+            // changeFrequency: "weekly", 
+            priority: 0.9
         }));
 
         urls.push(...menuUrls);
@@ -40,8 +42,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     if (gameData.length) {
         const gameUrls: MetadataRoute.Sitemap = gameData.map((game: any) => ({
             url: `${frontendUrl}/exclusive-games/${game.id}`,
-            lastModified: new Date(),
-            changeFrequency: "weekly",
+            // lastModified: new Date(),
+            // changeFrequency: "weekly",
+            priority: 0.9
         }));
 
         urls.push(...gameUrls);

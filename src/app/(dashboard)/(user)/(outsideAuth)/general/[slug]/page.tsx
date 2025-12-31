@@ -1,9 +1,19 @@
 import { getPageDetail } from '@/serverApi/pages';
 import { renderHTML } from '@/utils/RenderHTML';
-import { ArrowRight2 } from '@wandersonalwes/iconsax-react';
-import { notFound, redirect } from 'next/navigation';
-import React from 'react'
+import { Metadata } from 'next';
+import { notFound } from 'next/navigation';
+const SITE_URL = process.env.NEXT_PUBLIC_FRONTEND_URL!;
 
+export async function generateMetadata(props: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+    const { slug } = await props.params;
+    const canonicalUrl = `${SITE_URL}/general/${slug}`.replace(/\/$/, "");
+
+    return {
+        alternates: {
+            canonical: canonicalUrl,
+        },
+    };
+}
 export default async function GeneralPage(props: { params: Promise<{ slug: string }> }) {
     const { slug } = await props.params;
     let pageData = null;
