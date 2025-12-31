@@ -40,9 +40,9 @@ export default function UspSlider({ uspData }: { uspData: UspItem[] }) {
 
     return (
         <section className="usp__slider w-full px-4 mt-8">
-            <h1 className="text-lg md:text-xl font-semibold mb-4">
+            <h2 className="text-lg md:text-xl font-semibold mb-4">
                 Top 10 Trending Games
-            </h1>
+            </h2>
 
             <div className="relative w-full overflow-hidden">
                 <motion.div
