@@ -29,7 +29,7 @@ export async function generateMetadata(): Promise<Metadata> {
       openGraph: {
         title: seoData?.data?.site_name || seoData?.data?.site_name || metadata.title,
         description: seoData?.data?.site_description || seoData?.data?.site_description || metadata.description,
-        images: seoData?.data?.logo ? [seoData.logo] : ["/assets/images/logo.png"],
+        images: seoData?.data?.logo ? ["/firekirini-og.jpg"] : ["/assets/images/logo.png"],
       },
       icons: seoData?.data?.favicon || metadata.icons,
       alternates: {

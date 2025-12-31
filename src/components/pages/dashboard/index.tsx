@@ -1,11 +1,11 @@
 "use client";
 
-import Image from "next/image";
-import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
 import { BannerProps } from "@/types/setting";
-import { Button } from "@mui/material";
 import { renderHTML } from "@/utils/RenderHTML";
+import { Button } from "@mui/material";
+import { AnimatePresence, motion } from "framer-motion";
+import Image from "next/image";
+import { useState } from "react";
 
 export default function Dashboard({ slides }: { slides: BannerProps[] }) {
     const [current, setCurrent] = useState(0);
@@ -43,19 +43,20 @@ export default function Dashboard({ slides }: { slides: BannerProps[] }) {
                     <div className="content relative z-0 px-6">
                         <div className="content relative z-0 px-6 text-center">
                             {slides[current]?.name && (
-                                <h1 className="text-[32px] md:text-[48px] leading-[50%] text-[#3A013F] mb-8">
+                                <h1 className="text-[32px] md:text-[48px] leading-[50%]  mb-8 font-bold">
                                     {slides[current].name}
                                 </h1>
                             )}
 
                             {slides[current]?.description && (
-                                <p className="text-[#600167] text-[13px] leading-[120%] font-[700] mb-5 banner-desc">
+                                <p className=" text-[13px] leading-[120%] font-[500] mb-5 banner-desc  lg:max-w-[500px]">
                                     {renderHTML(slides[current].description)}
                                 </p>
                             )}
 
                             {slides[current]?.cta_link && (
                                 <Button
+                                    className="max-w-fit "
                                     variant="contained"
                                     sx={{
                                         borderRadius: 27,
@@ -68,7 +69,6 @@ export default function Dashboard({ slides }: { slides: BannerProps[] }) {
                                 </Button>
                             )}
                         </div>
-
                     </div>
                 </motion.div>
             </AnimatePresence>
