@@ -37,13 +37,13 @@ export default function Dashboard({ slides }: { slides: BannerProps[] }) {
                         src={slides[current].image_url || ""}
                         alt={slides[current].name}
                         fill
-                        className="object-cover z-[-1]"
+                        className="object-cover z-[-1] object-bottom-right lg:object-center"
                     />
 
                     <div className="content relative z-0 px-6">
                         <div className="content relative z-0 px-6 text-center">
                             {slides[current]?.name && (
-                                <h1 className="text-[32px] md:text-[48px] leading-[50%]  mb-8 font-bold">
+                                <h1 className="text-[32px] md:text-[48px] md:leading-[50%]  mb-8 font-bold">
                                     {slides[current].name}
                                 </h1>
                             )}
