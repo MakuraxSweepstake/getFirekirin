@@ -43,6 +43,7 @@ export default function Private({ children }: { children: React.ReactNode }) {
         // if (!user) {
         //     router.replace("/");
         // }
+        
     }, [token, user, dispatch, router]);
 
     if (!user) return null;
