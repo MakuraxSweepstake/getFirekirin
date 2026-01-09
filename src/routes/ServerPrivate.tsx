@@ -17,7 +17,7 @@ export default async function ServerPrivate({ children }: { children: React.Reac
     const cookieStore = await cookies();
     const access_token = cookieStore.get("access_token")?.value;
 
-    if (!access_token) redirect("/");
+    if (!access_token) return;
 
     const payload = decodeJwt(access_token);
     if (!payload || !payload.exp || payload.exp < Math.floor(Date.now() / 1000)) {

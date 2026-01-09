@@ -31,7 +31,7 @@ export default function Private({ children }: { children: React.ReactNode }) {
 
         if (!accessToken || isTokenExpired(accessToken)) {
             dispatch(clearTokens());
-            router.replace("/");
+            // router.replace("/");
             return;
         }
 
