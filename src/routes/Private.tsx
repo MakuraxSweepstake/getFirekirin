@@ -40,9 +40,9 @@ export default function Private({ children }: { children: React.ReactNode }) {
             dispatch(setTokens({ access_token: accessToken, user: user || null }));
         }
 
-        if (!user) {
-            router.replace("/");
-        }
+        // if (!user) {
+        //     router.replace("/");
+        // }
     }, [token, user, dispatch, router]);
 
     if (!user) return null;

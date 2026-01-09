@@ -19,10 +19,10 @@ export default async function ServerPrivate({ children }: { children: React.Reac
 
     if (!access_token) return;
 
-    const payload = decodeJwt(access_token);
-    if (!payload || !payload.exp || payload.exp < Math.floor(Date.now() / 1000)) {
-        redirect("/");
-    }
+    // const payload = decodeJwt(access_token);
+    // if (!payload || !payload.exp || payload.exp < Math.floor(Date.now() / 1000)) {
+    //     redirect("/");
+    // }
 
     
     // const user = payload; 
