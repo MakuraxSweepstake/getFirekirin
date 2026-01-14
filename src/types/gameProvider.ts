@@ -5,6 +5,6 @@ export interface GameProviderResponseProps {
         name: string,
         value: string
     }[],
-    message: stringtring
+    message: string
 }
 
