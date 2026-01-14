@@ -1,12 +1,11 @@
 'use client';
 
-import React from 'react';
+import { Button, InputLabel, OutlinedInput, Stack } from '@mui/material';
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import dayjs from 'dayjs';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import dayjs from 'dayjs';
-import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { InputLabel, OutlinedInput, Stack, Button, TextField } from '@mui/material';
 
 // Reuse your MUI styles
 const formFieldSx = {
@@ -75,7 +74,7 @@ export default function VerifyKYCPage() {
         },
         validationSchema,
         onSubmit: (values) => {
-            // console.log('Form submitted:', values);
+            console.log('Form submitted:', values);
         },
     });
 

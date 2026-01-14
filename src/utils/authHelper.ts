@@ -14,6 +14,7 @@ export async function getServerAuth() {
 
         return { isAuthenticated: true, user: payload };
     } catch (err) {
+        console.error(err);
         return { isAuthenticated: false, user: null };
     }
 }

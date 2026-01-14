@@ -2,12 +2,11 @@
 
 import ActionGroup from '@/components/molecules/Action';
 import { useAppDispatch } from '@/hooks/hook';
-import { useDeleteGameByIdMutation, useGetAllGamesQuery } from '@/services/gameApi'
+import { useDeleteGameByIdMutation, useGetAllGamesQuery } from '@/services/gameApi';
 import { showToast, ToastVariant } from '@/slice/toastSlice';
 import { GameItem } from '@/types/game';
 import Image from 'next/image';
 import Link from 'next/link';
-import React from 'react'
 
 function GameSkeleton() {
     return (
@@ -41,7 +40,7 @@ function GameSkeleton() {
 }
 export default function AdminGameList() {
     const { data, isLoading } = useGetAllGamesQuery();
-    const [deleteGame, { isLoading: deleting }] = useDeleteGameByIdMutation();
+    const [deleteGame] = useDeleteGameByIdMutation();
     const dispatch = useAppDispatch();
     return (
         <div className="admin__games grid md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-6">
@@ -73,12 +72,12 @@ export default function AdminGameList() {
                                             )
                                         )
                                     }
-                                    catch (e) {
+                                    catch (e: any) {
                                         dispatch(
                                             showToast(
                                                 {
                                                     variant: ToastVariant.ERROR,
-                                                    message: "Unable to Delete Game"
+                                                    message: e?.data?.message || "Unable to Delete Game"
                                                 }
                                             )
                                         )

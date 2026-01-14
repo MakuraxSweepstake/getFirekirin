@@ -1,4 +1,4 @@
-import React from 'react'
+import Link from "next/link";
 
 export default function NotFound() {
     return (
@@ -10,7 +10,7 @@ export default function NotFound() {
                     <p>Oops! The page you're looking for doesn’t exist or has been moved.</p>
 
                     <p>🔍 Try checking the URL or head back to the
-                        <a href="/" className="text-secondary hover:underline ml-1">homepage</a>.
+                        <Link href="/" className="text-secondary hover:underline ml-1">homepage</Link>.
                     </p>
 
                     <p>

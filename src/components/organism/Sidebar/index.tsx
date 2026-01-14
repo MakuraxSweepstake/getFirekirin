@@ -1,21 +1,19 @@
 "use client";
 
-import * as React from 'react';
-import { styled, Theme, CSSObject } from '@mui/material/styles';
+import { DRAWER_WIDTH } from '@/config';
+import { useAppSelector } from '@/hooks/hook';
+import { useGetSeoDataQuery } from '@/services/menuApi';
+import { IconButton } from '@mui/material';
 import Box from '@mui/material/Box';
 import MuiDrawer from '@mui/material/Drawer';
-import { DRAWER_WIDTH } from '@/config';
+import { CSSObject, styled, Theme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { Add } from '@wandersonalwes/iconsax-react';
 import Image from 'next/image';
+import Link from 'next/link';
+import * as React from 'react';
 import AdminMenu from './AdminSidebar';
 import UserMenu from './UserSidebar';
-import { useAppSelector } from '@/hooks/hook';
-import useMediaQuery from '@mui/material/useMediaQuery';
-import { useThemeContext } from '@/context/ThemeContext';
-import { IconButton } from '@mui/material';
-import { Add, CloseCircle } from '@wandersonalwes/iconsax-react';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { useGetSeoDataQuery } from '@/services/menuApi';
 const drawerWidth = DRAWER_WIDTH;
 
 const openedMixin = (theme: Theme): CSSObject => ({
@@ -82,7 +80,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
     }),
 );
 
-export default function Sidebar({ open, handleDrawerOpen, handleMobileMenuToggle, mobileMenuOpen }: {
+export default function Sidebar({ open, handleMobileMenuToggle, mobileMenuOpen }: {
     open: boolean,
     handleDrawerOpen: () => void;
     handleMobileMenuToggle: () => void;

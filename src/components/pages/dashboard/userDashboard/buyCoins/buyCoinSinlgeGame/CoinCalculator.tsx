@@ -4,14 +4,13 @@ import GlassWrapper from '@/components/molecules/GlassWrapper';
 import GoldCoinIcon from '@/icons/GoldCoinIcon';
 import { Box, Button, OutlinedInput } from '@mui/material';
 import { Coin } from '@wandersonalwes/iconsax-react';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 export default function CoinCalculator({ slug }: { slug: string }) {
     const [amount, setAmount] = useState<number | "">("");
     const [baseCoins, setBaseCoins] = useState<number | null>(null);
-    const [bonusCoins, setBonusCoins] = useState<number | null>(null);
+    const [_bonusCoins, setBonusCoins] = useState<number | null>(null);
 
     const router = useRouter();
 

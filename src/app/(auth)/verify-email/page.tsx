@@ -18,10 +18,10 @@ function VerifyEmailContent() {
     const id = searchParams.get("id");
     const hash = searchParams.get("hash");
     const [sendEmailVerificationAgain, { isLoading: sendingLink }] = useSendVerificationLinkAgainMutation();
-    const [verifyEmail, { isLoading }] = useVerifyEmailMutation();
+    const [verifyEmail] = useVerifyEmailMutation();
     const dispatch = useAppDispatch();
 
-    const { deviceId, loading } = useSeon();
+    const { deviceId } = useSeon();
 
     const handleLinkResend = async () => {
         try {

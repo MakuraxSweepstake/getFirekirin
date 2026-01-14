@@ -118,7 +118,7 @@ export default function RegisterPage() {
         pob: '',
         agree: true
     }
-    const { deviceId, loading } = useSeon();
+    const { deviceId } = useSeon();
     const { handleSubmit, handleBlur, handleChange, errors, dirty, values, touched, setFieldValue, setFieldTouched } = useFormik(
         {
             initialValues,

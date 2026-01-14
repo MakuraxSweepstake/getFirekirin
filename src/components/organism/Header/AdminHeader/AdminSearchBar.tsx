@@ -1,7 +1,6 @@
 // "use client";
-import { Box, FormControl, IconButton, InputAdornment, OutlinedInput } from "@mui/material";
-import { SearchNormal, SearchNormal1 } from "@wandersonalwes/iconsax-react";
-import React from 'react'
+import { Box, FormControl, InputAdornment, OutlinedInput } from "@mui/material";
+import { SearchNormal1 } from "@wandersonalwes/iconsax-react";
 
 export default function AdminSearchBar() {
 

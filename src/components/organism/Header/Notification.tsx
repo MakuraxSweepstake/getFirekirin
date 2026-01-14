@@ -1,26 +1,26 @@
 "use client";
 
-import React, { useRef, useState } from 'react';
+import { useAppDispatch } from '@/hooks/hook';
+import { useReadAllNotificationMutation, useReadNotificationMutation } from '@/services/notificationApi';
+import { showToast, ToastVariant } from '@/slice/toastSlice';
+import { Pagination } from '@/types/game';
+import { NotificationProps } from '@/types/notification';
+import { formatDateTime } from '@/utils/formatDateTime';
 import {
     Badge,
     Box,
-    IconButton,
-    Popper,
-    Paper,
     ClickAwayListener,
-    Typography,
+    IconButton,
     List,
     ListItem,
+    Paper,
+    Popper,
+    Typography,
 } from '@mui/material';
 import Fade from '@mui/material/Fade'; // ✅ Import Fade
 import { Notification } from '@wandersonalwes/iconsax-react';
 import Link from 'next/link';
-import { NotificationProps } from '@/types/notification';
-import { Pagination } from '@/types/game';
-import { useReadAllNotificationMutation, useReadNotificationMutation } from '@/services/notificationApi';
-import { useAppDispatch } from '@/hooks/hook';
-import { showToast, ToastVariant } from '@/slice/toastSlice';
-import { formatDateTime } from '@/utils/formatDateTime';
+import { useRef, useState } from 'react';
 
 
 export default function NotificationPage({
@@ -43,12 +43,12 @@ export default function NotificationPage({
     const id = open ? 'popper' : undefined;
     const dispatch = useAppDispatch();
 
-    const [readNotification, { isLoading }] = useReadNotificationMutation();
-    const [readAllNotification, { isLoading: readingAll }] = useReadAllNotificationMutation();
+    const [readNotification,] = useReadNotificationMutation();
+    const [readAllNotification,] = useReadAllNotificationMutation();
     const handleNotificationClick = async (id?: string) => {
         if (id) {
             try {
-                const response = await readNotification({ id }).unwrap();
+                await readNotification({ id }).unwrap();
                 // dispatch(
                 //     showToast({
                 //         message: "Notification read successfully",
@@ -67,7 +67,7 @@ export default function NotificationPage({
         }
         else {
             try {
-                const response = await readAllNotification().unwrap();
+                await readAllNotification().unwrap();
                 setOpen(false);
             }
             catch (e: any) {
@@ -130,7 +130,7 @@ export default function NotificationPage({
                                             <List className='max-h-[320px] overflow-auto px-1'>
                                                 {
                                                     notifications.map((notification, index) => {
-                                                        const { date, time } = formatDateTime(notification.created_at);
+                                                        const { date } = formatDateTime(notification.created_at);
                                                         return (
                                                             <ListItem className={`border-b-solid border-b-gray-100 border-b-[1px] rounded-sm !p-2 cursor-pointer mb-2 ${notification.has_read ? "" : "bg-gray-100"} ${index > 0 ? " " : ""}`} key={notification.id} onClick={() => handleNotificationClick(notification.id)}>
                                                                 <p className='text-[12px] lg:text-[12px] leading-[120%] text-title line-clamp-2'>{notification.message}</p>

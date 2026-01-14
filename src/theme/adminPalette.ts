@@ -1,7 +1,7 @@
 // src/theme/Palette.ts
-import { createTheme, PaletteMode } from "@mui/material/styles";
 import { ThemeMode } from "@/config";
 import { PaletteThemeProps } from "@/types/theme";
+import { createTheme, PaletteMode } from "@mui/material/styles";
 
 export default function Palette(mode: ThemeMode) {
     const contrastText = "#fff";
@@ -11,8 +11,8 @@ export default function Palette(mode: ThemeMode) {
     let secondaryColors = ["#93E0D8", "#69A29D", "#4A7D78"];
     let grayColors = ["#E0E0E3", '#F3F4F6'];
     let titleColors = ["#0E0E11", "rgba(0, 0, 0, 0.80)", "rgba(0, 0, 0, 0.90)"];
-    let primaryGradColors = ['linear-gradient(90deg, #B100B8 0%, #F335ED 100%)'];
-    let secondaryGradColors = ['linear-gradient(90deg, #69A29D 0%, #93E0D9 100%)'];
+    const primaryGradColors = ['linear-gradient(90deg, #B100B8 0%, #F335ED 100%)'];
+    const secondaryGradColors = ['linear-gradient(90deg, #69A29D 0%, #93E0D9 100%)'];
 
 
     if (mode === ThemeMode.DARK) {

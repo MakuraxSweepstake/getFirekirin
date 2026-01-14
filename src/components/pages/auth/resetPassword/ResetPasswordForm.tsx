@@ -4,13 +4,11 @@ import { PATH } from '@/routes/PATH'
 import { useResetPasswordMutation } from '@/services/authApi'
 import { clearTokens } from '@/slice/authSlice'
 import { showToast, ToastVariant } from '@/slice/toastSlice'
-import { Box, InputLabel, OutlinedInput } from '@mui/material'
-import { ArrowLeft } from '@wandersonalwes/iconsax-react'
+import { InputLabel, OutlinedInput } from '@mui/material'
 import { useFormik } from 'formik'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import React from 'react'
-import * as Yup from 'yup';
+import * as Yup from 'yup'
 
 const validationSchema = Yup.object().shape({
     emailAddress: Yup.string()
@@ -130,5 +128,5 @@ export default function ResetPasswordForm({ email }: { email?: string }) {
                 {!email ? <Link href={PATH.AUTH.LOGIN.ROOT} className='ss-btn bg-secondary-grad'>Back to Login</Link> : ""}
             </div>
         </form>
-)
+    )
 }

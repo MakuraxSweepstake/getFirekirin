@@ -2,9 +2,9 @@
 
 import { useAppDispatch, useAppSelector } from "@/hooks/hook";
 import { clearTokens, setTokens } from "@/slice/authSlice";
+import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
-import Cookies from "js-cookie";
 
 function isTokenExpired(token: string): boolean {
     try {
@@ -27,7 +27,7 @@ export default function Private({ children }: { children: React.ReactNode }) {
     const token = useAppSelector((state) => state.auth.access_token);
 
     useEffect(() => {
-        let accessToken = token || Cookies.get("access_token");
+        const accessToken = token || Cookies.get("access_token");
 
         if (!accessToken || isTokenExpired(accessToken)) {
             dispatch(clearTokens());
@@ -43,7 +43,7 @@ export default function Private({ children }: { children: React.ReactNode }) {
         // if (!user) {
         //     router.replace("/");
         // }
-        
+
     }, [token, user, dispatch, router]);
 
     if (!user) return null;

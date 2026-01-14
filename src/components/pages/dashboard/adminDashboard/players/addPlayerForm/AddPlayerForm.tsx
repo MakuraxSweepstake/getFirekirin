@@ -1,15 +1,11 @@
 "use client";
-import InputFile from '@/components/atom/InputFile'
-import PasswordField from '@/components/molecules/PasswordField'
-import { PATH } from '@/routes/PATH'
-import { PlayerProps, SinlgePlayerResponseProps } from '@/types/player'
-import { Button, InputLabel, OutlinedInput } from '@mui/material'
-import { FormikProps } from 'formik'
-import { useRouter } from 'next/navigation'
-import React from 'react'
+import InputFile from '@/components/atom/InputFile';
+import PasswordField from '@/components/molecules/PasswordField';
+import { PlayerProps, SinlgePlayerResponseProps } from '@/types/player';
+import { Button, InputLabel, OutlinedInput } from '@mui/material';
+import { FormikProps } from 'formik';
 
 export default function AddPlayerForm({ formik, id, data, loading, buttonLabel }: { formik: FormikProps<PlayerProps>, id?: string, data?: SinlgePlayerResponseProps, loading?: boolean, buttonLabel?: string }) {
-    const router = useRouter();
 
     return (
         <form onSubmit={formik.handleSubmit}>

@@ -1,12 +1,12 @@
 "use client";
-import { CssBaseline, GlobalStyles } from '@mui/material'
-import { StyledEngineProvider, ThemeProvider } from '@mui/material/styles'
-import React from 'react'
-import Palette from './palette';
-import AdminPalette from './adminPalette';
 import { ThemeMode } from '@/config';
-import { NextAppDirEmotionCacheProvider } from './emotionCache';
 import { useAppSelector } from '@/hooks/hook';
+import { CssBaseline, GlobalStyles } from '@mui/material';
+import { StyledEngineProvider, ThemeProvider } from '@mui/material/styles';
+import React from 'react';
+import AdminPalette from './adminPalette';
+import { NextAppDirEmotionCacheProvider } from './emotionCache';
+import Palette from './palette';
 
 
 export default function ThemeCustomization({ children }: { children: React.ReactNode }) {
@@ -33,6 +33,7 @@ export default function ThemeCustomization({ children }: { children: React.React
     }, [user]);
 
 
+    console.log(theme)
     return (
         <StyledEngineProvider injectFirst>
             <NextAppDirEmotionCacheProvider options={{ key: 'mui' }}>

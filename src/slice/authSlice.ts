@@ -1,4 +1,3 @@
-import { RoleProps, User } from "@/types/auth";
 import { PlayerProps } from "@/types/player";
 import { createSlice } from "@reduxjs/toolkit";
 import Cookies from "js-cookie";
@@ -11,14 +10,14 @@ const isBrowser = typeof window !== "undefined";
 
 const tokens = isBrowser ? localStorage.getItem("token") : null;
 let localStorageAccessToken = "";
-let localStorageRefreshToken = "";
+// let localStorageRefreshToken = "";
 let localStorageUser = null;
 
 if (tokens) {
     try {
         const parsedTokens = JSON.parse(tokens);
         localStorageAccessToken = parsedTokens.access_token || "";
-        localStorageRefreshToken = parsedTokens.refreshToken || "";
+        // localStorageRefreshToken = parsedTokens.refreshToken || "";
         localStorageUser = parsedTokens.user || "";
     } catch (error) {
         console.error("Error parsing tokens from localStorage:", error);

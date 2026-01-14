@@ -1,17 +1,12 @@
 "use client"
 
-import InputFile from '@/components/atom/InputFile'
-import PasswordField from '@/components/molecules/PasswordField'
 import { useAppDispatch } from '@/hooks/hook'
-import { PATH } from '@/routes/PATH'
 import { useCreatePlayerMutation, useGetPlayerByIdQuery, useUpdatePlayerByIdMutation } from '@/services/playerApi'
 import { showToast, ToastVariant } from '@/slice/toastSlice'
 import { initialPlayerValues } from '@/types/player'
-import { Button, Input, InputLabel, OutlinedInput } from '@mui/material'
 import { useFormik } from 'formik'
 import { useRouter } from 'next/navigation'
-import React from 'react'
-import * as Yup from "yup";
+import * as Yup from "yup"
 import AddPlayerForm from './AddPlayerForm'
 
 export const PlayerValidationSchema = (isEdit: boolean) => Yup.object().shape({
@@ -44,7 +39,7 @@ export default function AddPlayerPage({ id }: { id?: string }) {
 
     const [createPlayer, { isLoading }] = useCreatePlayerMutation();
     const [updatePlayer, { isLoading: updating }] = useUpdatePlayerByIdMutation();
-    const { data, isLoading: loadingPlayer } = useGetPlayerByIdQuery(
+    const { data, } = useGetPlayerByIdQuery(
         id ? { id } : ({} as any),
         { skip: !id }
     );

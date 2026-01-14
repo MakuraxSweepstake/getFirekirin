@@ -1,6 +1,5 @@
 "use client";
 
-import { useThemeContext } from "@/context/ThemeContext";
 import { InputLabel } from "@mui/material";
 import React from "react";
 
@@ -35,7 +34,7 @@ export default function SelectField({
     touched,
     placeholder
 }: SelectFieldProps) {
-    const theme = useThemeContext();
+    // const theme = useThemeContext();
     return (
         <div className="input__field">
             <InputLabel className="block text-sm font-semibold mb-2">

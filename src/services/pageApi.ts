@@ -17,7 +17,7 @@ export const pageApi = createApi({
             invalidatesTags: ['pages']
         }),
         getAllPage: builder.query<PageListResponse, QueryParams>({
-            query: (body) => ({
+            query: () => ({
                 url: "/api/admin/page/list",
                 method: "GET",
             }),

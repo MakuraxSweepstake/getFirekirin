@@ -12,7 +12,7 @@ import * as Yup from "yup";
 
 export default function UpdatePassword() {
     const dispatch = useDispatch();
-    const { open, provider, hasChangedPassword } = useSelector((state: RootState) => state?.updatePasswordSlice);
+    const { open, provider } = useSelector((state: RootState) => state?.updatePasswordSlice);
 
     const [updateNewPassword, { isLoading }] = useUpdateUserGamePasswordMutation();
     console.log({

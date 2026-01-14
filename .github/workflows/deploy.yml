@@ -3,7 +3,7 @@ name: getFirekirin Deployment Pipeline
 on:
   push:
     branches:
-      - main
+      - fixes/linting
 
 jobs:
   build-and-deploy:

@@ -3,17 +3,15 @@
 import { useAppSelector } from '@/hooks/hook'
 import GoldCoinIcon from '@/icons/GoldCoinIcon'
 import SilverCoinIcon from '@/icons/SilverCoinIcon'
-import { useGetUserBalanceBySlugQuery } from '@/services/userApi'
 import { Box } from '@mui/material'
 
 export default function UserCoin({ slug }: { slug: string }) {
-    const { data } = useGetUserBalanceBySlugQuery({ slug });
-    const user = useAppSelector((s) => s ? s.auth.user : "");
+    const user = useAppSelector((s) => s.auth.user);
+    const newBalance = useAppSelector((state) => state.userBalanceSlice);
     if (!user) {
         return "";
     }
 
-    const newBalance = useAppSelector((state) => state.userBalanceSlice);
     const providerBalance = newBalance.providerAndBalance.find(
         (item: any) => item.provider === slug
     );

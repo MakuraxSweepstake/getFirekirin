@@ -1,19 +1,19 @@
 "use client";
 
-import React, { useRef, useState } from "react";
 import {
     Box,
     Button,
-    Popper,
-    Paper,
     ClickAwayListener,
+    Fade,
     List,
     ListItem,
-    Fade,
-    Typography,
     ListItemButton,
+    Paper,
+    Popper,
+    Typography,
 } from "@mui/material";
-import { ArrowDown2, Menu } from "@wandersonalwes/iconsax-react";
+import { ArrowDown2 } from "@wandersonalwes/iconsax-react";
+import React, { useRef, useState } from "react";
 
 type TabLink = { label: string; value: string, icon?: React.ReactNode };
 

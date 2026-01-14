@@ -1,14 +1,13 @@
 import Avatar from '@/components/atom/Avatar';
-import { Transitions } from '@/components/molecules/Transition';
 import { useAppDispatch, useAppSelector } from '@/hooks/hook';
 import { PATH } from '@/routes/PATH';
 import { clearTokens } from '@/slice/authSlice';
-import { Box, Button, ButtonBase, ClickAwayListener, Fade, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Paper, Popper, Stack, Typography } from '@mui/material'
+import { Box, ClickAwayListener, Fade, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Paper, Popper } from '@mui/material';
+import { ArrowDown2, Coin, Logout, MoneySend, Profile, Wallet2 } from "@wandersonalwes/iconsax-react";
 import Link from 'next/link';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState } from 'react';
 const avataur1 = '/assets/images/avatar-6.png';
-import { ArrowDown2, ArrowUp2, Coin, Logout, MoneySend, Profile, Wallet2 } from "@wandersonalwes/iconsax-react";
 
 
 export default function ProfileBlock() {

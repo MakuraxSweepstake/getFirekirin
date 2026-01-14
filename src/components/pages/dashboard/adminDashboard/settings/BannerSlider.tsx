@@ -1,22 +1,21 @@
 "use client";
 
-import React from "react";
-import { useFormik } from "formik";
-import * as Yup from "yup";
+import InputFile from "@/components/atom/InputFile";
+import { useAppDispatch } from "@/hooks/hook";
+import { useGetAllBannerQuery, useUpdateBannerMutation } from "@/services/settingApi";
+import { showToast, ToastVariant } from "@/slice/toastSlice";
 import {
     Button,
+    FormControlLabel,
+    IconButton,
     InputLabel,
     OutlinedInput,
-    IconButton,
-    FormControlLabel,
-    Typography,
-    Switch,
+    Switch
 } from "@mui/material";
-import InputFile from "@/components/atom/InputFile";
 import { CloseCircle } from "@wandersonalwes/iconsax-react";
-import { useAppDispatch } from "@/hooks/hook";
-import { showToast, ToastVariant } from "@/slice/toastSlice";
-import { useGetAllBannerQuery, useUpdateBannerMutation } from "@/services/settingApi";
+import { useFormik } from "formik";
+import React from "react";
+import * as Yup from "yup";
 
 const validationSchema = Yup.object({
     banners: Yup.array().of(
@@ -32,8 +31,8 @@ const validationSchema = Yup.object({
 
 export default function BannerSlider() {
     const dispatch = useAppDispatch();
-    const { data, isLoading } = useGetAllBannerQuery();
-    const [updateBanner, { isLoading: updating }] = useUpdateBannerMutation();
+    const { data } = useGetAllBannerQuery();
+    const [updateBanner] = useUpdateBannerMutation();
 
     const formik = useFormik({
         initialValues: {

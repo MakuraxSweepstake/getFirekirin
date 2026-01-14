@@ -49,8 +49,8 @@ export default function InputFile({
         onChange(updatedFiles.length > 0 ? updatedFiles : null);
     };
 
-    const fileChosen =
-        (Array.isArray(value) && value.length > 0) || value || serverFile;
+    // const fileChosen =
+    //     (Array.isArray(value) && value.length > 0) || value || serverFile;
 
     return (
         <div className="input__field">

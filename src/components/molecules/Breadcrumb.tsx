@@ -1,10 +1,10 @@
 'use client';
 
-import React from 'react';
+import { Stack } from '@mui/material';
+import { ArrowRight2 } from '@wandersonalwes/iconsax-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Box, Typography, Stack } from '@mui/material';
-import { ArrowRight2 } from '@wandersonalwes/iconsax-react';
+import React from 'react';
 
 export default function Breadcrumb() {
     const pathname = usePathname();

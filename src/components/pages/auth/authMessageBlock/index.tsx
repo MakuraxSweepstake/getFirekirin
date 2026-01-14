@@ -1,7 +1,6 @@
-import { ImageProps } from '@/types/config'
-import { List, ListItem } from '@mui/material'
-import Box from '@mui/material/Box'
-import Image from 'next/image'
+import { ImageProps } from '@/types/config';
+import Box from '@mui/material/Box';
+import Image from 'next/image';
 
 interface Props {
     image?: ImageProps
@@ -11,7 +10,7 @@ interface Props {
 
 export default function AuthMessageBlock(props: Props) {
 
-    const { image, title, features } = props;
+    const { title, features } = props;
     return (
         <Box className="auth-image-wrapper relative hidden lg:block w-[50%] min-h-screen pl-9 pr-15 pb-15 rounded-[8px] overflow-hidden" >
             <Image src={"/assets/images/auth-image.png"} alt="Auth Image" fill className="object-cover max-w-[100%] h-auto" />

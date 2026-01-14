@@ -1,6 +1,5 @@
 import GlassWrapper from "@/components/molecules/GlassWrapper";
 import { getSupportEmail } from "@/serverApi/game";
-import React from "react";
 
 export default async function Support() {
 	let supportEmails = {

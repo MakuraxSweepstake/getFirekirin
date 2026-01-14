@@ -25,9 +25,8 @@
 
 // export const { useDownloadTransactionMutation } = downloadApi;
 // src/services/downloadApi.ts
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { createApi } from "@reduxjs/toolkit/query/react";
 import { baseQuery } from "./baseQuery"; // your custom base query
-import { GlobalResponse } from "@/types/config";
 
 export const downloadApi = createApi({
     reducerPath: "downloadApi",

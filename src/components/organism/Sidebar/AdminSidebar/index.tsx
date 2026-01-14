@@ -1,7 +1,6 @@
 "use client";
 
 import { PATH } from "@/routes/PATH";
-import Link from "next/link";
 import {
     List,
     ListItem,
@@ -20,6 +19,7 @@ import {
     StatusUp,
     UserSearch,
 } from "@wandersonalwes/iconsax-react";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
 

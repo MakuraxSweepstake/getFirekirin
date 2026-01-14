@@ -1,6 +1,10 @@
 "use client";
 
-import React from "react";
+import BonusIcon from "@/app/customIcons/BonusIcon";
+import FireIcon from "@/app/customIcons/FireIcon";
+import HomeIcon from "@/app/customIcons/HomeIcon";
+import { PATH } from "@/routes/PATH";
+import Private from "@/routes/Private";
 import {
     Box,
     List,
@@ -9,23 +13,13 @@ import {
     ListItemText,
 } from "@mui/material";
 import {
-    Home,
-    StatusUp,
-    MessageQuestion,
-    PasswordCheck,
-    Wallet2,
-    Coin,
     CardPos,
+    Coin
 } from "@wandersonalwes/iconsax-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import Private from "@/routes/Private";
-import { PATH } from "@/routes/PATH";
+import React from "react";
 import PrimaryMenu from "./PrimaryMenu";
-import SupportIcon from "@/app/customIcons/SupportIcon";
-import HomeIcon from "@/app/customIcons/HomeIcon";
-import FireIcon from "@/app/customIcons/FireIcon";
-import BonusIcon from "@/app/customIcons/BonusIcon";
 
 // ✅ Define menu array for static items
 const staticMenus = [

@@ -7,10 +7,10 @@ import GoldCoinIcon from '@/icons/GoldCoinIcon';
 import { useDepositMutation } from '@/services/transaction';
 import { showToast, ToastVariant } from '@/slice/toastSlice';
 import { Box, Button } from '@mui/material';
-import { BitcoinRefresh, Check, TickCircle } from '@wandersonalwes/iconsax-react';
+import { TickCircle } from '@wandersonalwes/iconsax-react';
 import Image from 'next/image';
-import { usePathname, useRouter } from 'next/navigation';
-import React from 'react'
+import { useRouter } from 'next/navigation';
+import React from 'react';
 
 type PaymentModeProps = "crypto" | "idem"
 export default function CheckoutPage({ amount, slug, bonus }: {
@@ -18,7 +18,6 @@ export default function CheckoutPage({ amount, slug, bonus }: {
     slug: string;
     bonus: number
 }) {
-    const pathname = usePathname();
     const dispatch = useAppDispatch();
     const router = useRouter();
     const [getPaymentLink, { isLoading: gettingLink }] = useDepositMutation();
