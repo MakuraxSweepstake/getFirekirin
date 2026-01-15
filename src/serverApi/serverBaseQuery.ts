@@ -1,6 +1,5 @@
 // lib/baseQuery.ts
 
-import { RootState } from "@/hooks/store";
 
 export async function serverBaseQuery<T>(
     endpoint: string,
