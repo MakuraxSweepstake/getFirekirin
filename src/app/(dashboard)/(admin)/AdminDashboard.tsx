@@ -21,29 +21,29 @@ const AdminDashboardTableWrapper = ({ title, cta, children }: { title?: string; 
     )
 }
 export default function AdminDashboardRoot() {
-    const [search, setSearch] = React.useState("");
-    const games = [
-        {
-            name: "Firekirin",
-            amount: 50,
-            percentage: 10
-        },
-        {
-            name: "Ultrapanda",
-            amount: "168k",
-            percentage: 10
-        },
-        {
-            name: "Panda Master",
-            amount: "268k",
-            percentage: 10
-        },
-        {
-            name: "Fish Master",
-            amount: "136k",
-            percentage: 10
-        },
-    ]
+    const [search, _setSearch] = React.useState("");
+    // const games = [
+    //     {
+    //         name: "Firekirin",
+    //         amount: 50,
+    //         percentage: 10
+    //     },
+    //     {
+    //         name: "Ultrapanda",
+    //         amount: "168k",
+    //         percentage: 10
+    //     },
+    //     {
+    //         name: "Panda Master",
+    //         amount: "268k",
+    //         percentage: 10
+    //     },
+    //     {
+    //         name: "Fish Master",
+    //         amount: "136k",
+    //         percentage: 10
+    //     },
+    // ]
     return (
         <>
             <h1 className="text-[24px] leading-[120%] mb-6">Dashboard</h1>

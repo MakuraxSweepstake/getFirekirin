@@ -1,9 +1,7 @@
-import { Box, Typography } from '@mui/material'
+import GlassWrapper from '@/components/molecules/GlassWrapper'
 import { SecuritySafe } from '@wandersonalwes/iconsax-react'
 import Image from 'next/image'
-import React from 'react'
 import ConnectWalletForm from './ConnectWalletForm'
-import GlassWrapper from '@/components/molecules/GlassWrapper'
 
 export default function ConnectWalletPage() {
     return (

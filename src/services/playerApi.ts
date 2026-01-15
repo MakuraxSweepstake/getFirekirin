@@ -1,13 +1,12 @@
 // services/playerApi.ts
 
-import { createApi } from "@reduxjs/toolkit/query/react";
-import { baseQuery } from "./baseQuery";
+import { GlobalResponse, QueryParams } from "@/types/config";
 import {
     PlayerListResponse,
-    PlayerProps,
-    SinlgePlayerResponseProps,
+    SinlgePlayerResponseProps
 } from "@/types/player";
-import { GlobalResponse, QueryParams } from "@/types/config";
+import { createApi } from "@reduxjs/toolkit/query/react";
+import { baseQuery } from "./baseQuery";
 
 export const playerApi = createApi({
     reducerPath: "playerApi",

@@ -19,7 +19,7 @@ export default function ProtectedLink({ href, className, children, target, rel, 
     const dispatch = useAppDispatch();
     const router = useRouter();
 
-    const { data, isLoading } = useGetGamesPasswordStatusQuery({ provider: provider || "" }, { skip: !provider });
+    const { data } = useGetGamesPasswordStatusQuery({ provider: provider || "" }, { skip: !provider });
 
     console.log("user data", { data, provider });
 

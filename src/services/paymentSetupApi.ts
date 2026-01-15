@@ -1,7 +1,6 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { baseQuery } from "./baseQuery";
 import { GlobalResponse } from "@/types/config";
-import { MenuResponse } from "@/types/menu";
+import { createApi } from "@reduxjs/toolkit/query/react";
+import { baseQuery } from "./baseQuery";
 
 type PaymentRequestProps = {
     idem_payment_uri: string,

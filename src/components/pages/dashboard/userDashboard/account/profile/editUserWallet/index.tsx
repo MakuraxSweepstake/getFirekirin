@@ -3,11 +3,10 @@
 import { useAppDispatch, useAppSelector } from '@/hooks/hook';
 import { useAddUserWalletMutation } from '@/services/userApi';
 import { showToast, ToastVariant } from '@/slice/toastSlice';
-import { Button, InputLabel, OutlinedInput } from '@mui/material'
-import { InfoCircle, WalletCheck } from '@wandersonalwes/iconsax-react'
+import { Button, InputLabel, OutlinedInput } from '@mui/material';
+import { InfoCircle, WalletCheck } from '@wandersonalwes/iconsax-react';
 import { useFormik } from 'formik';
-import React from 'react'
-import * as yup from 'yup'
+import * as yup from 'yup';
 
 
 const validationSchema = yup.object({
@@ -16,7 +15,7 @@ const validationSchema = yup.object({
 export default function EditUserWallet() {
     const dispatch = useAppDispatch();
     const user = useAppSelector((state) => state.auth.user);
-    const [connectWallet, { isLoading }] = useAddUserWalletMutation();
+    const [connectWallet] = useAddUserWalletMutation();
     const formik = useFormik({
         initialValues: {
             wallet_address: user?.wallet_address || "",

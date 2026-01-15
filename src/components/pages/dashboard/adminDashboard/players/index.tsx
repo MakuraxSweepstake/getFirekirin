@@ -3,23 +3,21 @@
 import CustomSwitch from '@/components/atom/Switch';
 import ActionGroup from '@/components/molecules/Action';
 import TabController from '@/components/molecules/TabController';
-import TableHeader from '@/components/molecules/TableHeader'
+import TableHeader from '@/components/molecules/TableHeader';
 import CustomTable from '@/components/organism/Table';
 import { useAppDispatch } from '@/hooks/hook';
 import { PATH } from '@/routes/PATH';
 import { useDownloadUserMutation } from '@/services/downloadApi';
 import { useDeletePlayerByIdMutation, useGetAllPlayerQuery, useSuspendPlayerByIdMutation } from '@/services/playerApi';
 import { showToast, ToastVariant } from '@/slice/toastSlice';
-import { PlayerItem, PlayerProps } from '@/types/player';
+import { PlayerItem } from '@/types/player';
 import { formatDateTime } from '@/utils/formatDateTime';
 import { getInitials } from '@/utils/getInitials';
 import { Box, Checkbox, Pagination } from '@mui/material';
 import { ColumnDef, getCoreRowModel, getPaginationRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
-import { useRouter } from 'next/navigation';
-import React, { useMemo, useState } from 'react'
+import React, { useMemo, useState } from 'react';
 
 export default function PlayerListing() {
-    const router = useRouter();
     const dispatch = useAppDispatch();
     const [search, setSearch] = useState("");
     const [sorting, setSorting] = useState<{ id: string; desc: boolean }[]>([]);
@@ -33,10 +31,10 @@ export default function PlayerListing() {
         status: currentTab || ""
     });
 
-    const filteredData = useMemo(() => data?.data?.data || [], [data, currentTab, pageSize]);
+    // const filteredData = useMemo(() => data?.data?.data || [], [data, currentTab, pageSize]);
 
-    const [deletePlayer, { isLoading: deletingPlayer }] = useDeletePlayerByIdMutation();
-    const [suspendPlayer, { isLoading: suspendingPlayer }] = useSuspendPlayerByIdMutation();
+    const [deletePlayer] = useDeletePlayerByIdMutation();
+    const [suspendPlayer] = useSuspendPlayerByIdMutation();
     const [downloadUser, { isLoading: downloading }] = useDownloadUserMutation();
 
     const handlePlayerSuspend = async (id: string) => {
@@ -199,10 +197,10 @@ export default function PlayerListing() {
         columns,
         state: {
             sorting,
-            
+
         },
         onSortingChange: setSorting,
-       
+
         getCoreRowModel: getCoreRowModel(),
         getSortedRowModel: getSortedRowModel(),
         getPaginationRowModel: getPaginationRowModel(),

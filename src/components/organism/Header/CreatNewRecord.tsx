@@ -1,8 +1,8 @@
 import { PATH } from '@/routes/PATH';
-import { Box, ClickAwayListener, Fade, IconButton, List, ListItem, ListItemText, Paper, Popper, Typography } from '@mui/material'
-import { Add } from '@wandersonalwes/iconsax-react'
+import { Box, ClickAwayListener, Fade, IconButton, List, ListItem, ListItemText, Paper, Popper } from '@mui/material';
+import { Add } from '@wandersonalwes/iconsax-react';
 import Link from 'next/link';
-import React from 'react'
+import React from 'react';
 
 export default function CreatNewRecord() {
     const [open, setOpen] = React.useState(false);

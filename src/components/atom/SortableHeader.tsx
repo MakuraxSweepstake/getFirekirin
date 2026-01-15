@@ -1,4 +1,4 @@
-import { ArrowUp, ArrowDown } from '@wandersonalwes/iconsax-react';
+import { ArrowDown, ArrowUp } from '@wandersonalwes/iconsax-react';
 
 export default function SortableHeader({ column, label }: { column: any; label: string }) {
     const sortState = column.getIsSorted(); // asc | desc | false

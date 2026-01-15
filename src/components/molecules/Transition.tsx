@@ -17,7 +17,6 @@ export interface TransitionsProps extends React.HTMLAttributes<HTMLDivElement> {
 
 export const Transitions = React.forwardRef<HTMLDivElement, TransitionsProps>(({
     children,
-    type = 'grow',
     position = 'top',
     in: inProp = false,
     ...other

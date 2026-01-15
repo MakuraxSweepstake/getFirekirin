@@ -1,17 +1,15 @@
 "use client";
-import React from 'react';
+import PageHeader from '@/components/molecules/PageHeader';
+import { useAppDispatch } from '@/hooks/hook';
+import { showToast, ToastVariant } from '@/slice/toastSlice';
+import { Button, InputLabel, OutlinedInput } from '@mui/material';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { InputLabel, OutlinedInput, Button } from '@mui/material';
-import PageHeader from '@/components/molecules/PageHeader';
-import { showToast, ToastVariant } from '@/slice/toastSlice';
-import { useAppDispatch } from '@/hooks/hook';
-import { useCreatePaymentSetupMutation, useGetPaymentSetupQuery } from '@/services/paymentSetupApi';
 
 export default function PaymentSetup() {
     const dispatch = useAppDispatch();
-    const { data } = useGetPaymentSetupQuery();
-    const [updatePaymentSetup, { isLoading }] = useCreatePaymentSetupMutation();
+    // const { data } = useGetPaymentSetupQuery();
+    // const [updatePaymentSetup, { isLoading }] = useCreatePaymentSetupMutation();
     const formik = useFormik({
         initialValues: {
             idem_payment_uri: 'https://gateway.idem-club.info/idem/',
@@ -30,7 +28,7 @@ export default function PaymentSetup() {
                 .matches(/^\d+$/, 'Merchant ID must be numeric'),
         }),
         onSubmit: (values) => {
-            // console.log('Submitting IDEM Payment Setup:', values);
+            console.log('Submitting IDEM Payment Setup:', values);
 
             try {
 

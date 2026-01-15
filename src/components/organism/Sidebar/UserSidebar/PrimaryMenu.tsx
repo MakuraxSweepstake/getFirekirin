@@ -1,12 +1,10 @@
-import React from "react";
-import { List, ListItem, ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
-import { ReceiptEdit } from "@wandersonalwes/iconsax-react";
-import { PATH } from "@/routes/PATH";
-import { getAllMenus } from "@/serverApi/menu";
+import SupportIcon from "@/app/customIcons/SupportIcon";
 import { useGetAllUserMenuQuery } from "@/services/menuApi";
+import { List, ListItem, ListItemIcon, ListItemText } from "@mui/material";
+import { ReceiptEdit } from "@wandersonalwes/iconsax-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import SupportIcon from "@/app/customIcons/SupportIcon";
+import React from "react";
 
 export default function PrimaryMenu({ open }: { open: boolean }) {
     const { data, isLoading } = useGetAllUserMenuQuery();

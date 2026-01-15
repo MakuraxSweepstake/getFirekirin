@@ -1,7 +1,7 @@
 'use client';
 
 import GlassWrapper from "@/components/molecules/GlassWrapper";
-import { Box, Button, Stack, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import Link from "next/link";
 
 export default function KycBanner() {

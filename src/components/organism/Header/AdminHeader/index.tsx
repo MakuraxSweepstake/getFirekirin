@@ -14,8 +14,8 @@ export default function AdminHeader() {
   // React.useEffect(() => {
   //   setMounted(true);
   // }, []);
-  const [pageIndex, setPageIndex] = React.useState(1);
-  const [pageSize, setPageSize] = React.useState(10);
+  const [pageIndex, _setPageIndex] = React.useState(1);
+  const [pageSize, _setPageSize] = React.useState(10);
   const { data } = useGetAllNotificationQuery({ pageIndex, pageSize });
   return (
     <Box className='flex items-center gap-4 justify-end w-full'>

@@ -1,12 +1,11 @@
 "use client";
 
-import { Box } from '@mui/material'
-import React from 'react'
-import Sidebar from '../organism/Sidebar'
-import Header from '../organism/Header'
+import { Box } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { usePathname } from 'next/navigation';
-import Breadcrumb from '../molecules/Breadcrumb';
+import React from 'react';
+import Header from '../organism/Header';
+import Sidebar from '../organism/Sidebar';
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
     const [open, setOpen] = React.useState(true);
@@ -26,9 +25,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     const handleMobileMenuToggle = () => {
         setOpenMobile((prev) => !prev);
     }
-    const handleDrawerClose = () => {
-        setOpen(false);
-    };
+    // const handleDrawerClose = () => {
+    //     setOpen(false);
+    // };
     const DrawerHeader = styled('div')(({ theme }) => ({
         display: 'flex',
         alignItems: 'center',

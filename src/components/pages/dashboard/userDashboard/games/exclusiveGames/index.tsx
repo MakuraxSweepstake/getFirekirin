@@ -1,10 +1,7 @@
-import { PATH } from '@/routes/PATH';
-import ProtectedLink from '@/routes/ProtectedLink';
 import { getAllGames } from '@/serverApi/game';
 import { Tooltip } from '@mui/material';
 import Image from 'next/image';
 import Link from 'next/link';
-import React from 'react'
 
 export default async function ExclusiveGamePage() {
     let games = null;
@@ -12,7 +9,7 @@ export default async function ExclusiveGamePage() {
     try {
         games = await getAllGames();
     } catch (err) {
-        // console.log("❌ Failed to fetch games:", err);
+        console.log("❌ Failed to fetch games:", err);
         return <p className="text-red-500">Failed to load games.</p>;
     }
 

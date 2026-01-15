@@ -1,10 +1,10 @@
 "use client";
 import CustomTable from '@/components/organism/Table';
-import { useGetAllDepositQuery, useGetAllWithdrawlQuery } from '@/services/transaction';
+import { useGetAllWithdrawlQuery } from '@/services/transaction';
 import { SingleDepositProps } from '@/types/transaction';
 import { Pagination } from '@mui/material';
 import { ColumnDef, getCoreRowModel, getPaginationRowModel, useReactTable } from '@tanstack/react-table';
-import React, { useState } from 'react'
+import { useState } from 'react';
 
 export default function WithdrawnHistoryPage({ currentFilter,
     customRange
@@ -18,7 +18,7 @@ export default function WithdrawnHistoryPage({ currentFilter,
     const { data, isLoading } = useGetAllWithdrawlQuery({
         pageIndex,
         pageSize,
-        days:currentFilter,
+        days: currentFilter,
         customRange
     });
     const columns: ColumnDef<SingleDepositProps>[] = [

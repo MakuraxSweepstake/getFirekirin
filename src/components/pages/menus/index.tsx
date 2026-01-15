@@ -13,7 +13,7 @@ export default function MenuPage() {
 
     const { data, isLoading } = useGetAllPageQuery({ pageIndex: 1, pageSize: 30 });
     const [createMenu, { isLoading: updatingMenu }] = useCreateMenuMutation();
-    const { data: menus, isLoading: loadingMenu } = useGetAllMenuQuery();
+    const { data: menus } = useGetAllMenuQuery();
     const dispatch = useAppDispatch();
 
     const [selectedMenus, setSelectedMenus] = React.useState<any[]>([]);
@@ -37,7 +37,7 @@ export default function MenuPage() {
     const handleMenuSave = async () => {
         try {
             const menuIds = selectedMenus.map((menu) => menu.id);
-            const response = await createMenu({ pages: menuIds }).unwrap();
+            await createMenu({ pages: menuIds }).unwrap();
 
             dispatch(
                 showToast({

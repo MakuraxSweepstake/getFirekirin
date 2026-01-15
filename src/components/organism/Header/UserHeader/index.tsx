@@ -1,15 +1,9 @@
-import { Box } from '@mui/material'
-import React from 'react'
-import Profile from '../Profile'
-import AdminSearchBar from '../AdminHeader/AdminSearchBar'
-import CoinCard from '@/components/molecules/CoinCard'
-import GoldCoinIcon from '@/icons/GoldCoinIcon'
-import SilverCoinIcon from '@/icons/SilverCoinIcon'
-import UserCoinCard from './UserCoinCard'
-import Private from '@/routes/Private'
-import { CheckAuth } from '@/utils/checkAuth'
-import Link from 'next/link'
 import { PATH } from '@/routes/PATH'
+import { CheckAuth } from '@/utils/checkAuth'
+import { Box } from '@mui/material'
+import Link from 'next/link'
+import Profile from '../Profile'
+import UserCoinCard from './UserCoinCard'
 
 export default function UserHeader() {
   const isAuth = CheckAuth();

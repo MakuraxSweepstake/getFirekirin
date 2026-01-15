@@ -8,7 +8,6 @@ export async function serverBaseQuery<T>(
         token,
         body,
         cache = "no-store",
-        withAuth = false,
     }: {
         method?: string;
         token?: string;

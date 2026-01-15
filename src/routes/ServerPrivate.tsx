@@ -1,16 +1,15 @@
 // routes/Private.tsx
 import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
 import React from "react";
 import ReduxHydrator from "./ReduxHydrator";
 
-function decodeJwt(token: string) {
-    try {
-        return JSON.parse(atob(token.split(".")[1]));
-    } catch {
-        return null;
-    }
-}
+// function decodeJwt(token: string) {
+//     try {
+//         return JSON.parse(atob(token.split(".")[1]));
+//     } catch {
+//         return null;
+//     }
+// }
 
 export default async function ServerPrivate({ children }: { children: React.ReactNode }) {
     // ✅ Read cookie server-side
@@ -24,7 +23,7 @@ export default async function ServerPrivate({ children }: { children: React.Reac
     //     redirect("/");
     // }
 
-    
+
     // const user = payload; 
 
     return (

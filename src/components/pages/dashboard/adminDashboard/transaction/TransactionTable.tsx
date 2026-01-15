@@ -31,7 +31,7 @@ export default function TransactionTable({ user_id, game_id, search, setSearch }
     const [sorting, setSorting] = useState<{ id: string; desc: boolean }[]>([]);
     const [pageIndex, setPageIndex] = useState(1);
     const [pageSize, setPageSize] = useState(10);
-    const [rowSelection, setRowSelection] = useState({});
+    // const [rowSelection, setRowSelection] = useState({});
     const [status, setStatus] = React.useState<TransactionStatusProps | undefined>();
     const [selectedGame, setSelectedGame] = React.useState("");
     const [selectedTransactionType, setSelectedTransationType] = React.useState<TransactionTypeProps | string>("");
@@ -144,7 +144,7 @@ export default function TransactionTable({ user_id, game_id, search, setSearch }
         // onRowSelectionChange: setRowSelection,
     });
 
-    const { data: games, isLoading } = useGetAllGamesQuery();
+    const { data: games } = useGetAllGamesQuery();
 
 
 

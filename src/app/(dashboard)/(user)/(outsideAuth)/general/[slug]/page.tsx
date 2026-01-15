@@ -21,7 +21,7 @@ export default async function GeneralPage(props: { params: Promise<{ slug: strin
     try {
         pageData = await getPageDetail(slug);
     } catch (err) {
-        // console.log("❌ Failed to fetch games:", err);
+        console.log("❌ Failed to fetch games:", err);
         return notFound();
     }
 

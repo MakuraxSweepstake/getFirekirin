@@ -1,14 +1,12 @@
 "use client";
-import React from 'react'
-import SingleGameCred from '../../../gameCredentials/SingleGameCred'
 import { useAppSelector } from '@/hooks/hook';
-import { useRouter } from 'next/navigation';
+import SingleGameCred from '../../../gameCredentials/SingleGameCred';
 
 export default function GameCredentialsBlock({ game }: { game: any }) {
     const user = useAppSelector((s) => s ? s.auth.user : "");
     if (!user) {
         return "";
-}
+    }
 
     return (
         <div className="game_cred ">

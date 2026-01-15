@@ -1,15 +1,13 @@
 "use client";
 
+import TabController from "@/components/molecules/TabController";
+import Filter from "@/components/organism/Filter";
+import DepositHistoryPage from "@/components/pages/dashboard/userDashboard/depositHistory";
+import WithdrawnHistoryPage from "@/components/pages/dashboard/userDashboard/withdrawlHistory";
+import { Coin, Coin1, User } from "@wandersonalwes/iconsax-react";
+import { useSearchParams } from "next/navigation";
 import React from "react";
 import AccountTab from "./AccountTab";
-import TabController from "@/components/molecules/TabController";
-import { Tab } from "@mui/material";
-import WithdrawnHistoryPage from "@/components/pages/dashboard/userDashboard/withdrawlHistory";
-import DepositHistoryPage from "@/components/pages/dashboard/userDashboard/depositHistory";
-import { useSearchParams } from "next/navigation";
-import { Coin, Coin1, User } from "@wandersonalwes/iconsax-react";
-import SelectField from "@/components/atom/SelectField";
-import Filter from "@/components/organism/Filter";
 
 type AccountTabProps = "account" | "deposit" | "withdraw"
 

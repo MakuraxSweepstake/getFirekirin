@@ -1,9 +1,8 @@
 "use client";
 
-import React from 'react'
-import BalanceRefresh from './BalanceRefresh';
-import { Eye, EyeSlash } from '@wandersonalwes/iconsax-react';
 import { Tooltip } from '@mui/material';
+import { Eye, EyeSlash } from '@wandersonalwes/iconsax-react';
+import React from 'react';
 import CopyToClipboard from './CopyToClipboard';
 
 export const CardPasswordField = ({ password }: { password: string }) => {

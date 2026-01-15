@@ -8,7 +8,7 @@ import { useAddGameMutation, useGetGameByIdQuery, useUpdateGameByIdMutation } fr
 import { useGetAllProviderQuery } from "@/services/providerApi";
 import { showToast, ToastVariant } from "@/slice/toastSlice";
 import { gameInitialValues, GameProps } from "@/types/game";
-import { Button, InputLabel, Input, OutlinedInput } from "@mui/material";
+import { Button, InputLabel, OutlinedInput } from "@mui/material";
 import { useFormik } from "formik";
 import { useRouter } from "next/navigation";
 import React from "react";
@@ -32,7 +32,7 @@ export default function AddGameForm({ id }: AddGameFormProps) {
     const router = useRouter();
     const { data: gameProviders, isLoading } = useGetAllProviderQuery();
     const [addGame, { isLoading: addingGame }] = useAddGameMutation();
-    const { data, isLoading: loadingGameData } = useGetGameByIdQuery({ id: Number(id) }, { skip: !id })
+    const { data } = useGetGameByIdQuery({ id: Number(id) }, { skip: !id })
     const [updateGame, { isLoading: editing }] = useUpdateGameByIdMutation();
 
     const [serverFiles, setServerFiles] = React.useState<{

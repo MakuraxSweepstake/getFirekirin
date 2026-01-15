@@ -1,10 +1,9 @@
 
 import { Button, Dialog, DialogContent, IconButton, InputAdornment, OutlinedInput, useMediaQuery } from "@mui/material";
-import SelectField from "../atom/SelectField";
 import { ArrowDown, DocumentDownload, SearchNormal } from "@wandersonalwes/iconsax-react";
-import React from "react";
-import Filter from "../organism/Filter";
 import dayjs, { Dayjs } from "dayjs";
+import React from "react";
+import SelectField from "../atom/SelectField";
 import DateRangePicker from "./DateRangePicker";
 
 

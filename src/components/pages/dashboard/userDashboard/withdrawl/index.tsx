@@ -46,7 +46,7 @@ export default function WithdrawlPage({
     const gameInfo = coins?.data?.game_information || {};
     const dispatch = useAppDispatch();
 
-    const [withdrawMoney, { isLoading: widthdrawing }] =
+    const [withdrawMoney] =
         useWithdrawlMutation();
 
     const formik = useFormik<WithdrawlFormValues>({

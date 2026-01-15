@@ -1,8 +1,7 @@
 import MoreIcon from '@/app/customIcons/MoreIcon';
-import { Box, Button, ClickAwayListener, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Fade, IconButton, List, ListItem, Paper, Popper } from '@mui/material'
-import { More } from '@wandersonalwes/iconsax-react'
+import { Box, Button, ClickAwayListener, Dialog, DialogActions, DialogContent, DialogTitle, Fade, IconButton, List, ListItem, Paper, Popper } from '@mui/material';
 import Link from 'next/link';
-import React, { useRef, useState } from 'react'
+import { useRef, useState } from 'react';
 
 export default function ActionGroup({
     onView, onEdit, onDelete

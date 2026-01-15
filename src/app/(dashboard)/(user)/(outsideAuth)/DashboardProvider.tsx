@@ -1,7 +1,6 @@
 "use client"
-import TransactionTable from '@/components/pages/dashboard/adminDashboard/transaction/TransactionTable';
-import { useAppSelector } from '@/hooks/hook'
-import React from 'react'
+import { useAppSelector } from '@/hooks/hook';
+import React from 'react';
 import AdminDashboardRoot from '../../(admin)/AdminDashboard';
 
 export default function DashboardProvider({ children }: { children: React.ReactNode }) {

@@ -1,19 +1,19 @@
 "use client";
 
-import React from "react";
-import { useFormik } from "formik";
-import * as Yup from "yup";
-import { InputLabel, OutlinedInput, Button, IconButton } from "@mui/material";
 import InputFile from "@/components/atom/InputFile";
-import { CloseCircle } from "@wandersonalwes/iconsax-react";
-import { useGetSettingsQuery, useUpdateSettingMutation } from "@/services/settingApi";
 import { useAppDispatch } from "@/hooks/hook";
+import { useGetSettingsQuery, useUpdateSettingMutation } from "@/services/settingApi";
 import { showToast, ToastVariant } from "@/slice/toastSlice";
 import { SiteInitialRequest } from "@/types/setting";
+import { Button, IconButton, InputLabel, OutlinedInput } from "@mui/material";
+import { CloseCircle } from "@wandersonalwes/iconsax-react";
+import { useFormik } from "formik";
+import React from "react";
+import * as Yup from "yup";
 
 export default function SiteSetting() {
     const dispatch = useAppDispatch();
-    const [updateSetting, { isLoading }] = useUpdateSettingMutation();
+    const [updateSetting] = useUpdateSettingMutation();
     const { data } = useGetSettingsQuery();
 
     const [serverFiles, setServerFiles] = React.useState({

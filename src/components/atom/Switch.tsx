@@ -1,5 +1,4 @@
-import { Switch } from '@mui/material'
-import React from 'react'
+import { Switch } from '@mui/material';
 
 export default function CustomSwitch({ isSuspended, onClick }: { isSuspended?: boolean; onClick?: () => void }) {
     return (

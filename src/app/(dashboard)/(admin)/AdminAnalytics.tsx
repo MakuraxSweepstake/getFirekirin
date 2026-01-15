@@ -5,9 +5,9 @@ import { useGetAnalyticsQuery } from '@/services/dashboardApi';
 import { AnalyticsProps } from '@/types/dashboard';
 import { formatDateTime } from '@/utils/formatDateTime';
 import { Box, ClickAwayListener, Fade, IconButton, List, ListItem, Paper, Popper } from '@mui/material';
-import { ArrowLeft, More } from '@wandersonalwes/iconsax-react';
+import { ArrowLeft } from '@wandersonalwes/iconsax-react';
 import { ApexOptions } from 'apexcharts';
-import React, { useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import Chart from "react-apexcharts";
 
 type AnalyticsType = "today" | "this_week" | "this_month" | "this_year" | "all_time";

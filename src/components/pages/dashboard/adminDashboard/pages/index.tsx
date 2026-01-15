@@ -10,7 +10,7 @@ import { PageRequestProps } from '@/types/page';
 import { formatDateTime } from '@/utils/formatDateTime';
 import { Checkbox, Pagination } from '@mui/material';
 import { ColumnDef, getCoreRowModel, getPaginationRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
-import React, { useMemo, useState } from 'react'
+import { useMemo, useState } from 'react';
 
 export default function GeneralPageLiting() {
     const dispatch = useAppDispatch();
@@ -23,7 +23,7 @@ export default function GeneralPageLiting() {
         pageSize: pageSize,
         search: search || ""
     });
-    const [deletePage, { isLoading: deleting }] = useDeletePageByIdMutation();
+    const [deletePage] = useDeletePageByIdMutation();
 
     const filteredData = useMemo(() => data?.data?.data || [], [data]);
 
@@ -73,7 +73,7 @@ export default function GeneralPageLiting() {
             accessorKey: 'registeredDate',
             header: 'Registered Date',
             cell: ({ row }) => {
-                const { date, time } = formatDateTime(row.original.date)
+                const { date } = formatDateTime(row.original.date)
                 return (
                     <span className="text-[12px] font-[500] max-w-[380px]">{date}</span>
                 )

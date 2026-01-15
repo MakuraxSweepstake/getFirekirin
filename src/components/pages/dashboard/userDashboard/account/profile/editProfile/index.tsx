@@ -5,15 +5,12 @@ import { useAppDispatch, useAppSelector } from '@/hooks/hook';
 import { useUpdateUserProfileMutation } from '@/services/userApi';
 import { setTokens } from '@/slice/authSlice';
 import { showToast, ToastVariant } from '@/slice/toastSlice';
-import { initialPlayerValues, PlayerItem, SinlgePlayerResponseProps } from '@/types/player';
+import { initialPlayerValues, PlayerItem } from '@/types/player';
 import { useFormik } from 'formik';
-import { useRouter } from 'next/navigation';
-import React from 'react'
 
 export default function EditUserProfile({ id, buttonLabel }: { id: string, buttonLabel?: string; }) {
 
     const dispatch = useAppDispatch();
-    const router = useRouter();
     const [updateUserProfile, { isLoading }] = useUpdateUserProfileMutation();
     const user = useAppSelector((state) => state?.auth.user);
     const access_token = useAppSelector((state) => state?.auth.access_token);

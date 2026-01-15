@@ -1,7 +1,7 @@
+import { GlobalResponse } from "@/types/config";
+import { GameItem, GameResponseProps, SingleGameResponse } from "@/types/game";
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { baseQuery } from "./baseQuery";
-import { GameItem, GameProps, GameResponseProps, SingleGameResponse } from "@/types/game";
-import { GlobalResponse } from "@/types/config";
 
 export const gameApi = createApi({
     reducerPath: "gameApi",
