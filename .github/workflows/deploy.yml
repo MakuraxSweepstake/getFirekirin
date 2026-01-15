@@ -61,13 +61,13 @@ jobs:
             ./ \
             ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:/var/www/getFirekirin/
 
-      - name: Restart application
-        run: |
-          ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} << 'EOF'
-            cd /var/www/getFirekirin
-            pm2 reload ecosystem.config.js --update-env --env production || \
-            pm2 start ecosystem.config.js --env production
-          EOF
+      # - name: Restart application
+      #   run: |
+      #     ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} << 'EOF'
+      #       cd /var/www/getFirekirin
+      #       pm2 reload ecosystem.config.js --update-env --env production || \
+      #       pm2 start ecosystem.config.js --env production
+      #     EOF
 
       - name: Notify Slack on Success
         if: success()
