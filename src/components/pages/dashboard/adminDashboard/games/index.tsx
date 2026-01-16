@@ -2,6 +2,7 @@
 
 import ActionGroup from '@/components/molecules/Action';
 import { useAppDispatch } from '@/hooks/hook';
+import { PATH } from '@/routes/PATH';
 import { useDeleteGameByIdMutation, useGetAllGamesQuery } from '@/services/gameApi';
 import { showToast, ToastVariant } from '@/slice/toastSlice';
 import { GameItem } from '@/types/game';
@@ -59,6 +60,7 @@ export default function AdminGameList() {
                                 {game.name}
                             </h2>
                             <ActionGroup
+                                onEdit={`${PATH.ADMIN.GAMES.EDIT_GAME.ROOT}/${game?.id}`}
                                 onDelete={async () => {
                                     try {
 

@@ -49,15 +49,16 @@ export default function ActionGroup({
                 {({ TransitionProps }) => (
                     <Fade {...TransitionProps} timeout={300}>
                         <Paper
-                            elevation={3}
                             sx={{
                                 width: 215,
                                 borderRadius: 2,
                                 mt: 1,
+                                p: 0,
+                                overflow: "hidden"
                             }}
                         >
                             <ClickAwayListener onClickAway={handleClose}>
-                                <List>
+                                <List className='p-0!'>
                                     {onView ? <ListItem>
                                         <Link href={onView || ""} className='block py-3 px-4 hover:bg-[#FBF4FB]'>View Profile</Link>
                                     </ListItem> : ""}

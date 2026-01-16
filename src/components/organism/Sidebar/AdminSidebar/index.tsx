@@ -160,7 +160,7 @@ export default function AdminMenu({ open }: { open: boolean }) {
                     >
                         <Link
                             href={href}
-                            className={`flex gap-2 items-start px-4 py-2 ${open ? "expanded" : "collapsed"
+                            className={`flex gap-2 items-center px-4 py-2 ${open ? "expanded" : "collapsed"
                                 } ${active ? "active__menu" : ""}`}
                         >
                             <ListItemIcon className={open ? "expanded" : "collapsed"}>
