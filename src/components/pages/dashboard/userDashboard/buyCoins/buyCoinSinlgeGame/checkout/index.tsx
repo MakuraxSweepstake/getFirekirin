@@ -156,7 +156,7 @@ export default function CheckoutPage({ amount, slug, bonus }: {
                             catch (e: any) {
                                 dispatch(
                                     showToast({
-                                        message: e.message || "Something went wrong",
+                                        message: e?.data?.message || "Something went wrong",
                                         variant: ToastVariant.ERROR
                                     })
                                 )
