@@ -96,21 +96,22 @@ export default function WithdrawlModal({
                             </GlassWrapper>
                         </div>
                     </div>
-                    <div className="relative">
-                        <InputLabel htmlFor="photoid_number" className="text-start">Photo ID <span className="text-red-500">*</span></InputLabel>
-                        <OutlinedInput
-                            name="photoid_number"
-                            id="photoid_number"
-                            value={formik.values.photoid_number}
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
-                            placeholder="Enter your Photo ID"
-                        />
-                        {
-                            formik.touched.photoid_number && formik.errors.photoid_number ?
-                                <span className="error text-start">{formik.errors.photoid_number || ""}</span> : null
-                        }
-                    </div>
+                    {formik.values.type === "tryspeed" ?
+                        <div className="relative">
+                            <InputLabel htmlFor="photoid_number" className="text-start">Photo ID <span className="text-red-500">*</span></InputLabel>
+                            <OutlinedInput
+                                name="photoid_number"
+                                id="photoid_number"
+                                value={formik.values.photoid_number}
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                                placeholder="Enter your Photo ID"
+                            />
+                            {
+                                formik.touched.photoid_number && formik.errors.photoid_number ?
+                                    <span className="error text-start">{formik.errors.photoid_number || ""}</span> : null
+                            }
+                        </div> : ""}
                     <div className="relative">
                         <InputLabel htmlFor="wallet_address" className="text-start"> {formik.values.type === "masspay" ? "Wallet Address" : "Lightining Address"}<span className="text-red-500">*</span></InputLabel>
                         <div className="relative">
