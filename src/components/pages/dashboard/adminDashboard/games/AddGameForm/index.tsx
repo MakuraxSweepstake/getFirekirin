@@ -66,6 +66,7 @@ export default function AddGameForm({ id }: AddGameFormProps) {
             api: data.data?.api,
             provider: data.data?.provider,
             profit: data.data?.profit,
+            meta: data?.data?.meta
         } : gameInitialValues,
         validationSchema,
         enableReinitialize: true,
