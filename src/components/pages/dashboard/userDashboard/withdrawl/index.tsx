@@ -32,6 +32,8 @@ export type WithdrawlFormValues = {
     withdrawl_amounts: Record<string, number | "">;
     wallet_address: string;
     photoid_number: string;
+    ssn: string;
+    type: "tryspeed" | "masspay"
 };
 
 export default function WithdrawlPage({
@@ -55,6 +57,8 @@ export default function WithdrawlPage({
             withdrawl_amounts: {},
             wallet_address: user?.wallet_address || "",
             photoid_number: "",
+            type: "tryspeed",
+            ssn: ""
         },
         validationSchema,
         enableReinitialize: true,
@@ -67,6 +71,8 @@ export default function WithdrawlPage({
                     amount: Number(amount),
                     game_provider: values.game_provider,
                     photoid_number: values.photoid_number,
+                    ssn: values.ssn,
+                    type: values.type
                 }).unwrap();
 
                 setOpen(false);

@@ -1,5 +1,7 @@
+import GlassWrapper from "@/components/molecules/GlassWrapper";
+import BitCoinIcon from "@/icons/BitCoinIcon";
 import { Box, Button, InputLabel, Modal, OutlinedInput } from "@mui/material";
-import { SecuritySafe } from "@wandersonalwes/iconsax-react";
+import { BitcoinRefresh, SecuritySafe, TickCircle } from "@wandersonalwes/iconsax-react";
 import { FormikProps } from "formik";
 import Image from "next/image";
 import React from "react";
@@ -27,9 +29,13 @@ export default function WithdrawlModal({
 
     const handleChangeAddress = () => {
         setIsEditing(true);
-        formik.setFieldValue("wallet_address", ""); // clear so user can enter new
+        formik.setFieldValue("wallet_address", "");
     };
 
+    const handleTypeChange = (value: string) => {
+        formik.setFieldValue("type", value)
+        handleChangeAddress();
+    }
     return (
         <Modal open={open} onClose={handleClose}>
             <Box
@@ -71,6 +77,25 @@ export default function WithdrawlModal({
                 </p>
 
                 <form onSubmit={formik.handleSubmit} className="flex flex-col gap-3">
+                    <div className="grid sm:grid-cols-2 mb-8 gap-6">
+                        <div className="col-span-1">
+                            <GlassWrapper>
+                                <div className="py-5 px-4 flex justify-between items-center cursor-pointer" onClick={() => handleTypeChange("tryspeed")} >
+                                    <span className="text-[14px] flex items-center justify-start gap-2"><BitCoinIcon />Try Speed</span>
+                                    {formik.values.type === "tryspeed" ? <TickCircle /> : ""}
+                                </div>
+                            </GlassWrapper>
+                        </div>
+                        <div className="col-span-1">
+                            <GlassWrapper>
+                                <div className="py-5 px-4 flex justify-between items-center cursor-pointer" onClick={() => handleTypeChange("masspay")}>
+                                    <span className="text-[14px] flex items-center justify-start gap-2"><BitcoinRefresh />Masspay</span>
+                                    {formik.values.type === "masspay" ? <TickCircle /> : ""}
+
+                                </div>
+                            </GlassWrapper>
+                        </div>
+                    </div>
                     <div className="relative">
                         <InputLabel htmlFor="photoid_number" className="text-start">Photo ID <span className="text-red-500">*</span></InputLabel>
                         <OutlinedInput
@@ -87,7 +112,7 @@ export default function WithdrawlModal({
                         }
                     </div>
                     <div className="relative">
-                        <InputLabel htmlFor="wallet_address" className="text-start">Wallet Address <span className="text-red-500">*</span></InputLabel>
+                        <InputLabel htmlFor="wallet_address" className="text-start"> {formik.values.type === "masspay" ? "Wallet Address" : "Lightining Address"}<span className="text-red-500">*</span></InputLabel>
                         <div className="relative">
                             <OutlinedInput
                                 name="wallet_address"
@@ -117,6 +142,21 @@ export default function WithdrawlModal({
                             )}
                         </div>
                     </div>
+                    {formik.values.type === "masspay" ? <div className="relative">
+                        <InputLabel htmlFor="ssn" className="text-start">SSN <span className="text-red-500">*</span></InputLabel>
+                        <OutlinedInput
+                            name="ssn"
+                            id="ssn"
+                            value={formik.values.ssn}
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            placeholder="Enter your Photo ID"
+                        />
+                        {
+                            formik.touched.ssn && formik.errors.ssn ?
+                                <span className="error text-start">{formik.errors.ssn || ""}</span> : null
+                        }
+                    </div> : ""}
 
                     <Button
                         type="submit"
