@@ -40,17 +40,10 @@ export async function generateStaticParams() {
 
 export const dynamic = 'force-static'
 
-
 export default async function UserGameDetail(props: { params: Promise<{ id: string }> }) {
     const { id } = await props.params;
 
     const game = await getSingleGame(id);
 
-    return <ExclusiveGameDetail game={game} />
-
+    return <ExclusiveGameDetail game={game} />;
 }
-// export default async function ExclusiveGamePage({ params }: PageProps) {
-//     const game = await getSingleGame(params.id)
-
-//     return <ExclusiveGameDetail game={game} />
-// }
