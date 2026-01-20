@@ -67,7 +67,7 @@ export default function WithdrawlPage({
     const gameInfo = coins?.data?.game_information || {};
     const dispatch = useAppDispatch();
 
-    const [withdrawMoney,{isLoading}] = useSubmitMassPayPaymentFieldsMutation();
+    const [withdrawMoney, { isLoading }] = useSubmitMassPayPaymentFieldsMutation();
 
     const formik = useFormik<WithdrawlFormValues>({
         initialValues: {
@@ -180,6 +180,7 @@ export default function WithdrawlPage({
         }
     };
 
+    console.log("Formik Errors:", formik.values.withdrawl_amounts);
     return (
         <section className="withdrawl__root">
             <div className="section__title mb-4 lg:mb-8 max-w-[520px]">
