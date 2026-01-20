@@ -38,7 +38,7 @@ export async function generateStaticParams() {
     }))
 }
 
-export const dynamic = 'force-static'
+export const dynamic = 'force-static';
 
 export default async function UserGameDetail(props: { params: Promise<{ id: string }> }) {
     const { id } = await props.params;
