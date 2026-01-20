@@ -2,7 +2,7 @@ import { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
   images: {
-    domains: ["app.bdwebai.com", "sweepstake.webjuwa.com", "app.socialspins777.com"],
+    // domains: ["app.bdwebai.com", "sweepstake.webjuwa.com", "app.socialspins777.com"],
     remotePatterns: [
       {
         protocol: 'https',
