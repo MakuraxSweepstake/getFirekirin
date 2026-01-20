@@ -28,7 +28,6 @@ export async function generateMetadata(props: { params: Promise<{ id: string }> 
     };
 }
 
-
 export default async function UserGameDetail(props: { params: Promise<{ id: string }> }) {
     const { id } = await props.params;
 
