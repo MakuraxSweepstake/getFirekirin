@@ -8,6 +8,7 @@ import { Box, Button, Modal } from "@mui/material";
 import { BitcoinRefresh, SecuritySafe, TickCircle } from "@wandersonalwes/iconsax-react";
 import { FormikProps } from "formik";
 import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
 import { WithdrawlFormValues } from ".";
 import { RenderFields } from "./renderFields";
@@ -69,10 +70,9 @@ export default function WithdrawlModal({
                 "payment_fields",
                 fetchedFields.map((item) => ({
                     ...item,
-                    value: "",
+                    value: item.value || "",
                 }))
             );
-
 
 
         } catch (e: any) {
@@ -139,7 +139,9 @@ export default function WithdrawlModal({
                         <>
                             <div className="flex flex-col md:grid grid-cols-2 gap-4">
                                 {fields.map((field) => (
-                                    <RenderFields key={field.token} field={field} formik={formik} />
+                                    <div className={field.type === "IDSelfieCollection" ? "col-span-2" : "col-span-1"} key={field.token}>
+                                        {field.type === "IDSelfieCollection" ? <Link href={field.value} className="bg-primary-grad ss-btn">{field.label}</Link> : <RenderFields field={field} formik={formik} />}
+                                    </div>
                                 ))}
                             </div>
                             <div className="flex gap-3 mt-4">

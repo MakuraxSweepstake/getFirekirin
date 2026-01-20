@@ -63,7 +63,7 @@ export interface MasspayPaymentFields {
     is_required: boolean;
     label: string;
     validation: string;
-    type: "BillReferenceNumber" | "BankAccountType" | "BankAccountNumber" | "BankRoutingNumber" | "SocialSecurity" | "DateOfBirth" | "Address1";
+    type: "BillReferenceNumber" | "BankAccountType" | "BankAccountNumber" | "BankRoutingNumber" | "SocialSecurity" | "DateOfBirth" | "Address1" | "IDSelfieCollection";
     expected_value: string;
     value: string;
 }
