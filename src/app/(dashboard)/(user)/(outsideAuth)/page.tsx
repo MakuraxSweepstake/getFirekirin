@@ -113,7 +113,7 @@ export default async function Home() {
               {subGames?.data?.map((game: any) => (
                 <Link
                   href={`exclusive-games/${game.id}`}
-                  key={game.name}
+                  key={game.name + game.id + game.image_url}
                   className="col-span-1 relative aspect-[1/1]"
                 >
                   <Image

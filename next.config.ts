@@ -24,7 +24,7 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'app.socialspins777.com',
+        hostname: 'dev.getfirekirin.com',
         port: '',
         pathname: '/storage/**',
       },

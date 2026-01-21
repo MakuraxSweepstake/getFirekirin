@@ -3,14 +3,19 @@
 import DashboardLayout from '@/components/layouts/DashboardLayout';
 import AgeVerificationModal from '@/components/organism/dialog';
 import { useSearchParams } from 'next/navigation';
-import React, { Suspense } from 'react';
+import React, { Suspense, useEffect } from 'react';
 
 
 function LayoutContent({ children }: { children: React.ReactNode }) {
     const searchParams = useSearchParams();
     const visitorId = searchParams.get("visitor_id");
 
-    localStorage.setItem("visitor_id", visitorId || "");
+    useEffect(() => {
+        if (visitorId) {
+            localStorage.setItem("visitor_id", visitorId);
+        }
+    }, [visitorId]);
+
     return (
         <DashboardLayout>
             {children}

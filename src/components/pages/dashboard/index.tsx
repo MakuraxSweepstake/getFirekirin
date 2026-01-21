@@ -49,9 +49,9 @@ export default function Dashboard({ slides }: { slides: BannerProps[] }) {
                             )}
 
                             {slides[current]?.description && (
-                                <p className=" text-[13px] leading-[120%] font-[500] mb-5 banner-desc  lg:max-w-[500px]">
+                                <div className=" text-[13px] leading-[120%] font-[500] mb-5 banner-desc  lg:max-w-[500px]">
                                     {renderHTML(slides[current].description)}
-                                </p>
+                                </div>
                             )}
 
                             {slides[current]?.cta_link && (
