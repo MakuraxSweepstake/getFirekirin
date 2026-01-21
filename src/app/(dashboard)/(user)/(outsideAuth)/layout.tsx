@@ -3,7 +3,7 @@
 import DashboardLayout from '@/components/layouts/DashboardLayout';
 import AgeVerificationModal from '@/components/organism/dialog';
 import { useSearchParams } from 'next/navigation';
-import React from 'react';
+import React, { Suspense } from 'react';
 
 export default function DashboardRootLayout({ children }: { children: React.ReactNode }) {
     const searchParams = useSearchParams();
@@ -12,9 +12,11 @@ export default function DashboardRootLayout({ children }: { children: React.Reac
     localStorage.setItem("visitor_id", visitorId || "");
 
     return (
-        <DashboardLayout>
-            {children}
-            <AgeVerificationModal />
-        </DashboardLayout>
+        <Suspense fallback={<div>Loading...</div>}>
+            <DashboardLayout>
+                {children}
+                <AgeVerificationModal />
+            </DashboardLayout>
+        </Suspense>
     )
 }
