@@ -8,19 +8,11 @@ export const authApi = createApi({
     baseQuery: baseQuery,
     endpoints: (builder) => ({
         registerUser: builder.mutation<{ success: boolean, data: LoginResponse | null, message: string }, RegisterProps>({
-            query: ({ email,
-                username,
-                password,
-                password_confirmation, first_name, middle_name, last_name, phone, photoid_number, dob, city, pob, agree,device_id }) => ({
-                    url: `/api/auth/register`,
-                    method: "POST",
-                    body: {
-                        email,
-                        username,
-                        password,
-                        password_confirmation, first_name, middle_name, last_name, phone, photoid_number, dob, city, pob, agree,device_id
-                    },
-                }),
+            query: (body) => ({
+                url: `/api/auth/register`,
+                method: "POST",
+                body
+            }),
 
         }),
         login: builder.mutation<LoginResponse, LoginProps>({
@@ -37,11 +29,11 @@ export const authApi = createApi({
                 body: { email },
             })
         }),
-        verifyEmail: builder.mutation<GlobalResponse, { id: string; hash: string,device_id:string }>({
-            query: ({ id, hash ,device_id}) => ({
+        verifyEmail: builder.mutation<GlobalResponse, { id: string; hash: string, device_id: string }>({
+            query: ({ id, hash, device_id }) => ({
                 url: "/api/auth/verify-email",
                 method: "POST",
-                body: { id, hash,device_id},
+                body: { id, hash, device_id },
             })
         }),
         forgotPassword: builder.mutation<GlobalResponse, { email: string }>({
