@@ -17,10 +17,12 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
     }, [visitorId]);
 
     return (
-        <DashboardLayout>
-            {children}
-            <AgeVerificationModal />
-        </DashboardLayout>
+        <Suspense fallback={<div>Loading...</div>}>
+            <DashboardLayout>
+                {children}
+                <AgeVerificationModal />
+            </DashboardLayout>
+        </Suspense>
     )
 }
 export default function DashboardRootLayout({ children }: { children: React.ReactNode }) {
