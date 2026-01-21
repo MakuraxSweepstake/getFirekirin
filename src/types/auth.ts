@@ -41,4 +41,5 @@ export interface RegisterProps extends LoginProps {
     pob: string;
     agree: boolean;
     device_id?: string;
+    visitor_id?: string;
 }
