@@ -1,5 +1,5 @@
 import ExclusiveGameDetail from "@/components/pages/dashboard/userDashboard/games/exclusiveGames/exclusiveGameDetail";
-import { getAllGames, getSingleGame } from "@/serverApi/game";
+import { getSingleGame } from "@/serverApi/game";
 import { Metadata } from "next";
 
 const SITE_URL = process.env.NEXT_PUBLIC_FRONTEND_URL!;
@@ -27,18 +27,6 @@ export async function generateMetadata(props: { params: Promise<{ id: string }> 
         },
     };
 }
-
-export async function generateStaticParams() {
-    const res = await getAllGames()
-
-    const games = res?.data?.data ?? []
-
-    return games.map((game: any) => ({
-        id: String(game.id),
-    }))
-}
-
-export const dynamic = 'force-static';
 
 export default async function UserGameDetail(props: { params: Promise<{ id: string }> }) {
     const { id } = await props.params;
