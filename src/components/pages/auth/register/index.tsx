@@ -116,7 +116,8 @@ export default function RegisterPage() {
         dob: null as Dayjs | null,
         city: '',
         pob: '',
-        agree: true
+        agree: true,
+        visitor_id: undefined,
     }
     const { deviceId } = useSeon();
     const { handleSubmit, handleBlur, handleChange, errors, dirty, values, touched, setFieldValue, setFieldTouched } = useFormik(
@@ -125,6 +126,7 @@ export default function RegisterPage() {
             validationSchema,
             onSubmit: async (values) => {
                 const formattedDob = values.dob ? dayjs(values.dob).format('YYYY-MM-DD') : '';
+                const userFromPropeelVisitorId = localStorage.getItem("visitor_id");
                 try {
                     const response = await registerUser({
                         email: values.emailAddress,
@@ -140,7 +142,8 @@ export default function RegisterPage() {
                         city: values.city,
                         pob: values.pob,
                         agree: values.agree,
-                        device_id: deviceId
+                        device_id: deviceId,
+                        visitor_id: userFromPropeelVisitorId || undefined,
                     }).unwrap();
 
                     dispatch(
@@ -151,6 +154,7 @@ export default function RegisterPage() {
                         }),
                     );
                     router.replace(`${PATH.AUTH.VERIFY_EMAIL.ROOT}?email=${values.emailAddress}`);
+                    localStorage.removeItem("visitor_id");
                 }
                 catch (e: any) {
                     dispatch(
