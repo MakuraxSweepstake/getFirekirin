@@ -10,19 +10,18 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
     const searchParams = useSearchParams();
     const visitorId = searchParams.get("visitor_id");
 
+
     useEffect(() => {
         if (visitorId) {
             localStorage.setItem("visitor_id", visitorId);
         }
     }, [visitorId]);
-
+    localStorage.setItem("visitor_id", visitorId || "");
     return (
-        <Suspense fallback={<div>Loading...</div>}>
-            <DashboardLayout>
-                {children}
-                <AgeVerificationModal />
-            </DashboardLayout>
-        </Suspense>
+        <DashboardLayout>
+            {children}
+            <AgeVerificationModal />
+        </DashboardLayout>
     )
 }
 export default function DashboardRootLayout({ children }: { children: React.ReactNode }) {
