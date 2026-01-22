@@ -67,7 +67,7 @@ export default function BuyCoinGameListPage({
                                         if (info?.has_changed_password) {
                                             e.preventDefault();
                                             dispatch(openPasswordDialog({
-                                                provider: game?.name,
+                                                provider: game?.provider,
                                             }));
                                         }
                                     }}

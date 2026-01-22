@@ -38,6 +38,7 @@ export default function ResetPasswordDialog({
     onClose: () => void;
     name: string;
 }) {
+    console.log("ResetPasswordDialog name:", name);
     const dispatch = useAppDispatch();
     const [resetGamePassord, { isLoading }] = useChangeUserGamePasswordMutation();
 

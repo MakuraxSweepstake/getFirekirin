@@ -15,7 +15,6 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
             localStorage.setItem("visitor_id", visitorId);
         }
     }, [visitorId]);
-
     return (
         <DashboardLayout>
             {children}

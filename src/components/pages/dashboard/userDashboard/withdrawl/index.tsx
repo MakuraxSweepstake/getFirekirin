@@ -260,7 +260,7 @@ export default function WithdrawlPage({
                                                 onClick={() => {
                                                     if (info?.has_changed_password) {
                                                         dispatch(openPasswordDialog({
-                                                            provider: game?.name,
+                                                            provider: game?.provider,
                                                         }));
                                                     }
                                                     else {
