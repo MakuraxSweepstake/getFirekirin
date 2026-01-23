@@ -10,6 +10,7 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
     const searchParams = useSearchParams();
     const visitorId = searchParams.get("visitor_id");
 
+
     useEffect(() => {
         if (visitorId) {
             localStorage.setItem("visitor_id", visitorId);

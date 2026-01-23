@@ -14,8 +14,8 @@ export interface DepositUrlProps {
     amount: number;
     currency: string;
     payment_url: string;
-    merchant_id:string;
-    
+    merchant_id: string;
+
 }
 
 
@@ -47,4 +47,23 @@ export interface DepositListProps {
     }
     success: boolean;
     message: string;
+}
+
+export interface MasspayPaymentMethods {
+    id: number;
+    name: string;
+    destination_token: string;
+    fee: number;
+}
+
+export interface MasspayPaymentFields {
+    input_type: "text" | "options" | "date";
+    token: string;
+    is_optional: boolean;
+    is_required: boolean;
+    label: string;
+    validation: string;
+    type: "BillReferenceNumber" | "BankAccountType" | "BankAccountNumber" | "BankRoutingNumber" | "SocialSecurity" | "DateOfBirth" | "Address1" | "IDSelfieCollection";
+    expected_value: string;
+    value: string;
 }
