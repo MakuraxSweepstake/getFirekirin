@@ -5,6 +5,7 @@ import { useDepositMutation } from '@/services/transaction';
 import { showToast, ToastVariant } from '@/slice/toastSlice';
 import { DepositProps } from '@/types/transaction';
 import { Button, InputLabel, OutlinedInput } from '@mui/material';
+import { useRouter } from 'next/navigation';
 import Script from 'next/script';
 import { PaymentModeProps } from '.';
 
@@ -21,7 +22,7 @@ declare global {
 
 export default function PaymentForm({ id, amount, type }: DepositProps & { type: PaymentModeProps }) {
     const dispatch = useAppDispatch();
-
+    const router = useRouter();
     const user = useAppSelector((state) => state.auth.user);
     const [payViaFortPay, { isLoading }] = useDepositMutation();
 
@@ -36,7 +37,8 @@ export default function PaymentForm({ id, amount, type }: DepositProps & { type:
                             amount: amount,
                             type: type as PaymentModeProps,
                             payment_token: response.token
-                        }).unwrap()
+                        }).unwrap();
+                        router.push(`/buy-coins/${id}/success`)
                     }
                     catch (e: any) {
                         dispatch(showToast({
