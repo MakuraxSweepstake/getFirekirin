@@ -330,8 +330,6 @@ export default function RegisterPage() {
                             </div>
                         </div>
 
-
-
                         <div className="col-span-2 lg:col-span-3">
                             <div className="input__field">
                                 <InputLabel htmlFor="phone">Phone <span className="text-red-500">*</span></InputLabel>
