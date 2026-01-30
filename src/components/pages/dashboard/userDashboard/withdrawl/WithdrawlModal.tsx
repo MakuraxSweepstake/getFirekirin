@@ -182,7 +182,7 @@ export default function WithdrawlModal({
                                                     onClick={() => handleTypeChange(option?.destination_token)}
                                                 >
                                                     <span className="text-[12px] flex items-center justify-start gap-2 max-w-[80%] text-start">
-                                                        {option.thumbnail_url ? <Image src={option?.thumbnail_url} alt={option?.name} className="w-6 h-6 object-contain" /> : <BitcoinRefresh />}
+                                                        {option.thumbnail_url ? <Image src={option?.thumbnail_url} alt={option?.name} width={120} height={40} className="object-contain max-w-16" /> : <BitcoinRefresh />}
                                                         <span>
                                                             {option?.name}
                                                             <span className="text-[#FBA027] text-[12px] block">(Fee ${option.fee})</span>
