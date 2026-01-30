@@ -17,11 +17,11 @@ import WithdrawlModal from "./WithdrawlModal";
 const validationSchema = Yup.object({
     withdrawl_amounts: Yup.object().test(
         "min-amount",
-        "Amount must be greater than $2",
+        "Amount must be greater than $40",
         (value) => {
             if (!value) return true;
             return Object.values(value).every(
-                (v) => v === "" || Number(v) >= 2
+                (v) => v === "" || Number(v) >= 40
             );
         }
     ),
@@ -156,10 +156,10 @@ export default function WithdrawlPage({
     };
 
     const handleWithdrawClick = (balance: number, provider: string) => {
-        if (balance < 2) {
+        if (balance < 40) {
             dispatch(
                 showToast({
-                    message: "Insufficient balance to withdraw (Min $2 required)",
+                    message: "Withdraw Amount must be at least $40",
                     variant: ToastVariant.ERROR,
                 })
             );
@@ -183,8 +183,8 @@ export default function WithdrawlPage({
     console.log("Formik Errors:", formik.values.withdrawl_amounts);
     return (
         <section className="withdrawl__root">
-            <div className="section__title mb-4 lg:mb-8 max-w-[520px]">
-                <h1 className="mb-2 text-[24px] lg:text-[32px]">Withdraw Coins</h1>
+            <div className="section__title mb-4 lg:mb-8 max-w-[560px]">
+                <h1 className="mb-2 text-[24px] lg:text-[32px]">Withdraw Coins <span className="text-[#FBA027] text-[20px]">(Min Withdrawl $40)</span></h1>
                 <p className="text-[11px] lg:text-[13px]">
                     To start playing and cashing out your winnings, you'll need a crypto
                     wallet to purchase E-Credits and receive payouts. Don't worry—it's quick
@@ -291,7 +291,7 @@ export default function WithdrawlPage({
                                                     }
                                                 </span>
                                             )}
-                                        <span className="text-[8px] lg:text-[10px]">Min $2.0</span>
+                                        <span className="text-[8px] lg:text-[10px]">Min $40.0</span>
                                     </div>
 
                                     {/* Withdraw Button */}
@@ -302,6 +302,7 @@ export default function WithdrawlPage({
                                                 color="secondary"
                                                 className="md:!max-w-fit !text-[#426A66]"
                                                 startIcon={<CardPos />}
+                                                // disabled={info.available < 40}
                                                 onClick={() => {
                                                     if (info?.has_changed_password) {
                                                         dispatch(openPasswordDialog({

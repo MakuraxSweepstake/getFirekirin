@@ -102,7 +102,7 @@ export default function UserCoinCard() {
                 >
                     <SilverCoinIcon />
                     <div className="coins">
-                        <strong className="text-[12px] leading-4 font-[600] text-[#93E0D8] block">{sweepsCoin.providers.length ? sweepsCoin.providers.reduce((acc, item) => acc + Number(item.balance), 0) : 0}</strong>
+                        <strong className="text-[12px] leading-4 font-[600] text-[#93E0D8] block">{sweepsCoin.providers.length ? sweepsCoin.providers.reduce((acc, item) => acc + Number(item.balance), 0).toFixed(2) : 0}</strong>
                         <span className="text-[9px] mt-[-2px]  hidden md:block">Sweeps Coins</span>
                     </div>
                 </Box>
@@ -127,7 +127,7 @@ export default function UserCoinCard() {
                                     <div className="header flex justify-start items-center gap-4 border-b border-[rgba(255,255,255,0.1)] pb-3 mb-6 ">
                                         <SilverCoinIcon />
                                         <div className="coin-detail ">
-                                            <h2 className="text-[24px] leading-[120%] text-white">{sweepsCoin.providers.length ? sweepsCoin.providers.reduce((acc, item) => acc + Number(item.balance), 0) : 0}</h2>
+                                            <h2 className="text-[24px] leading-[120%] text-white">{sweepsCoin.providers.length ? sweepsCoin.providers.reduce((acc, item) => acc + Number(item.balance), 0).toFixed(2) : 0}</h2>
                                             <p className="text-[11px] text-[rgba(255,255,255,0.8)]">Sweeps Coins</p>
                                         </div>
                                         <IconButton onClick={() => refetch()} disabled={isLoading || isFetching}>

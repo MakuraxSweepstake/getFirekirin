@@ -55,6 +55,7 @@ export interface MasspayPaymentMethods {
     name: string;
     destination_token: string;
     fee: number;
+    thumbnail_url: string;
 }
 
 export interface MasspayPaymentFields {
