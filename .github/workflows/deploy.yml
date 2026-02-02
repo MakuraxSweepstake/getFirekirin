@@ -3,7 +3,7 @@ name: getFirekirin Deployment Pipeline
 on:
   push:
     branches:
-      - fixes/linting
+      - main
 
 jobs:
   build-and-deploy:
@@ -48,8 +48,8 @@ jobs:
       - name: Setup SSH
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.SERVER_SSH_KEY }}" > ~/.ssh/id_ed25519
-          chmod 600 ~/.ssh/id_ed25519
+          echo "${{ secrets.SERVER_SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H ${{ secrets.SERVER_HOST }} >> ~/.ssh/known_hosts
 
       - name: Deploy build to server
@@ -58,120 +58,141 @@ jobs:
             --exclude '.git' \
             --exclude '.env*' \
             --exclude 'node_modules' \
+            --exclude 'conf' \
+            --exclude 'logs' \
+            --exclude 'ssl' \
+            --exclude 'tmp' \
+            --exclude 'private_html' \
+            --exclude 'public_html' \
             ./ \
-            ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:/var/www/getFirekirin/
+            ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:/home/1522942.cloudwaysapps.com/swsjapwyjk/
 
-      # - name: Restart application
-      #   run: |
-      #     ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} << 'EOF'
-      #       cd /var/www/getFirekirin
-      #       pm2 reload ecosystem.config.js --update-env --env production || \
-      #       pm2 start ecosystem.config.js --env production
-      #     EOF
+      - name: Restart application
+        run: |
+          ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} << 'EOF'
+            # Load NVM
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+            
+            # Go to app directory
+            cd /home/1522942.cloudwaysapps.com/swsjapwyjk
+            
+            # Install dependencies (production only, no dev dependencies)
+            npm ci --prefer-offline --no-audit --production=false
+            
+            # Reload or start PM2
+            pm2 reload ecosystem.config.js --update-env --env production || \
+            pm2 start ecosystem.config.js --env production
+            
+            # Save PM2 process list
+            pm2 save
+            
+            # Show status
+            pm2 list
+          EOF
+      - name: Notify Slack on Success
+        if: success()
+        uses: slackapi/slack-github-action@v1.27.0
+        with:
+          payload: |
+            {
+              "text": "✅ getFirekirin Deployment Successful!",
+              "blocks": [
+                {
+                  "type": "header",
+                  "text": {
+                    "type": "plain_text",
+                    "text": "✅ getFirekirin Deployment Successful"
+                  }
+                },
+                {
+                  "type": "section",
+                  "fields": [
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Repository:*\n${{ github.repository }}"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Branch:*\n${{ github.ref_name }}"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Commit:*\n<${{ github.event.head_commit.url }}|${{ github.sha }}>"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Author:*\n${{ github.actor }}"
+                    }
+                  ]
+                },
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "*Message:* ${{ github.event.head_commit.message }}"
+                  }
+                },
+                {
+                  "type": "context",
+                  "elements": [
+                    {
+                      "type": "mrkdwn",
+                      "text": "Deployed to production at <!date^${{ github.event.head_commit.timestamp }}^{date_num} {time_secs}|${{ github.event.head_commit.timestamp }}>"
+                    }
+                  ]
+                }
+              ]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
 
-      # - name: Notify Slack on Success
-      #   if: success()
-      #   uses: slackapi/slack-github-action@v1.27.0
-      #   with:
-      #     payload: |
-      #       {
-      #         "text": "✅ getFirekirin Deployment Successful!",
-      #         "blocks": [
-      #           {
-      #             "type": "header",
-      #             "text": {
-      #               "type": "plain_text",
-      #               "text": "✅ getFirekirin Deployment Successful"
-      #             }
-      #           },
-      #           {
-      #             "type": "section",
-      #             "fields": [
-      #               {
-      #                 "type": "mrkdwn",
-      #                 "text": "*Repository:*\n${{ github.repository }}"
-      #               },
-      #               {
-      #                 "type": "mrkdwn",
-      #                 "text": "*Branch:*\n${{ github.ref_name }}"
-      #               },
-      #               {
-      #                 "type": "mrkdwn",
-      #                 "text": "*Commit:*\n<${{ github.event.head_commit.url }}|${{ github.sha }}>"
-      #               },
-      #               {
-      #                 "type": "mrkdwn",
-      #                 "text": "*Author:*\n${{ github.actor }}"
-      #               }
-      #             ]
-      #           },
-      #           {
-      #             "type": "section",
-      #             "text": {
-      #               "type": "mrkdwn",
-      #               "text": "*Message:* ${{ github.event.head_commit.message }}"
-      #             }
-      #           },
-      #           {
-      #             "type": "context",
-      #             "elements": [
-      #               {
-      #                 "type": "mrkdwn",
-      #                 "text": "Deployed to production at <!date^${{ github.event.head_commit.timestamp }}^{date_num} {time_secs}|${{ github.event.head_commit.timestamp }}>"
-      #               }
-      #             ]
-      #           }
-      #         ]
-      #       }
-      #   env:
-      #     SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-      #     SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
-
-      # - name: Notify Slack on Failure
-      #   if: failure()
-      #   uses: slackapi/slack-github-action@v1.27.0
-      #   with:
-      #     payload: |
-      #       {
-      #         "text": "❌ getFirekirin Deployment Failed!",
-      #         "blocks": [
-      #           {
-      #             "type": "header",
-      #             "text": {
-      #               "type": "plain_text",
-      #               "text": "❌ getFirekirin Deployment Failed"
-      #             }
-      #           },
-      #           {
-      #             "type": "section",
-      #             "fields": [
-      #               {
-      #                 "type": "mrkdwn",
-      #                 "text": "*Repository:*\n${{ github.repository }}"
-      #               },
-      #               {
-      #                 "type": "mrkdwn",
-      #                 "text": "*Branch:*\n${{ github.ref_name }}"
-      #               },
-      #               {
-      #                 "type": "mrkdwn",
-      #                 "text": "*Commit:*\n<${{ github.event.head_commit.url }}|${{ github.sha }}>"
-      #               },
-      #               {
-      #                 "type": "mrkdwn",
-      #                 "text": "*Author:*\n${{ github.actor }}"
-      #               }
-      #             ]
-      #           },
-      #           {
-      #             "type": "section",
-      #             "text": {
-      #               "type": "mrkdwn",
-      #               "text": "*Action:*\n<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Workflow Run>"
-      #             }
-      #           }
-      #         ]
-      #       }
-      #   env:
-      #     SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-      #     SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+      - name: Notify Slack on Failure
+        if: failure()
+        uses: slackapi/slack-github-action@v1.27.0
+        with:
+          payload: |
+            {
+              "text": "❌ getFirekirin Deployment Failed!",
+              "blocks": [
+                {
+                  "type": "header",
+                  "text": {
+                    "type": "plain_text",
+                    "text": "❌ getFirekirin Deployment Failed"
+                  }
+                },
+                {
+                  "type": "section",
+                  "fields": [
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Repository:*\n${{ github.repository }}"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Branch:*\n${{ github.ref_name }}"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Commit:*\n<${{ github.event.head_commit.url }}|${{ github.sha }}>"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Author:*\n${{ github.actor }}"
+                    }
+                  ]
+                },
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "*Action:*\n<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Workflow Run>"
+                  }
+                }
+              ]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
