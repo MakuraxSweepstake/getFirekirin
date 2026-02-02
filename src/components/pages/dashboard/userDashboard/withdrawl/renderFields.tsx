@@ -27,7 +27,7 @@ export const RenderFields = ({ field, formik }: RenderFieldsProps) => {
     const handleChange = (value: string | Dayjs | null) => {
         let formattedValue = value;
 
-        if (field.input_type === "date" && value) {
+        if (field.input_type === "date" && field.type !== "CardExpiration" && value) {
             formattedValue = dayjs(value as Dayjs).format("YYYY-MM-DD");
         }
 

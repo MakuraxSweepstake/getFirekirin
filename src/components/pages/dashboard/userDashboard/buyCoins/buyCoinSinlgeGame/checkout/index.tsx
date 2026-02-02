@@ -7,7 +7,7 @@ import GoldCoinIcon from '@/icons/GoldCoinIcon';
 import { useDepositMutation } from '@/services/transaction';
 import { showToast, ToastVariant } from '@/slice/toastSlice';
 import { Box, Button } from '@mui/material';
-import { BitcoinRefresh, TickCircle } from '@wandersonalwes/iconsax-react';
+import { Card, TickCircle } from '@wandersonalwes/iconsax-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React from 'react';
@@ -92,9 +92,8 @@ export default function CheckoutPage({ amount, slug, bonus }: {
                             <div className="col-span-1">
                                 <GlassWrapper>
                                     <div className="py-5 px-4 flex justify-between items-center cursor-pointer" onClick={() => setCurrentPaymentMode("fortpay")}>
-                                        <span className="text-[14px] flex items-center justify-start gap-2"><BitcoinRefresh />FORT Pay</span>
+                                        <span className="text-[14px] flex items-center justify-start gap-2"><Card />Card Payments</span>
                                         {currentPaymentMode === "fortpay" ? <TickCircle /> : ""}
-
                                     </div>
                                 </GlassWrapper>
                             </div>
