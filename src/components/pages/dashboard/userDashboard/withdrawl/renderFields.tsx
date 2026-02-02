@@ -12,7 +12,6 @@ interface RenderFieldsProps {
 }
 
 export const RenderFields = ({ field, formik }: RenderFieldsProps) => {
-    // Get the actual field object from payment_fields array
     const fieldIndex = formik.values.payment_fields?.findIndex(
         (f: MasspayPaymentFields) => f.token === field.token
     );
@@ -32,7 +31,6 @@ export const RenderFields = ({ field, formik }: RenderFieldsProps) => {
             formattedValue = dayjs(value as Dayjs).format("YYYY-MM-DD");
         }
 
-        // Update the value in the payment_fields array
         if (fieldIndex !== -1) {
             const updatedFields = [...formik.values.payment_fields];
             updatedFields[fieldIndex] = {
@@ -127,102 +125,124 @@ export const RenderFields = ({ field, formik }: RenderFieldsProps) => {
             );
 
         case "date":
-            return (
-                <div className="input__field text-left">
-                    <InputLabel>{field.label} <span className="text-red-500">*</span></InputLabel>
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <DatePicker
-                            value={fieldValue ? dayjs(fieldValue) : null}
-                            onChange={(newValue) => handleChange(newValue)}
-                            onClose={handleBlur}
-                            slotProps={{
-                                textField: {
-                                    fullWidth: true,
-                                    id: field.token,
-                                    name: `payment_fields.${field.token}`,
-                                    placeholder: field.expected_value || "YYYY-MM-DD",
-                                    error: Boolean(fieldError),
-                                    onBlur: handleBlur,
-                                    helperText: fieldError || "",
-                                    sx: {
-                                        '& .MuiOutlinedInput-root, & .MuiPickersInputBase-root, & .MuiPickersOutlinedInput-root': {
-                                            borderRadius: '27px',
-                                            background: 'rgba(118, 107, 120, 0.55)',
-                                            color: '#fff',
-                                            '& .MuiOutlinedInput-notchedOutline, & .MuiPickersOutlinedInput-notchedOutline': {
-                                                border: '0.576px solid rgba(255, 255, 255, 0.04)',
-                                            },
-                                            '&:hover .MuiOutlinedInput-notchedOutline, &:hover .MuiPickersOutlinedInput-notchedOutline': {
-                                                borderColor: 'rgba(255,255,255,0.2)',
-                                            },
-                                            '&.Mui-focused .MuiOutlinedInput-notchedOutline, &.Mui-focused .MuiPickersOutlinedInput-notchedOutline': {
-                                                borderColor: '#B801C0',
-                                            },
-                                        },
-                                        '& .MuiOutlinedInput-input, & .MuiPickersInputBase-input': {
-                                            padding: '12px 16px',
-                                            color: '#fff',
-                                            '&::placeholder': {
-                                                color: 'rgba(255, 255, 255, 0.2)',
-                                                fontWeight: 300,
-                                                fontSize: '12px',
-                                                opacity: 1,
-                                            },
-                                        },
-                                        '& .MuiInputAdornment-root': {
-                                            marginRight: '8px',
-                                        },
-                                        '& .MuiInputAdornment-root button': {
-                                            color: 'rgba(255, 255, 255, 0.7)',
-                                            '&:hover': {
+            if (field.type === "CardExpiration") {
+                return (
+                    <div className="input__field text-left">
+                        <InputLabel>{field.label} <span className="text-red-500">*</span></InputLabel>
+                        <OutlinedInput
+                            fullWidth
+                            id={field.token}
+                            name={`payment_fields.${field.token}`}
+                            value={fieldValue}
+                            onChange={(e) => handleChange(e.target.value)}
+                            onBlur={handleBlur}
+                            error={Boolean(fieldError)}
+                            placeholder={field.expected_value}
+                        />
+                        {fieldError && (
+                            <FormHelperText error>{fieldError}</FormHelperText>
+                        )}
+                    </div>
+                )
+            }
+            else {
+                return (
+                    <div className="input__field text-left">
+                        <InputLabel>{field.label} <span className="text-red-500">*</span></InputLabel>
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                            <DatePicker
+                                value={fieldValue ? dayjs(fieldValue) : null}
+                                onChange={(newValue) => handleChange(newValue)}
+                                onClose={handleBlur}
+                                slotProps={{
+                                    textField: {
+                                        fullWidth: true,
+                                        id: field.token,
+                                        name: `payment_fields.${field.token}`,
+                                        placeholder: field.expected_value || "YYYY-MM-DD",
+                                        error: Boolean(fieldError),
+                                        onBlur: handleBlur,
+                                        helperText: fieldError || "",
+                                        sx: {
+                                            '& .MuiOutlinedInput-root, & .MuiPickersInputBase-root, & .MuiPickersOutlinedInput-root': {
+                                                borderRadius: '27px',
+                                                background: 'rgba(118, 107, 120, 0.55)',
                                                 color: '#fff',
-                                                background: 'rgba(255, 255, 255, 0.08)',
+                                                '& .MuiOutlinedInput-notchedOutline, & .MuiPickersOutlinedInput-notchedOutline': {
+                                                    border: '0.576px solid rgba(255, 255, 255, 0.04)',
+                                                },
+                                                '&:hover .MuiOutlinedInput-notchedOutline, &:hover .MuiPickersOutlinedInput-notchedOutline': {
+                                                    borderColor: 'rgba(255,255,255,0.2)',
+                                                },
+                                                '&.Mui-focused .MuiOutlinedInput-notchedOutline, &.Mui-focused .MuiPickersOutlinedInput-notchedOutline': {
+                                                    borderColor: '#B801C0',
+                                                },
+                                            },
+                                            '& .MuiOutlinedInput-input, & .MuiPickersInputBase-input': {
+                                                padding: '12px 16px',
+                                                color: '#fff',
+                                                '&::placeholder': {
+                                                    color: 'rgba(255, 255, 255, 0.2)',
+                                                    fontWeight: 300,
+                                                    fontSize: '12px',
+                                                    opacity: 1,
+                                                },
+                                            },
+                                            '& .MuiInputAdornment-root': {
+                                                marginRight: '8px',
+                                            },
+                                            '& .MuiInputAdornment-root button': {
+                                                color: 'rgba(255, 255, 255, 0.7)',
+                                                '&:hover': {
+                                                    color: '#fff',
+                                                    background: 'rgba(255, 255, 255, 0.08)',
+                                                }
+                                            },
+                                            '& .MuiIconButton-root': {
+                                                padding: '8px',
                                             }
-                                        },
-                                        '& .MuiIconButton-root': {
-                                            padding: '8px',
                                         }
-                                    }
-                                },
-                                popper: {
-                                    sx: {
-                                        "& .MuiPickersCalendarHeader-label": {
-                                            color: "#fff",
-                                        },
-                                        "& .MuiDayCalendar-weekDayLabel": {
-                                            color: "#fff",
-                                        },
-                                        "& .MuiPickersDay-root": {
-                                            color: "#fff",
-                                        },
-                                        "& .MuiPickersDay-root.Mui-selected": {
-                                            backgroundColor: "#B801C0",
-                                        },
-                                        "& .MuiPickersDay-root:hover": {
-                                            backgroundColor: "rgba(184, 1, 192, 0.3)",
-                                        },
-                                        "& .MuiPickersArrowSwitcher-button": {
-                                            color: "#fff",
-                                        },
-                                        "& .MuiPickersCalendarHeader-root": {
-                                            color: "#fff",
-                                        },
-                                        "& .MuiPickersDay-root.MuiPickersDay-today": {
-                                            backgroundColor: "#B801C0",
-                                            border: "1px solid #fff",
-                                            "&:not(.Mui-selected)": {
+                                    },
+                                    popper: {
+                                        sx: {
+                                            "& .MuiPickersCalendarHeader-label": {
+                                                color: "#fff",
+                                            },
+                                            "& .MuiDayCalendar-weekDayLabel": {
+                                                color: "#fff",
+                                            },
+                                            "& .MuiPickersDay-root": {
+                                                color: "#fff",
+                                            },
+                                            "& .MuiPickersDay-root.Mui-selected": {
                                                 backgroundColor: "#B801C0",
+                                            },
+                                            "& .MuiPickersDay-root:hover": {
+                                                backgroundColor: "rgba(184, 1, 192, 0.3)",
+                                            },
+                                            "& .MuiPickersArrowSwitcher-button": {
+                                                color: "#fff",
+                                            },
+                                            "& .MuiPickersCalendarHeader-root": {
+                                                color: "#fff",
+                                            },
+                                            "& .MuiPickersDay-root.MuiPickersDay-today": {
+                                                backgroundColor: "#B801C0",
+                                                border: "1px solid #fff",
+                                                "&:not(.Mui-selected)": {
+                                                    backgroundColor: "#B801C0",
+                                                },
                                             },
                                         },
                                     },
-                                },
-                            }}
-                            maxDate={dayjs()}
-                            format="YYYY-MM-DD"
-                        />
-                    </LocalizationProvider>
-                </div>
-            );
+                                }}
+                                maxDate={dayjs()}
+                                format="YYYY-MM-DD"
+                            />
+                        </LocalizationProvider>
+                    </div>
+                );
+            }
 
         default:
             return (
