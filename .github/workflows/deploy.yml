@@ -6,30 +6,18 @@ on:
       - main
 
 jobs:
-  build-and-deploy:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Node
+      - name: Setup Node (for lint only)
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: "npm"
-
-      - name: Cache node modules
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.npm
-            node_modules
-            .next/cache
-          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('**/*.js', '**/*.jsx', '**/*.ts', '**/*.tsx') }}
-          restore-keys: |
-            ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-
-            ${{ runner.os }}-nextjs-
 
       - name: Install dependencies
         run: npm ci --prefer-offline --no-audit
@@ -37,13 +25,8 @@ jobs:
       - name: Lint
         run: npm run lint
 
-      - name: Build project
-        run: npm run build
-        env:
-          NODE_ENV: production
-          NEXT_PUBLIC_BASE_URL: ${{ secrets.NEXT_PUBLIC_BASE_URL }}
-          NEXT_PUBLIC_FRONTEND_URL: ${{ secrets.NEXT_PUBLIC_FRONTEND_URL }}
-          NEXT_PUBLIC_GTM_ID: ${{ secrets.NEXT_PUBLIC_GTM_ID }}
+      # ❌ NO BUILD HERE
+      # Build happens on server
 
       - name: Setup SSH
         run: |
@@ -52,97 +35,47 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H ${{ secrets.SERVER_HOST }} >> ~/.ssh/known_hosts
 
-      - name: Deploy build to server
+      - name: Deploy source to server
         run: |
           rsync -avz --delete \
             --exclude '.git' \
             --exclude '.env*' \
             --exclude 'node_modules' \
-            --exclude 'conf' \
             --exclude 'logs' \
-            --exclude 'ssl' \
-            --exclude 'tmp' \
             --exclude 'private_html' \
             --exclude 'public_html' \
             ./ \
-            ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:/home/1522942.cloudwaysapps.com/swsjapwyjk/
+            ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:/home/1522942.cloudwaysapps.com/segekvheuz/
 
-      - name: Restart application
+      - name: Build & Restart on Server
         run: |
           ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} << 'EOF'
-            # Load NVM
             export NVM_DIR="$HOME/.nvm"
             [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-            
-            # Go to app directory
-            cd /home/1522942.cloudwaysapps.com/swsjapwyjk
-            
-            # Install dependencies (production only, no dev dependencies)
-            npm ci --prefer-offline --no-audit --production=false
-            
-            # Reload or start PM2
-            pm2 reload ecosystem.config.js --update-env --env production || \
-            pm2 start ecosystem.config.js --env production
-            
-            # Save PM2 process list
+
+            cd /home/1522942.cloudwaysapps.com/segekvheuz
+
+            # Install dependencies
+            npm ci --no-audit
+
+            # Build production app
+            NODE_ENV=production npm run build
+
+            # Restart PM2 safely
+            pm2 reload ecosystem.config.js --update-env || \
+            pm2 start ecosystem.config.js
+
             pm2 save
-            
-            # Show status
             pm2 list
           EOF
+
       - name: Notify Slack on Success
         if: success()
         uses: slackapi/slack-github-action@v1.27.0
         with:
           payload: |
             {
-              "text": "✅ getFirekirin Deployment Successful!",
-              "blocks": [
-                {
-                  "type": "header",
-                  "text": {
-                    "type": "plain_text",
-                    "text": "✅ getFirekirin Deployment Successful"
-                  }
-                },
-                {
-                  "type": "section",
-                  "fields": [
-                    {
-                      "type": "mrkdwn",
-                      "text": "*Repository:*\n${{ github.repository }}"
-                    },
-                    {
-                      "type": "mrkdwn",
-                      "text": "*Branch:*\n${{ github.ref_name }}"
-                    },
-                    {
-                      "type": "mrkdwn",
-                      "text": "*Commit:*\n<${{ github.event.head_commit.url }}|${{ github.sha }}>"
-                    },
-                    {
-                      "type": "mrkdwn",
-                      "text": "*Author:*\n${{ github.actor }}"
-                    }
-                  ]
-                },
-                {
-                  "type": "section",
-                  "text": {
-                    "type": "mrkdwn",
-                    "text": "*Message:* ${{ github.event.head_commit.message }}"
-                  }
-                },
-                {
-                  "type": "context",
-                  "elements": [
-                    {
-                      "type": "mrkdwn",
-                      "text": "Deployed to production at <!date^${{ github.event.head_commit.timestamp }}^{date_num} {time_secs}|${{ github.event.head_commit.timestamp }}>"
-                    }
-                  ]
-                }
-              ]
+              "text": "✅ getFirekirin Deployment Successful!"
             }
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
@@ -154,44 +87,7 @@ jobs:
         with:
           payload: |
             {
-              "text": "❌ getFirekirin Deployment Failed!",
-              "blocks": [
-                {
-                  "type": "header",
-                  "text": {
-                    "type": "plain_text",
-                    "text": "❌ getFirekirin Deployment Failed"
-                  }
-                },
-                {
-                  "type": "section",
-                  "fields": [
-                    {
-                      "type": "mrkdwn",
-                      "text": "*Repository:*\n${{ github.repository }}"
-                    },
-                    {
-                      "type": "mrkdwn",
-                      "text": "*Branch:*\n${{ github.ref_name }}"
-                    },
-                    {
-                      "type": "mrkdwn",
-                      "text": "*Commit:*\n<${{ github.event.head_commit.url }}|${{ github.sha }}>"
-                    },
-                    {
-                      "type": "mrkdwn",
-                      "text": "*Author:*\n${{ github.actor }}"
-                    }
-                  ]
-                },
-                {
-                  "type": "section",
-                  "text": {
-                    "type": "mrkdwn",
-                    "text": "*Action:*\n<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Workflow Run>"
-                  }
-                }
-              ]
+              "text": "❌ getFirekirin Deployment Failed!"
             }
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}

@@ -57,7 +57,7 @@ const validationSchema = Yup.object({
     dob: Yup.date().max(new Date(), 'Date of birth cannot be in the future').required('DOB is required'),
     address: Yup.string(),
     user_id: Yup.string().required('User ID is required'),
-    photo_id: Yup.string().required('Photo ID is required'),
+    photo_id: Yup.string().required('Photo ID Number is required'),
 });
 
 export default function VerifyKYCPage() {
@@ -187,12 +187,12 @@ export default function VerifyKYCPage() {
 
                 {/* Photo ID */}
                 <div className="input__field">
-                    <InputLabel htmlFor="photo_id">Photo ID<span className="text-red-500">*</span></InputLabel>
+                    <InputLabel htmlFor="photo_id">Photo ID Number<span className="text-red-500">*</span></InputLabel>
                     <OutlinedInput
                         fullWidth
                         id="photo_id"
                         name="photo_id"
-                        placeholder="Enter photo ID"
+                        placeholder="Enter photo ID Number"
                         value={formik.values.photo_id}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}

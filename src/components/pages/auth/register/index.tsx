@@ -283,9 +283,9 @@ export default function RegisterPage() {
                             <div className="input__field">
                                 {/* <InputLabel htmlFor="photoid_number"></InputLabel> */}
                                 <PasswordField
-                                    label='Photo ID'
+                                    label='Photo ID Number'
                                     name="photoid_number"
-                                    placeholder="Enter photo ID"
+                                    placeholder="Enter photo ID Number"
                                     value={values.photoid_number}
                                     onChange={handleChange}
                                     onBlur={handleBlur}
