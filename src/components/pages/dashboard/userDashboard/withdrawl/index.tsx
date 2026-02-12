@@ -141,7 +141,6 @@ export default function WithdrawlPage({
             }
         },
     });
-    console.log("Formik Values:", formik.values, formik.errors);
 
     const handleWithdrawlChange = (provider: string, value: string) => {
         if (value === "") {

@@ -121,7 +121,7 @@ export default function Palette(mode: ThemeMode) {
                     input: {
                         padding: 0,
                         "&::placeholder": {
-                            color: "var(--Gray, #999)",
+                            color: "var(--Gray, #aaa)",
                             fontWeight: 400,
                             fontSize: "14px",
                         },
