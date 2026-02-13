@@ -1,5 +1,6 @@
 "use client";
 
+import Chatbot from '@/components/atom/ChatbotIcon';
 import DashboardLayout from '@/components/layouts/DashboardLayout';
 import AgeVerificationModal from '@/components/organism/dialog';
 import { useSearchParams } from 'next/navigation';
@@ -20,6 +21,7 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
         <DashboardLayout>
             {children}
             <AgeVerificationModal />
+            <Chatbot />
         </DashboardLayout>
     )
 }

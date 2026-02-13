@@ -66,3 +66,11 @@ export interface BannerResponseProps {
     success: boolean;
     data: BannerProps[];
 }
+
+
+export interface ChatbotProps {
+    chatbot_link: string;
+    chatbot_image: File | null;
+    chatbot_image_url?: string;
+    chatbot_label: string;
+}

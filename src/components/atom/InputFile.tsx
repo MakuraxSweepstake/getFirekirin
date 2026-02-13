@@ -2,7 +2,7 @@
 
 import { InputLabel, OutlinedInput } from "@mui/material";
 import { CloseCircle } from "@wandersonalwes/iconsax-react";
-import React from "react";
+import React, { useEffect, useMemo } from "react";
 
 interface InputFileProps {
     name: string;
@@ -33,31 +33,89 @@ export default function InputFile({
     serverFile,
     onRemoveServerFile,
 }: InputFileProps) {
+    /* =========================
+       Helpers
+    ========================== */
+
+    const isVideoFile = (file: File) => file.type.startsWith("video/");
+    const isVideoUrl = (url: string) =>
+        /\.(mp4|webm|ogg|mov)$/i.test(url);
+
+    /* =========================
+       File Change Handler
+    ========================== */
+
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const files = e.target.files;
         if (!files) return;
+
         if (multiple) {
             onChange(Array.from(files));
         } else {
             onChange(files[0]);
         }
+
+        // reset input
+        e.target.value = "";
     };
 
     const handleRemoveFile = (fileToRemove: File) => {
         if (!Array.isArray(value)) return;
+
         const updatedFiles = value.filter((f) => f !== fileToRemove);
-        onChange(updatedFiles.length > 0 ? updatedFiles : null);
+        onChange(updatedFiles.length ? updatedFiles : null);
     };
 
-    // const fileChosen =
-    //     (Array.isArray(value) && value.length > 0) || value || serverFile;
+    /* =========================
+       Generate Preview URLs
+    ========================== */
+
+    const previewFiles = useMemo(() => {
+        if (!value) return [];
+
+        if (Array.isArray(value)) {
+            return value.map((file) => ({
+                file,
+                url: URL.createObjectURL(file),
+                isVideo: isVideoFile(file),
+            }));
+        }
+
+        return [
+            {
+                file: value,
+                url: URL.createObjectURL(value),
+                isVideo: isVideoFile(value),
+            },
+        ];
+    }, [value]);
+
+    /* =========================
+       Cleanup Object URLs
+    ========================== */
+
+    useEffect(() => {
+        return () => {
+            previewFiles.forEach((item) => {
+                URL.revokeObjectURL(item.url);
+            });
+        };
+    }, [previewFiles]);
+
+    /* =========================
+       Render
+    ========================== */
 
     return (
         <div className="input__field">
-            <InputLabel htmlFor={name} className="block text-sm font-semibold mb-2">
+            <InputLabel
+                htmlFor={name}
+                className="block text-sm font-semibold mb-2"
+            >
                 {label} {required && <span className="text-red-500">*</span>}
             </InputLabel>
 
+            {/* Clickable Input */}
             <div className="input_box relative">
                 <OutlinedInput
                     fullWidth
@@ -65,24 +123,19 @@ export default function InputFile({
                     name={name}
                     type="text"
                     readOnly
-                    // value={
-                    //     Array.isArray(value)
-                    //         ? value.map((f) => f.name).join(", ") || ""
-                    //         : value instanceof File
-                    //             ? value.name
-                    //             : ""
-                    // }
-                    // placeholder="Choose file"
-                    onClick={() => document.getElementById(`${name}-file`)?.click()}
+                    onClick={() =>
+                        document.getElementById(`${name}-file`)?.click()
+                    }
                     error={Boolean(touched && error)}
-                    sx={{
-                        cursor: "pointer",
-                    }}
+                    sx={{ cursor: "pointer" }}
                 />
-                <span className=" absolute left-2 top-1/2 translate-y-[-50%] text-[11px] text-title bg-[#D8D8DD] inline-block py-1 px-2 z-[-1] rounded-sm">Choose File</span>
+
+                <span className="absolute left-2 top-1/2 -translate-y-1/2 text-[11px] text-title bg-[#D8D8DD] inline-block py-1 px-2 z-[-1] rounded-sm">
+                    Choose File
+                </span>
             </div>
 
-            {/* Hidden file input */}
+            {/* Hidden File Input */}
             <input
                 type="file"
                 id={`${name}-file`}
@@ -90,93 +143,120 @@ export default function InputFile({
                 accept={accept}
                 hidden
                 multiple={multiple}
-                onChange={(e) => {
-                    handleFileChange(e);
-                    e.target.value = "";
-                }}
+                onChange={handleFileChange}
                 onBlur={onBlur}
             />
 
-            {/* Preview thumbnails */}
-            <div className="flex gap-3 flex-wrap mt-2">
-                {value &&
-                    (Array.isArray(value) ? (
-                        value.map((f) => (
-                            <div
-                                key={f.name}
-                                className="relative w-[80px] h-[80px] rounded-lg overflow-hidden border border-gray-200"
-                            >
-                                <img
-                                    src={URL.createObjectURL(f)}
-                                    alt={f.name}
-                                    className="w-full h-full object-cover"
-                                />
-                                <CloseCircle
-                                    size={16}
-                                    className="absolute top-1 right-1 cursor-pointer text-white hover:text-red-500"
-                                    onClick={() => handleRemoveFile(f)}
-                                />
-                            </div>
-                        ))
-                    ) : (
-                        <div
-                            key={value.name}
-                            className="relative w-[80px] h-[80px] rounded-lg overflow-hidden border border-gray-200"
-                        >
+            {/* Preview Section */}
+            <div className="flex gap-3 flex-wrap mt-3">
+
+                {/* Local File Preview */}
+                {previewFiles.map(({ file, url, isVideo }) => (
+                    <div
+                        key={file.name + url}
+                        className="relative w-[90px] h-[90px] rounded-lg overflow-hidden border border-gray-200"
+                    >
+                        {isVideo ? (
+                            <video
+                                src={url}
+                                className="w-full h-full object-cover"
+                                autoPlay
+                                loop
+                                muted
+                                playsInline
+                            />
+                        ) : (
                             <img
-                                src={URL.createObjectURL(value)}
-                                alt={value.name}
+                                src={url}
+                                alt={file.name}
                                 className="w-full h-full object-cover"
                             />
-                            <CloseCircle
-                                size={16}
-                                className="absolute top-1 right-1 cursor-pointer text-white hover:text-red-500"
-                                onClick={() => onChange(null)}
-                            />
-                        </div>
-                    ))}
+                        )}
 
-                {/* Server File preview */}
+                        <CloseCircle
+                            size={18}
+                            className="absolute top-1 right-1 cursor-pointer text-white hover:text-red-500 drop-shadow"
+                            onClick={() =>
+                                Array.isArray(value)
+                                    ? handleRemoveFile(file)
+                                    : onChange(null)
+                            }
+                        />
+                    </div>
+                ))}
+
+                {/* Server File Preview */}
                 {serverFile &&
-                    (Array.isArray(serverFile) ? (
-                        serverFile.map((f) => (
+                    (Array.isArray(serverFile)
+                        ? serverFile.map((url) => (
                             <div
-                                key={f}
-                                className="relative w-[80px] h-[80px] rounded-lg overflow-hidden border border-gray-200"
+                                key={url}
+                                className="relative w-[90px] h-[90px] rounded-lg overflow-hidden border border-gray-200"
                             >
-                                <img src={f} alt={f} className="w-full h-full object-cover" />
+                                {isVideoUrl(url) ? (
+                                    <video
+                                        src={url}
+                                        className="w-full h-full object-cover"
+                                        autoPlay
+                                        loop
+                                        muted
+                                        playsInline
+                                    />
+                                ) : (
+                                    <img
+                                        src={url}
+                                        alt={url}
+                                        className="w-full h-full object-cover"
+                                    />
+                                )}
+
                                 <CloseCircle
-                                    size={16}
-                                    className="absolute top-1 right-1 cursor-pointer text-white hover:text-red-500"
+                                    size={18}
+                                    className="absolute top-1 right-1 cursor-pointer text-white hover:text-red-500 drop-shadow"
                                     onClick={() =>
-                                        onRemoveServerFile && onRemoveServerFile(f)
+                                        onRemoveServerFile?.(url)
                                     }
                                 />
                             </div>
                         ))
-                    ) : (
-                        <div
-                            key={serverFile}
-                            className="relative w-[80px] h-[80px] rounded-lg overflow-hidden border border-gray-200"
-                        >
-                            <img
-                                src={serverFile}
-                                alt={serverFile}
-                                className="w-full h-full object-cover"
-                            />
-                            <CloseCircle
-                                size={16}
-                                className="absolute top-1 right-1 cursor-pointer text-white hover:text-red-500"
-                                onClick={() =>
-                                    onRemoveServerFile && onRemoveServerFile(serverFile)
-                                }
-                            />
-                        </div>
-                    ))}
+                        : (
+                            <div
+                                key={serverFile}
+                                className="relative w-[90px] h-[90px] rounded-lg overflow-hidden border border-gray-200"
+                            >
+                                {isVideoUrl(serverFile) ? (
+                                    <video
+                                        src={serverFile}
+                                        className="w-full h-full object-cover"
+                                        autoPlay
+                                        loop
+                                        muted
+                                        playsInline
+                                    />
+                                ) : (
+                                    <img
+                                        src={serverFile}
+                                        alt={serverFile}
+                                        className="w-full h-full object-cover"
+                                    />
+                                )}
+
+                                <CloseCircle
+                                    size={18}
+                                    className="absolute top-1 right-1 cursor-pointer text-white hover:text-red-500 drop-shadow"
+                                    onClick={() =>
+                                        onRemoveServerFile?.(serverFile)
+                                    }
+                                />
+                            </div>
+                        ))}
             </div>
 
+            {/* Error */}
             {touched && error && (
-                <span className="text-red-500 text-xs mt-1">{error}</span>
+                <span className="text-red-500 text-xs mt-1 block">
+                    {error}
+                </span>
             )}
         </div>
     );

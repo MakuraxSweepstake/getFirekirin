@@ -1,12 +1,12 @@
+import { GlobalResponse } from "@/types/config";
+import { BannerResponseProps, ChatbotProps, SiteSettingResponseProps } from "@/types/setting";
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { baseQuery } from "./baseQuery";
-import { GlobalResponse } from "@/types/config";
-import { BannerResponseProps, SiteSettingResponseProps } from "@/types/setting";
 
 export const settingApi = createApi({
     reducerPath: "settingApi",
     baseQuery: baseQuery,
-    tagTypes: ['settings', 'banners'],
+    tagTypes: ['settings', 'banners', "Chatbot"],
     endpoints: (builder) => ({
         updateSetting: builder.mutation<GlobalResponse, FormData>({
             query: (body) => ({
@@ -39,7 +39,30 @@ export const settingApi = createApi({
             providesTags: ['banners']
         }),
 
+        updateChatbot: builder.mutation<GlobalResponse, FormData>({
+            query: (body) => ({
+                url: "/api/admin/setting/chatbot",
+                method: "POST",
+                body: body,
+            }),
+            invalidatesTags: ['Chatbot']
+        }),
+        getChatbotSetting: builder.query<{ data: ChatbotProps }, void>({
+            query: () => ({
+                url: "/api/setting/chatbot",
+                method: "GET",
+            }),
+            providesTags: ['Chatbot']
+        }),
+
     })
 })
 
-export const { useUpdateSettingMutation, useGetSettingsQuery, useUpdateBannerMutation, useGetAllBannerQuery } = settingApi;
+export const {
+    useUpdateSettingMutation,
+    useGetSettingsQuery,
+    useUpdateBannerMutation,
+    useGetAllBannerQuery,
+    useUpdateChatbotMutation,
+    useGetChatbotSettingQuery
+} = settingApi;
