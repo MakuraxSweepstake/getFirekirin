@@ -1,8 +1,11 @@
 import { TransactionStatusProps } from "@/components/pages/dashboard/adminDashboard/transaction/TransactionTable";
+import { setBalance, updateBalancePerProvider } from "@/slice/userBalanceSlice";
 import { GlobalResponse, QueryParams } from "@/types/config";
 import { DepositListProps, DepositProps, DepositResponseProps, MasspayPaymentFields, MasspayPaymentMethods } from "@/types/transaction";
+import { UserBalanceResponse } from "@/types/user";
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { baseQuery } from "./baseQuery";
+import { SinlgePlayerResponseProps } from "@/types/player";
 
 // Define proper request/response types
 interface SubmitMassPayRequest {
@@ -31,6 +34,43 @@ export const transactionApi = createApi({
     baseQuery: baseQuery,
     tagTypes: ["Deposit", "Withdrawl"],
     endpoints: (builder) => ({
+        getUserBalance: builder.query<UserBalanceResponse, void>({
+            query: () => ({
+                url: "/api/get-balance",
+                method: "GET",
+            }),
+
+            async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+                try {
+                    const { data } = await queryFulfilled;
+                    dispatch(setBalance(data?.data));
+                } catch { }
+            },
+            providesTags: ['Deposit', 'Withdrawl']
+        }),
+
+        getUserBalanceBySlug: builder.query<{ data: { provider: string; balance: number, flag: string, has_changed_password: boolean } }, { slug: string }>({
+            query: ({ slug }) => ({
+                url: `/api/balance/${slug}`,
+                method: "GET"
+            }),
+            async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+                try {
+                    const { data } = await queryFulfilled;
+                    dispatch(updateBalancePerProvider({ balance: data?.data.balance, provider: arg.slug }));
+                } catch { }
+            },
+            providesTags: ['Deposit', 'Withdrawl']
+
+        }),
+        getUserGameBalance: builder.query<SinlgePlayerResponseProps, void>({
+            query: () => ({
+                url: "/api/detail/get-balance",
+                method: "GET"
+            }),
+            providesTags: ['Deposit', 'Withdrawl']
+
+        }),
         deposit: builder.mutation<DepositResponseProps, DepositProps>({
             query: ({ id, amount, type, payment_token }) => ({
                 url: `/api/payment/${id}`,
@@ -134,5 +174,8 @@ export const {
     useGetAllTransactionQuery,
     useGetMassPayPaymentFieldsMutation,
     useGetMassPayPaymentMethodsQuery,
-    useSubmitMassPayPaymentFieldsMutation
+    useSubmitMassPayPaymentFieldsMutation,
+    useGetUserBalanceQuery,
+    useGetUserBalanceBySlugQuery,
+    useGetUserGameBalanceQuery,
 } = transactionApi;
