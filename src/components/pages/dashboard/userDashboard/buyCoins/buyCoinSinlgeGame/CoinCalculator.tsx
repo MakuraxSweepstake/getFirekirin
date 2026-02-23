@@ -1,7 +1,9 @@
 "use client";
 
 import GlassWrapper from '@/components/molecules/GlassWrapper';
+import { useAppDispatch } from '@/hooks/hook';
 import GoldCoinIcon from '@/icons/GoldCoinIcon';
+import { showToast, ToastVariant } from '@/slice/toastSlice';
 import { Box, Button, OutlinedInput } from '@mui/material';
 import { Coin } from '@wandersonalwes/iconsax-react';
 import { useRouter } from 'next/navigation';
@@ -13,6 +15,7 @@ export default function CoinCalculator({ slug }: { slug: string }) {
     const [_bonusCoins, setBonusCoins] = useState<number | null>(null);
 
     const router = useRouter();
+    const dispatch = useAppDispatch();
 
     // const calculateBonus = (amount: number) => {
     //     return Math.max(Math.round(25.56 * amount - 27.78), 0);
@@ -37,6 +40,14 @@ export default function CoinCalculator({ slug }: { slug: string }) {
     };
 
     const handleBuy = () => {
+        if (Number(amount) < 20) {
+            return dispatch(
+                showToast({
+                    message: "Minimum amount is 20",
+                    variant: ToastVariant.ERROR,
+                })
+            )
+        }
         router.push(`/buy-coins/${slug}/checkout?amount=${amount}&bonus=${amount}`);
     };
 
