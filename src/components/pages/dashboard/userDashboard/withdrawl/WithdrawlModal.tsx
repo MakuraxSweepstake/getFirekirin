@@ -208,7 +208,7 @@ export default function WithdrawlModal({
                         <div className="flex flex-col md:grid grid-cols-2 gap-4">
                             {fields.map((field) => (
                                 <div className={field.type === "IDSelfieCollection" ? "col-span-2" : "col-span-1"} key={field.token}>
-                                    {field.type === "IDSelfieCollection" ? <Link href={field.value} className="bg-primary-grad ss-btn">{field.label}</Link> : <RenderFields field={field} formik={formik} />}
+                                    {field.type === "IDSelfieCollection" ? <Link href={field.value} className="bg-primary-grad ss-btn">{field.label}</Link> : <RenderFields field={field} formik={formik} disabled={fields.some(field => field.type === "IDSelfieCollection") || isLoading} />}
                                 </div>
                             ))}
                         </div>
@@ -246,6 +246,7 @@ export default function WithdrawlModal({
                                     color="primary"
                                     fullWidth
                                     type="submit"
+                                    disabled={fields.some(field => field.type === "IDSelfieCollection") || isLoading}
                                 >
                                     {isLoading ? "Processing..." : "Withdraw Now"}
                                 </Button>

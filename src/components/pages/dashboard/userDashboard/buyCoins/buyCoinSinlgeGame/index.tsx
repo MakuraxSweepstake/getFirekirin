@@ -8,23 +8,23 @@ import CoinCalculator from './CoinCalculator'
 export default function BuyCoinSinlgeGame({ slug }: { slug: string }) {
     const packs = [
         {
-            amount: "10",
+            amount: "20",
             label: "Starter Pack",
-            coin: "1000",
-            bonus: "10",
+            coin: "2000",
+            bonus: "20",
             tag: "popular"
         },
         {
-            amount: "20",
-            label: "Golden Pack",
-            coin: "2000",
-            bonus: "20",
-        },
-        {
             amount: "50",
-            label: "Legend Pack",
+            label: "Golden Pack",
             coin: "5000",
             bonus: "50",
+        },
+        {
+            amount: "100",
+            label: "Legend Pack",
+            coin: "10000",
+            bonus: "100",
         },
 
     ]
