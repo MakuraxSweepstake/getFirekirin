@@ -3,6 +3,7 @@
 import Chatbot from '@/components/atom/ChatbotIcon';
 import DashboardLayout from '@/components/layouts/DashboardLayout';
 import AgeVerificationModal from '@/components/organism/dialog';
+import AgeGate from '@/components/organism/dialog/AgeGate';
 import { useSearchParams } from 'next/navigation';
 import React, { Suspense, useEffect } from 'react';
 
@@ -22,6 +23,8 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
             {children}
             <AgeVerificationModal />
             <Chatbot />
+            <AgeGate />
+
         </DashboardLayout>
     )
 }

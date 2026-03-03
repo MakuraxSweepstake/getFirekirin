@@ -165,6 +165,7 @@ export default function RegisterPage() {
                 const cleanedPhone = values.phone.replace(/^0+/, '');
 
                 const fullPhoneNumber = `${values.country_code}${cleanedPhone}`;
+
                 try {
                     const response = await registerUser({
                         email: values.emailAddress,
@@ -184,10 +185,9 @@ export default function RegisterPage() {
                         visitor_id: userFromPropeelVisitorId || undefined,
                         country_code: '',
                     }).unwrap();
-
                     dispatch(
                         showToast({
-                            message: response?.data?.message || "User Registerd Successfully",
+                            message: response?.message || "User Registerd Successfully",
                             variant: ToastVariant.SUCCESS,
                             autoTime: true,
                         }),

@@ -7,7 +7,7 @@ export const authApi = createApi({
     reducerPath: "authApi",
     baseQuery: baseQuery,
     endpoints: (builder) => ({
-        registerUser: builder.mutation<{ success: boolean, data: LoginResponse | null, message: string }, RegisterProps>({
+        registerUser: builder.mutation<LoginResponse, RegisterProps>({
             query: (body) => ({
                 url: `/api/auth/register`,
                 method: "POST",
@@ -63,7 +63,20 @@ export const authApi = createApi({
                     },
                 })
         }),
+        getAgeGateUuid: builder.query<GlobalResponse & { data: { age_verify_uuid: string, is_age_verified: boolean } }, void>({
+            query: () => ({
+                url: `/api/user/age-verify`,
+                method: "GET",
+            })
+        }),
+        verifyAgeGate: builder.mutation<GlobalResponse, { age_verify_uuid: string }>({
+            query: ({ age_verify_uuid }) => ({
+                url: `/api/user/age-verify`,
+                method: "POST",
+                body: { age_verify_uuid }
+            })
+        })
     })
 })
 
-export const { useLoginMutation, useRegisterUserMutation, useSendVerificationLinkAgainMutation, useForgotPasswordMutation, useVerifyOTPMutation, useResetPasswordMutation, useVerifyEmailMutation } = authApi;
+export const { useLoginMutation, useRegisterUserMutation, useSendVerificationLinkAgainMutation, useForgotPasswordMutation, useVerifyOTPMutation, useResetPasswordMutation, useVerifyEmailMutation, useGetAgeGateUuidQuery, useVerifyAgeGateMutation } = authApi;
