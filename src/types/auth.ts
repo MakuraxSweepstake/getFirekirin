@@ -42,4 +42,5 @@ export interface RegisterProps extends LoginProps {
     agree: boolean;
     device_id?: string;
     visitor_id?: string;
+    country_code: string;
 }

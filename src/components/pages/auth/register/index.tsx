@@ -6,7 +6,7 @@ import { useAppDispatch } from '@/hooks/hook';
 import { PATH } from '@/routes/PATH';
 import { useRegisterUserMutation } from '@/services/authApi';
 import { showToast, ToastVariant } from '@/slice/toastSlice';
-import { Box, Checkbox, FormControlLabel, InputLabel, OutlinedInput } from '@mui/material';
+import { Autocomplete, Box, Checkbox, FormControlLabel, InputLabel, OutlinedInput, TextField } from '@mui/material';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -15,6 +15,7 @@ import dayjs, { Dayjs } from 'dayjs';
 import { useFormik } from 'formik';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 import * as Yup from 'yup';
 import AuthMessageBlock from '../authMessageBlock';
 
@@ -95,14 +96,47 @@ const validationSchema = Yup.object().shape({
     last_name: Yup.string().required('Last name is required'),
     photoid_number: Yup.string().required('Photo ID is required'),
     city: Yup.string(),
-    pob: Yup.string(),
-    agree: Yup.boolean().required().oneOf([true], 'You must agree to the terms and conditions')
+    pob: Yup.string().required('Place of birth is required'),
+    agree: Yup.boolean().required().oneOf([true], 'You must agree to the terms and conditions'),
+    country_code: Yup.string().required("Country code is required"),
 })
 
 export default function RegisterPage() {
     const [registerUser, { isLoading }] = useRegisterUserMutation();
     const router = useRouter();
     const dispatch = useAppDispatch();
+
+    const [countryCodes, setCountryCodes] = useState<any[]>([]);
+
+    useEffect(() => {
+        const fetchCountries = async () => {
+            try {
+                const res = await fetch("https://restcountries.com/v3.1/all?fields=name,idd");
+                const data = await res.json();
+
+                const formatted = data
+                    .filter((c: any) => c.idd?.root)
+                    .map((c: any) => {
+                        const dial = `${c.idd.root}${c.idd.suffixes?.[0] || ''}`;
+
+                        return {
+                            name: c.name.common,
+                            label: `${c.name.common} (${dial}) `,
+                            dialCode: dial,
+                        };
+                    })
+                    .sort((a: any, b: any) =>
+                        a.name.localeCompare(b.name)
+                    );
+
+                setCountryCodes(formatted);
+            } catch (err: any) {
+                console.error(err.message || "Country fetch failed");
+            }
+        };
+
+        fetchCountries();
+    }, []);
     const initialValues = {
         first_name: '',
         middle_name: '',
@@ -118,6 +152,7 @@ export default function RegisterPage() {
         pob: '',
         agree: true,
         visitor_id: undefined,
+        country_code: '',
     }
     const { deviceId } = useSeon();
     const { handleSubmit, handleBlur, handleChange, errors, dirty, values, touched, setFieldValue, setFieldTouched } = useFormik(
@@ -127,6 +162,9 @@ export default function RegisterPage() {
             onSubmit: async (values) => {
                 const formattedDob = values.dob ? dayjs(values.dob).format('YYYY-MM-DD') : '';
                 const userFromPropeelVisitorId = localStorage.getItem("visitor_id");
+                const cleanedPhone = values.phone.replace(/^0+/, '');
+
+                const fullPhoneNumber = `${values.country_code}${cleanedPhone}`;
                 try {
                     const response = await registerUser({
                         email: values.emailAddress,
@@ -136,7 +174,7 @@ export default function RegisterPage() {
                         first_name: values.first_name,
                         middle_name: values.middle_name,
                         last_name: values.last_name,
-                        phone: values.phone,
+                        phone: fullPhoneNumber,
                         photoid_number: values.photoid_number,
                         dob: formattedDob,
                         city: values.city,
@@ -144,6 +182,7 @@ export default function RegisterPage() {
                         agree: values.agree,
                         device_id: deviceId,
                         visitor_id: userFromPropeelVisitorId || undefined,
+                        country_code: '',
                     }).unwrap();
 
                     dispatch(
@@ -315,7 +354,7 @@ export default function RegisterPage() {
                         {/* Country */}
                         <div className="col-span-2 lg:col-span-3">
                             <div className="input__field">
-                                <InputLabel htmlFor="pob">Place of Birth</InputLabel>
+                                <InputLabel htmlFor="pob" >Place of Birth<span className="text-red-500">*</span></InputLabel>
                                 <OutlinedInput
                                     fullWidth
                                     id="pob"
@@ -330,7 +369,39 @@ export default function RegisterPage() {
                             </div>
                         </div>
 
-                        <div className="col-span-2 lg:col-span-3">
+                        {/* Phone */}
+                        <div className="col-span-2 lg:col-span-2">
+                            <InputLabel>
+                                Country Code <span className="text-red-500">*</span>
+                            </InputLabel>
+
+                            <Autocomplete
+                                options={countryCodes}
+                                getOptionLabel={(option) => option.label}
+                                onChange={(e, value) => {
+                                    setFieldValue("country_code", value?.dialCode || "");
+                                }}
+                                sx={{
+                                    '& .MuiOutlinedInput-root': {
+                                        padding: '4px !important',
+                                    },
+                                    '& .MuiAutocomplete-input': {
+                                        padding: '8px !important',
+                                    },
+                                }}
+                                renderInput={(params) => (
+                                    <TextField
+                                        {...params}
+                                        placeholder="Select country code"
+                                        error={Boolean(touched.country_code && errors.country_code)}
+                                        helperText={touched.country_code && errors.country_code}
+                                        sx={{ ...formFieldSx, }}
+
+                                    />
+                                )}
+                            />
+                        </div>
+                        <div className="col-span-2 lg:col-span-4">
                             <div className="input__field">
                                 <InputLabel htmlFor="phone">Phone <span className="text-red-500">*</span></InputLabel>
                                 <OutlinedInput
@@ -347,7 +418,9 @@ export default function RegisterPage() {
                                 </span>
                             </div>
                         </div>
-                        <div className="col-span-2 lg:col-span-3">
+
+                        {/* DOB */}
+                        <div className="col-span-2 lg:col-span-6">
                             <div className="input__field">
                                 <InputLabel htmlFor="dob">Date of Birth <span className="text-red-500">*</span></InputLabel>
                                 <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -408,6 +481,7 @@ export default function RegisterPage() {
                                 </LocalizationProvider>
                             </div>
                         </div>
+
                         <div className="col-span-2 lg:col-span-3">
                             <div className="input_field">
                                 <PasswordField
@@ -421,6 +495,7 @@ export default function RegisterPage() {
                                 />
                             </div>
                         </div>
+
                         <div className="col-span-2 lg:col-span-3">
                             <div className="input_field">
                                 <PasswordField
