@@ -36,7 +36,7 @@ export interface RegisterProps extends LoginProps {
     middle_name: string;
     last_name: string;
     phone: string;
-    photoid_number: string;
+    // photoid_number: string;
     dob: string;
     city: string;
     pob: string;

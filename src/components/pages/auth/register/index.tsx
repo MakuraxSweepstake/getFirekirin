@@ -65,11 +65,11 @@ const validationSchema = Yup.object().shape({
         .email('Must be a valid email')
         .max(255)
         .required('Email is required'),
-    displayName: Yup.string()
-        .required("Display Name is required")
-        .max(14, "Display Name must be less than 14 characters")
-        .min(6, "Display Name must be at least 6 characters long")
-        .matches(/^\S+$/, "Display Name cannot contain spaces"),
+    // displayName: Yup.string()
+    //     .required("Display Name is required")
+    //     .max(14, "Display Name must be less than 14 characters")
+    //     .min(6, "Display Name must be at least 6 characters long")
+    //     .matches(/^\S+$/, "Display Name cannot contain spaces"),
     phone: Yup.string()
         .required("Phone number is required"),
     password: Yup.string()
@@ -94,7 +94,7 @@ const validationSchema = Yup.object().shape({
     first_name: Yup.string().required('First name is required'),
     middle_name: Yup.string(),
     last_name: Yup.string().required('Last name is required'),
-    photoid_number: Yup.string().required('Photo ID is required'),
+    // photoid_number: Yup.string().required('Photo ID is required'),
     city: Yup.string(),
     pob: Yup.string().required('Place of birth is required'),
     agree: Yup.boolean().required().oneOf([true], 'You must agree to the terms and conditions'),
@@ -160,7 +160,7 @@ export default function RegisterPage() {
         password: "",
         confirmPassword: "",
         phone: "",
-        photoid_number: '',
+        // photoid_number: '',
         dob: null as Dayjs | null,
         city: '',
         pob: '',
@@ -190,7 +190,7 @@ export default function RegisterPage() {
                         middle_name: values.middle_name,
                         last_name: values.last_name,
                         phone: fullPhoneNumber,
-                        photoid_number: values.photoid_number,
+                        // photoid_number: values.photoid_number,
                         dob: formattedDob,
                         city: values.city,
                         pob: values.pob,
@@ -332,9 +332,8 @@ export default function RegisterPage() {
 
 
                         {/* Photo ID */}
-                        <div className="col-span-2 lg:col-span-3">
+                        {/* <div className="col-span-2 lg:col-span-3">
                             <div className="input__field">
-                                {/* <InputLabel htmlFor="photoid_number"></InputLabel> */}
                                 <PasswordField
                                     label='Photo ID Number'
                                     name="photoid_number"
@@ -345,7 +344,7 @@ export default function RegisterPage() {
                                 />
                                 <span className="error">{touched.photoid_number && errors.photoid_number}</span>
                             </div>
-                        </div>
+                        </div> */}
 
                         {/* Address */}
                         <div className="col-span-2 lg:col-span-3">

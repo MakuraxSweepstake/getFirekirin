@@ -4,6 +4,7 @@ import { useAppDispatch } from '@/hooks/hook'
 import { useCreatePlayerMutation, useGetPlayerByIdQuery, useUpdatePlayerByIdMutation } from '@/services/playerApi'
 import { showToast, ToastVariant } from '@/slice/toastSlice'
 import { initialPlayerValues } from '@/types/player'
+import dayjs, { Dayjs } from 'dayjs'
 import { useFormik } from 'formik'
 import { useRouter } from 'next/navigation'
 import * as Yup from "yup"
@@ -30,6 +31,14 @@ export const PlayerValidationSchema = (isEdit: boolean) => Yup.object().shape({
         then: (schema) => schema.oneOf([Yup.ref("password")], "Passwords must match").required("Password confirmation is required"),
         otherwise: (schema) => schema.nullable(),
     }),
+    dob: Yup.date()
+        .required("Date of birth is required")
+        .max(new Date(), 'Date of birth cannot be in the future')
+        .test('age', 'You must be at least 21 years old', function (value) {
+            if (!value) return true;
+            const cutoff = dayjs().subtract(21, 'years');
+            return dayjs(value).isBefore(cutoff);
+        }),
     // profile_image: Yup.mixed().required("Profile is required"),
 });
 export default function AddPlayerPage({ id }: { id?: string }) {
@@ -57,6 +66,7 @@ export default function AddPlayerPage({ id }: { id?: string }) {
             password: data?.data.password,
             password_confirmation: data?.data.password_confirmation,
             profile_image: null,
+            dob: data?.data.dob || null as Dayjs | null,
         } : initialPlayerValues,
         validationSchema: PlayerValidationSchema(!!id),
         enableReinitialize: true,
@@ -72,6 +82,7 @@ export default function AddPlayerPage({ id }: { id?: string }) {
             if (values.address) formData.append("address", values.address);
             if (values.city) formData.append("city", values.city);
             if (values.phone) formData.append("phone", values.phone);
+            if (values.dob) formData.append("dob", values.dob.toString());
 
             if (values.profile_image) {
                 if (Array.isArray(values.profile_image)) {

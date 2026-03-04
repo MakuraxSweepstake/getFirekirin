@@ -1,3 +1,4 @@
+import { Dayjs } from "dayjs";
 import { Pagination } from "./game";
 
 
@@ -14,6 +15,7 @@ export interface CommonPlayerProps {
     password_confirmation: string;
     role?: string;
     state?: string;
+    dob?: string | Dayjs | null;
 }
 export interface PlayerProps extends CommonPlayerProps {
     id?: string;
@@ -37,6 +39,7 @@ export const initialPlayerValues: PlayerProps = {
     password: "",
     password_confirmation: "",
     profile_image: null,
+    dob: null as Dayjs | null,
 };
 
 type GameInformation = {

@@ -27,6 +27,7 @@ export default function AgeGate() {
             key: process.env.NEXT_PUBLIC_AGE_CHECKER_KEY,
             mode: "manual",
             autoload: true,
+            show_close: true,
             onready: () => {
                 (window as any).AgeCheckerAPI.show(uuid);
             },
@@ -35,6 +36,10 @@ export default function AgeGate() {
                     handleSuccess(verification.uuid);
                 }
             },
+            onpagehide: () => {
+                (window as any).AgeCheckerAPI.close();
+                // Optional: Handle page hide if needed
+            }
         };
 
         // 3. Now load the script
