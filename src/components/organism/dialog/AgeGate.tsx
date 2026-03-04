@@ -6,7 +6,6 @@ import { useCallback, useEffect } from "react";
 export default function AgeGate() {
     const { data, isSuccess } = useGetAgeGateUuidQuery();
     const [verifyAgeGate] = useVerifyAgeGateMutation();
-
     const handleSuccess = useCallback(async (uuid: string) => {
         try {
             await verifyAgeGate({ age_verify_uuid: uuid }).unwrap();
@@ -38,14 +37,11 @@ export default function AgeGate() {
             },
             onpagehide: () => {
                 (window as any).AgeCheckerAPI.close();
-                // Optional: Handle page hide if needed
             }
         };
 
-        // 3. Now load the script
         const existing = document.querySelector('script[src*="agechecker.net"]');
         if (existing) {
-            // Script already loaded, just show
             (window as any).AgeCheckerAPI?.show(uuid);
             return;
         }

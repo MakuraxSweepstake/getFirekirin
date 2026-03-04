@@ -1,9 +1,10 @@
 import Avatar from '@/components/atom/Avatar';
 import { useAppDispatch, useAppSelector } from '@/hooks/hook';
 import { PATH } from '@/routes/PATH';
+import { useGetAgeGateUuidQuery } from '@/services/authApi';
 import { clearTokens } from '@/slice/authSlice';
 import { Box, ClickAwayListener, Fade, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Paper, Popper } from '@mui/material';
-import { ArrowDown2, Coin, Logout, MoneySend, Profile, Wallet2 } from "@wandersonalwes/iconsax-react";
+import { ArrowDown2, Coin, Logout, MoneySend, Profile, TickCircle, Wallet2 } from "@wandersonalwes/iconsax-react";
 import Link from 'next/link';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import React, { useRef, useState } from 'react';
@@ -104,6 +105,9 @@ export default function ProfileBlock() {
     const handleMouseLeave = () => {
         setGlassStyle((prev) => ({ ...prev, opacity: 0 }));
     };
+
+    const { data } = useGetAgeGateUuidQuery();
+
     return (
         <Box >
             <a
@@ -117,7 +121,7 @@ export default function ProfileBlock() {
                     padding: 0
                 }}
             >
-                <div className=' lg:flex items-center gap-1'>
+                <div className=' lg:flex items-center gap-1 relative'>
                     <Avatar alt="profile user" src={avataur1} />
                     {user?.role && user.role.toLowerCase() !== "user" ? <>
                         <div className=' hidden lg:block'>
@@ -128,6 +132,9 @@ export default function ProfileBlock() {
                         </div>
                         <ArrowDown2 size={14} className='text-primary hidden lg:block' />
                     </> : ""}
+                    <div className="absolute bottom-0 right-0">
+                        {data?.data?.is_age_verified ? <TickCircle variant='Bold' size={16} className="text-green-500" /> : <TickCircle variant='Bold' size={16} className="text-white" />}
+                    </div>
                 </div>
             </a>
             <Popper
