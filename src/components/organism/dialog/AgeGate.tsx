@@ -23,7 +23,6 @@ export default function AgeGate() {
         if (data.data.is_age_verified) return;
         const uuid = data.data.age_verify_uuid;
 
-        // 1. Set config BEFORE loading the script
         (window as any).AgeCheckerConfig = {
             key: process.env.NEXT_PUBLIC_AGE_CHECKER_KEY,
             mode: "manual",

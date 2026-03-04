@@ -111,18 +111,30 @@ export default function RegisterPage() {
     useEffect(() => {
         const fetchCountries = async () => {
             try {
-                const res = await fetch("https://restcountries.com/v3.1/all?fields=name,idd");
+                const res = await fetch(
+                    "https://restcountries.com/v3.1/all?fields=name,idd"
+                );
+
+                if (!res.ok) {
+                    throw new Error("Failed to fetch countries");
+                }
+
                 const data = await res.json();
 
                 const formatted = data
-                    .filter((c: any) => c.idd?.root)
-                    .map((c: any) => {
-                        const dial = `${c.idd.root}${c.idd.suffixes?.[0] || ''}`;
+                    .filter((country: any) => country?.idd?.root)
+                    .map((country: any) => {
+                        const root = country.idd.root;
+                        const suffix = country.idd.suffixes?.[0] || "";
+
+                        // 🔥 Special case: If root is "+1", do NOT append suffix
+                        const dialCode =
+                            root === "+1" ? root : `${root}${suffix}`;
 
                         return {
-                            name: c.name.common,
-                            label: `${c.name.common} (${dial}) `,
-                            dialCode: dial,
+                            name: country.name.common,
+                            label: `${country.name.common} (${dialCode})`,
+                            dialCode,
                         };
                     })
                     .sort((a: any, b: any) =>
@@ -130,8 +142,10 @@ export default function RegisterPage() {
                     );
 
                 setCountryCodes(formatted);
-            } catch (err: any) {
-                console.error(err.message || "Country fetch failed");
+            } catch (error: any) {
+                console.error(
+                    error?.message || "Country fetch failed"
+                );
             }
         };
 
