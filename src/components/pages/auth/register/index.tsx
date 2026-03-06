@@ -74,7 +74,7 @@ const validationSchema = Yup.object().shape({
             'Password cannot start or end with spaces',
             (value) => value === value?.trim()
         )
-        .min(9, 'Password must be at least 9 characters'),
+        .min(9, 'Password must be at least 9 characters').max(10, "Password Must not be greater than 10 Digits"),
     confirmPassword: Yup.string()
         .oneOf([Yup.ref('password')], 'Passwords must match')
         .required('Confirm Password is required'),
