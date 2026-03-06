@@ -1,8 +1,9 @@
 "use client";
 import InputFile from '@/components/atom/InputFile';
 import PasswordField from '@/components/molecules/PasswordField';
+import { US_STATES } from '@/constants/state';
 import { PlayerProps, SinlgePlayerResponseProps } from '@/types/player';
-import { Button, InputLabel, OutlinedInput } from '@mui/material';
+import { Button, InputLabel, MenuItem, OutlinedInput, Select } from '@mui/material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
@@ -181,6 +182,36 @@ export default function AddPlayerForm({ formik, id, data, loading, buttonLabel }
                         {formik.touched.phone && formik.errors.phone ? formik.errors.phone : ""}
                     </span>
                 </div>
+
+                <div className="input__field">
+                    <InputLabel htmlFor="pob">State</InputLabel>
+
+                    <Select
+                        fullWidth
+                        id="pob"
+                        name="pob"
+                        displayEmpty
+                        value={formik.values.pob}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        sx={formFieldSx}
+                        renderValue={(selected) =>
+                            selected === "" ? "Select a State" : selected
+                        }
+                    >
+                        <MenuItem value="">
+                            <em>Select a State</em>
+                        </MenuItem>
+                        {US_STATES.map((state) => (
+                            <MenuItem key={state.value} value={state.value}>
+                                {state.label}
+                            </MenuItem>
+                        ))}
+                    </Select>
+
+                    <span className="error">{formik.touched.pob && formik.errors.pob}</span>
+                </div>
+
                 <div className="input__field">
                     <InputLabel htmlFor="zip_code">Zip Code <span className="text-red-500">*</span></InputLabel>
                     <OutlinedInput

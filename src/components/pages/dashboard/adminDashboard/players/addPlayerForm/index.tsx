@@ -21,6 +21,7 @@ export const PlayerValidationSchema = (isEdit: boolean) => Yup.object().shape({
     address: Yup.string().required("Address is required"),
     city: Yup.string().required("City is required"),
     zip_code: Yup.string().required("Zip code is required"),
+    pob: Yup.string().required("State is required"),
     phone: Yup.string()
         .matches(/^\+?\d{7,15}$/, "Invalid phone number")
         .required("Phone is required"),
@@ -69,6 +70,7 @@ export default function AddPlayerPage({ id }: { id?: string }) {
             profile_image: null,
             dob: data?.data.dob || null as Dayjs | null,
             zip_code: data?.data.zip_code || "",
+            pob: data?.data.pob || "",
         } : initialPlayerValues,
         validationSchema: PlayerValidationSchema(!!id),
         enableReinitialize: true,
@@ -86,7 +88,7 @@ export default function AddPlayerPage({ id }: { id?: string }) {
             if (values.phone) formData.append("phone", values.phone);
             if (values.dob) formData.append("dob", values.dob.toString());
             if (values.zip_code) formData.append("zip_code", values.zip_code);
-
+            if (values.pob) formData.append("pob", values.pob);
             if (values.profile_image) {
                 if (Array.isArray(values.profile_image)) {
                     values.profile_image.forEach((file) => formData.append("profile_image", file));

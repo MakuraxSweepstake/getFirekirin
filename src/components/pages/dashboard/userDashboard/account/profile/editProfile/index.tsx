@@ -49,6 +49,8 @@ export default function EditUserProfile({ id, buttonLabel }: { id: string, butto
             if (values.city) formData.append("city", values.city);
             if (values.phone) formData.append("phone", values.phone);
             if (values.dob) formData.append("dob", formattedDob);
+            if (values.zip_code) formData.append("zip_code", values.zip_code);
+            if (values.pob) formData.append("pob", values.pob);
 
             if (values.profile_image) {
                 if (Array.isArray(values.profile_image)) {
