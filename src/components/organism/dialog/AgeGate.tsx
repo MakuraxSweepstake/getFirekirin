@@ -59,7 +59,7 @@ export default function AgeGate() {
             script.crossOrigin = "anonymous";
 
             script.onerror = () => {
-                window.location.href = "https://agechecker.net/loaderror";Pp
+                window.location.href = "https://agechecker.net/loaderror";
             };
 
             document.head.insertBefore(script, document.head.firstChild);
