@@ -1,3 +1,4 @@
+"use client"
 import { useGetChatbotSettingQuery } from '@/services/settingApi';
 import { Button, Typography } from '@mui/material';
 import Image from 'next/image';

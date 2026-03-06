@@ -1,3 +1,5 @@
+"use client"
+
 import InputFile from '@/components/atom/InputFile';
 import { useAppDispatch } from '@/hooks/hook';
 import { useGetChatbotSettingQuery, useUpdateChatbotMutation } from '@/services/settingApi';

@@ -1,8 +1,6 @@
 "use client";
 
-import Chatbot from '@/components/atom/ChatbotIcon';
 import DashboardLayout from '@/components/layouts/DashboardLayout';
-import Toast from '@/components/molecules/Toast';
 import AgeVerificationModal from '@/components/organism/dialog';
 import { useSearchParams } from 'next/navigation';
 import React, { Suspense, useEffect } from 'react';
@@ -22,10 +20,7 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
         <DashboardLayout>
             {children}
             <AgeVerificationModal />
-            <div className="fixed bottom-1 right-2 lg:bottom-2 lg:right-4 flex flex-col justify-end  items-end z-[9999] gap-8">
-                <Chatbot />
-                <Toast />
-            </div>
+
 
             {/* <AgeGate /> */}
 
