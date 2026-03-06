@@ -2,6 +2,7 @@
 import { useGetChatbotSettingQuery } from '@/services/settingApi';
 import { Button, Typography } from '@mui/material';
 import Image from 'next/image';
+import GlassWrapper from '../molecules/GlassWrapper';
 
 export default function Chatbot() {
   const { data } = useGetChatbotSettingQuery();
@@ -12,45 +13,47 @@ export default function Chatbot() {
   const isVideo = fileUrl?.toLowerCase().endsWith(".mp4");
 
   return (
-    <Button
-      className=" max-w-fit px-8!"
-      variant="contained"
-      color="primary"
-      fullWidth
-      LinkComponent={"a"}
-      href={data?.data?.chatbot_link || ""}
-      target='_black'
-      sx={{
-        justifyContent: "start"
-      }}
-    >
-      <div className=" w-full flex! justify-start! items-center! gap-4">
-        {fileUrl && (
-          isVideo ? (
-            <video
-              autoPlay
-              loop
-              muted
-              playsInline
-              className="w-11 h-11 rounded-full object-cover"
-            >
-              <source src={fileUrl} type="video/mp4" />
-            </video>
-          ) : (
-            <Image
-              src={fileUrl}
-              alt="chatbot"
-              width={44}
-              height={44}
-              className="rounded-full object-cover"
-            />
-          )
-        )}
+    <GlassWrapper>
+      <Button
+        className=" max-w-fit px-8!"
+        variant="text"
+        color="primary"
+        // fullWidth
+        LinkComponent={"a"}
+        href={data?.data?.chatbot_link || ""}
+        target='_black'
+        sx={{
+          justifyContent: "start"
+        }}
+      >
+        <div className=" w-full flex! justify-start! items-center! gap-4">
+          {fileUrl && (
+            isVideo ? (
+              <video
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="w-11 h-11 rounded-full object-cover"
+              >
+                <source src={fileUrl} type="video/mp4" />
+              </video>
+            ) : (
+              <Image
+                src={fileUrl}
+                alt="chatbot"
+                width={44}
+                height={44}
+                className="rounded-full object-cover"
+              />
+            )
+          )}
 
-        <Typography variant="subtitle2">
-          {label}
-        </Typography>
-      </div>
-    </Button>
+          <Typography variant="subtitle2">
+            {label}
+          </Typography>
+        </div>
+      </Button>
+    </GlassWrapper>
   );
 }
