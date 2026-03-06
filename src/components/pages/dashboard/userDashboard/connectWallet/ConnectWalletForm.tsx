@@ -34,7 +34,7 @@ export default function ConnectWalletForm() {
             catch (e: any) {
                 dispatch(
                     showToast({
-                        message: e.message || "Unable to connect wallet. Try Again Later",
+                        message: e?.data?.message || "Unable to connect wallet. Try Again Later",
                         variant: ToastVariant.ERROR
                     })
                 )
