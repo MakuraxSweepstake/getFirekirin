@@ -6,16 +6,11 @@ import { useAppDispatch } from '@/hooks/hook';
 import { PATH } from '@/routes/PATH';
 import { useRegisterUserMutation } from '@/services/authApi';
 import { showToast, ToastVariant } from '@/slice/toastSlice';
-import { Autocomplete, Box, Checkbox, FormControlLabel, InputLabel, OutlinedInput, TextField } from '@mui/material';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { Box, Checkbox, FormControlLabel, InputLabel, OutlinedInput } from '@mui/material';
 import { ArrowLeft } from '@wandersonalwes/iconsax-react';
-import dayjs, { Dayjs } from 'dayjs';
 import { useFormik } from 'formik';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
 import * as Yup from 'yup';
 import AuthMessageBlock from '../authMessageBlock';
 
@@ -65,11 +60,11 @@ const validationSchema = Yup.object().shape({
         .email('Must be a valid email')
         .max(255)
         .required('Email is required'),
-    // displayName: Yup.string()
-    //     .required("Display Name is required")
-    //     .max(14, "Display Name must be less than 14 characters")
-    //     .min(6, "Display Name must be at least 6 characters long")
-    //     .matches(/^\S+$/, "Display Name cannot contain spaces"),
+    displayName: Yup.string()
+        .required("Display Name is required")
+        .max(14, "Display Name must be less than 14 characters")
+        .min(6, "Display Name must be at least 6 characters long")
+        .matches(/^\S+$/, "Display Name cannot contain spaces"),
     phone: Yup.string()
         .required("Phone number is required"),
     password: Yup.string()
@@ -83,22 +78,22 @@ const validationSchema = Yup.object().shape({
     confirmPassword: Yup.string()
         .oneOf([Yup.ref('password')], 'Passwords must match')
         .required('Confirm Password is required'),
-    dob: Yup.date()
-        .required("Date of birth is required")
-        .max(new Date(), 'Date of birth cannot be in the future')
-        .test('age', 'You must be at least 21 years old', function (value) {
-            if (!value) return true;
-            const cutoff = dayjs().subtract(21, 'years');
-            return dayjs(value).isBefore(cutoff);
-        }),
+    // dob: Yup.date()
+    //     .required("Date of birth is required")
+    //     .max(new Date(), 'Date of birth cannot be in the future')
+    //     .test('age', 'You must be at least 21 years old', function (value) {
+    //         if (!value) return true;
+    //         const cutoff = dayjs().subtract(21, 'years');
+    //         return dayjs(value).isBefore(cutoff);
+    //     }),
     first_name: Yup.string().required('First name is required'),
     middle_name: Yup.string(),
     last_name: Yup.string().required('Last name is required'),
     // photoid_number: Yup.string().required('Photo ID is required'),
-    city: Yup.string(),
-    pob: Yup.string().required('Place of birth is required'),
+    // city: Yup.string(),
+    // pob: Yup.string().required('Place of birth is required'),
     agree: Yup.boolean().required().oneOf([true], 'You must agree to the terms and conditions'),
-    country_code: Yup.string().required("Country code is required"),
+    // country_code: Yup.string().required("Country code is required"),
 })
 
 export default function RegisterPage() {
@@ -106,51 +101,51 @@ export default function RegisterPage() {
     const router = useRouter();
     const dispatch = useAppDispatch();
 
-    const [countryCodes, setCountryCodes] = useState<any[]>([]);
+    // const [countryCodes, setCountryCodes] = useState<any[]>([]);
 
-    useEffect(() => {
-        const fetchCountries = async () => {
-            try {
-                const res = await fetch(
-                    "https://restcountries.com/v3.1/all?fields=name,idd"
-                );
+    // useEffect(() => {
+    //     const fetchCountries = async () => {
+    //         try {
+    //             const res = await fetch(
+    //                 "https://restcountries.com/v3.1/all?fields=name,idd"
+    //             );
 
-                if (!res.ok) {
-                    throw new Error("Failed to fetch countries");
-                }
+    //             if (!res.ok) {
+    //                 throw new Error("Failed to fetch countries");
+    //             }
 
-                const data = await res.json();
+    //             const data = await res.json();
 
-                const formatted = data
-                    .filter((country: any) => country?.idd?.root)
-                    .map((country: any) => {
-                        const root = country.idd.root;
-                        const suffix = country.idd.suffixes?.[0] || "";
+    //             const formatted = data
+    //                 .filter((country: any) => country?.idd?.root)
+    //                 .map((country: any) => {
+    //                     const root = country.idd.root;
+    //                     const suffix = country.idd.suffixes?.[0] || "";
 
-                        // 🔥 Special case: If root is "+1", do NOT append suffix
-                        const dialCode =
-                            root === "+1" ? root : `${root}${suffix}`;
+    //                     // 🔥 Special case: If root is "+1", do NOT append suffix
+    //                     const dialCode =
+    //                         root === "+1" ? root : `${root}${suffix}`;
 
-                        return {
-                            name: country.name.common,
-                            label: `${country.name.common} (${dialCode})`,
-                            dialCode,
-                        };
-                    })
-                    .sort((a: any, b: any) =>
-                        a.name.localeCompare(b.name)
-                    );
+    //                     return {
+    //                         name: country.name.common,
+    //                         label: `${country.name.common} (${dialCode})`,
+    //                         dialCode,
+    //                     };
+    //                 })
+    //                 .sort((a: any, b: any) =>
+    //                     a.name.localeCompare(b.name)
+    //                 );
 
-                setCountryCodes(formatted);
-            } catch (error: any) {
-                console.error(
-                    error?.message || "Country fetch failed"
-                );
-            }
-        };
+    //             setCountryCodes(formatted);
+    //         } catch (error: any) {
+    //             console.error(
+    //                 error?.message || "Country fetch failed"
+    //             );
+    //         }
+    //     };
 
-        fetchCountries();
-    }, []);
+    //     fetchCountries();
+    // }, []);
     const initialValues = {
         first_name: '',
         middle_name: '',
@@ -161,24 +156,24 @@ export default function RegisterPage() {
         confirmPassword: "",
         phone: "",
         // photoid_number: '',
-        dob: null as Dayjs | null,
-        city: '',
-        pob: '',
+        // dob: null as Dayjs | null,
+        // city: '',
+        // pob: '',
         agree: true,
         visitor_id: undefined,
-        country_code: '',
+        // country_code: '',
     }
     const { deviceId } = useSeon();
-    const { handleSubmit, handleBlur, handleChange, errors, dirty, values, touched, setFieldValue, setFieldTouched } = useFormik(
+    const { handleSubmit, handleBlur, handleChange, errors, dirty, values, touched, setFieldValue } = useFormik(
         {
             initialValues,
             validationSchema,
             onSubmit: async (values) => {
-                const formattedDob = values.dob ? dayjs(values.dob).format('YYYY-MM-DD') : '';
+                // const formattedDob = values.dob ? dayjs(values.dob).format('YYYY-MM-DD') : '';
                 const userFromPropeelVisitorId = localStorage.getItem("visitor_id");
-                const cleanedPhone = values.phone.replace(/^0+/, '');
+                // const cleanedPhone = values.phone.replace(/^0+/, '');
 
-                const fullPhoneNumber = `${values.country_code}${cleanedPhone}`;
+                // const fullPhoneNumber = `${values.country_code}${cleanedPhone}`;
 
                 try {
                     const response = await registerUser({
@@ -189,11 +184,11 @@ export default function RegisterPage() {
                         first_name: values.first_name,
                         middle_name: values.middle_name,
                         last_name: values.last_name,
-                        phone: fullPhoneNumber,
+                        phone: values.phone,
                         // photoid_number: values.photoid_number,
-                        dob: formattedDob,
-                        city: values.city,
-                        pob: values.pob,
+                        // dob: formattedDob,
+                        // city: values.city,
+                        // pob: values.pob,
                         agree: values.agree,
                         device_id: deviceId,
                         visitor_id: userFromPropeelVisitorId || undefined,
@@ -291,7 +286,7 @@ export default function RegisterPage() {
                         </div>
 
                         {/* EMAIL */}
-                        <div className="col-span-2 lg:col-span-6">
+                        <div className="col-span-3 lg:col-span-3">
                             <div className="input_field">
                                 <InputLabel htmlFor="emailAddress">Email Address<span className="text-red-500">*</span></InputLabel>
                                 <OutlinedInput
@@ -311,7 +306,7 @@ export default function RegisterPage() {
                         </div>
 
                         {/* DISPLAY NAME */}
-                        <div className="col-span-2 lg:col-span-3">
+                        <div className="col-span-3 lg:col-span-3">
                             <div className="input_field">
                                 <InputLabel htmlFor="displayName">Display Name<span className="text-red-500">*</span></InputLabel>
                                 <OutlinedInput
@@ -330,7 +325,6 @@ export default function RegisterPage() {
                             </div>
                         </div>
 
-
                         {/* Photo ID */}
                         {/* <div className="col-span-2 lg:col-span-3">
                             <div className="input__field">
@@ -347,7 +341,7 @@ export default function RegisterPage() {
                         </div> */}
 
                         {/* Address */}
-                        <div className="col-span-2 lg:col-span-3">
+                        {/* <div className="col-span-2 lg:col-span-3">
                             <div className="input__field">
                                 <InputLabel htmlFor="city">City</InputLabel>
                                 <OutlinedInput
@@ -362,10 +356,10 @@ export default function RegisterPage() {
                                 />
                                 <span className="error">{touched.city && errors.city}</span>
                             </div>
-                        </div>
+                        </div> */}
 
                         {/* Country */}
-                        <div className="col-span-2 lg:col-span-3">
+                        {/* <div className="col-span-2 lg:col-span-3">
                             <div className="input__field">
                                 <InputLabel htmlFor="pob" >Place of Birth<span className="text-red-500">*</span></InputLabel>
                                 <OutlinedInput
@@ -380,10 +374,10 @@ export default function RegisterPage() {
                                 />
                                 <span className="error">{touched.pob && errors.pob}</span>
                             </div>
-                        </div>
+                        </div> */}
 
                         {/* Phone */}
-                        <div className="col-span-2 lg:col-span-2">
+                        {/* <div className="col-span-2 lg:col-span-2">
                             <InputLabel>
                                 Country Code <span className="text-red-500">*</span>
                             </InputLabel>
@@ -413,8 +407,8 @@ export default function RegisterPage() {
                                     />
                                 )}
                             />
-                        </div>
-                        <div className="col-span-2 lg:col-span-4">
+                        </div> */}
+                        <div className="col-span-3 lg:col-span-6">
                             <div className="input__field">
                                 <InputLabel htmlFor="phone">Phone <span className="text-red-500">*</span></InputLabel>
                                 <OutlinedInput
@@ -433,7 +427,7 @@ export default function RegisterPage() {
                         </div>
 
                         {/* DOB */}
-                        <div className="col-span-2 lg:col-span-6">
+                        {/* <div className="col-span-2 lg:col-span-6">
                             <div className="input__field">
                                 <InputLabel htmlFor="dob">Date of Birth <span className="text-red-500">*</span></InputLabel>
                                 <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -493,9 +487,9 @@ export default function RegisterPage() {
                                     />
                                 </LocalizationProvider>
                             </div>
-                        </div>
+                        </div> */}
 
-                        <div className="col-span-2 lg:col-span-3">
+                        <div className="col-span-3 lg:col-span-3">
                             <div className="input_field">
                                 <PasswordField
                                     name="password"
@@ -509,7 +503,7 @@ export default function RegisterPage() {
                             </div>
                         </div>
 
-                        <div className="col-span-2 lg:col-span-3">
+                        <div className="col-span-3 lg:col-span-3">
                             <div className="input_field">
                                 <PasswordField
                                     name="confirmPassword"
@@ -522,7 +516,7 @@ export default function RegisterPage() {
                                 />
                             </div>
                         </div>
-                        <div className="col-span-4">
+                        <div className="col-span-6">
                             <FormControlLabel
                                 control={<Checkbox
                                     checked={values.agree}

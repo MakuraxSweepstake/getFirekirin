@@ -10,7 +10,6 @@ import dayjs, { Dayjs } from 'dayjs';
 import { useFormik } from 'formik';
 
 export default function EditUserProfile({ id, buttonLabel }: { id: string, buttonLabel?: string; }) {
-
     const dispatch = useAppDispatch();
     const [updateUserProfile, { isLoading }] = useUpdateUserProfileMutation();
     const user = useAppSelector((state) => state?.auth.user);
@@ -31,6 +30,7 @@ export default function EditUserProfile({ id, buttonLabel }: { id: string, butto
             password_confirmation: '',
             profile_image: null,
             dob: user.dob || null as Dayjs | null,
+            zip_code: user.zip_code || "",
         } : initialPlayerValues,
         validationSchema: PlayerValidationSchema(user?.id ? true : false),
         enableReinitialize: true,

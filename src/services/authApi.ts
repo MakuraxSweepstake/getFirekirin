@@ -63,7 +63,7 @@ export const authApi = createApi({
                     },
                 })
         }),
-        getAgeGateUuid: builder.query<GlobalResponse & { data: { age_verify_uuid: string, is_age_verified: boolean } }, void>({
+        getAgeGateUuid: builder.mutation<GlobalResponse & { data: { age_verify_uuid: string, is_age_verified: boolean } }, void>({
             query: () => ({
                 url: `/api/user/age-verify`,
                 method: "GET",
@@ -79,4 +79,4 @@ export const authApi = createApi({
     })
 })
 
-export const { useLoginMutation, useRegisterUserMutation, useSendVerificationLinkAgainMutation, useForgotPasswordMutation, useVerifyOTPMutation, useResetPasswordMutation, useVerifyEmailMutation, useGetAgeGateUuidQuery, useVerifyAgeGateMutation } = authApi;
+export const { useLoginMutation, useRegisterUserMutation, useSendVerificationLinkAgainMutation, useForgotPasswordMutation, useVerifyOTPMutation, useResetPasswordMutation, useVerifyEmailMutation, useGetAgeGateUuidMutation, useVerifyAgeGateMutation } = authApi;

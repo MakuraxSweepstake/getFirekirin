@@ -98,7 +98,9 @@ export default function CheckoutPage({ amount, slug, bonus }: {
                                 </GlassWrapper>
                             </div>
                         </div>
-                        {currentPaymentMode === "fortpay" ? <PaymentForm id={slug} amount={amount} type={currentPaymentMode as PaymentModeProps} /> : ""}
+                        {currentPaymentMode === "fortpay" ? <>
+                            <PaymentForm id={slug} amount={amount} type={currentPaymentMode as PaymentModeProps} />
+                        </> : ""}
                         {currentPaymentMode === "crypto" ? <Button type='submit' variant='contained' color='primary' className='!mt-3' onClick={async () => {
                             try {
                                 if (currentPaymentMode === "crypto") {

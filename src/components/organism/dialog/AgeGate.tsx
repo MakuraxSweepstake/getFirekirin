@@ -1,11 +1,16 @@
 "use client";
 
-import { useGetAgeGateUuidQuery, useVerifyAgeGateMutation } from "@/services/authApi";
-import { useCallback, useEffect } from "react";
+import { useAppDispatch } from "@/hooks/hook";
+import { useGetAgeGateUuidMutation, useVerifyAgeGateMutation } from "@/services/authApi";
+import { showToast, ToastVariant } from "@/slice/toastSlice";
+import { Button } from "@mui/material";
+import { useCallback } from "react";
 
 export default function AgeGate() {
-    const { data, isSuccess } = useGetAgeGateUuidQuery();
+
+    const [getAgeGateUuid, { isLoading }] = useGetAgeGateUuidMutation();
     const [verifyAgeGate] = useVerifyAgeGateMutation();
+    const dispatch = useAppDispatch();
     const handleSuccess = useCallback(async (uuid: string) => {
         try {
             await verifyAgeGate({ age_verify_uuid: uuid }).unwrap();
@@ -15,46 +20,68 @@ export default function AgeGate() {
         }
     }, [verifyAgeGate]);
 
-    console.log("AgeGate data:", data?.data?.age_verify_uuid, "isSuccess:", isSuccess);
+    const openAgeGate = async () => {
+        try {
+            const res = await getAgeGateUuid().unwrap();
 
-    useEffect(() => {
-        if (!isSuccess || !data?.data?.age_verify_uuid) return;
-        if (data.data.is_age_verified) return;
-        const uuid = data.data.age_verify_uuid;
+            const uuid = res?.data?.age_verify_uuid;
+            const verified = res?.data?.is_age_verified;
 
-        (window as any).AgeCheckerConfig = {
-            key: process.env.NEXT_PUBLIC_AGE_CHECKER_KEY,
-            mode: "manual",
-            autoload: true,
-            show_close: true,
-            onready: () => {
-                (window as any).AgeCheckerAPI.show(uuid);
-            },
-            onstatuschanged: (verification: { uuid: string; status: string }) => {
-                if (verification.status === "accepted") {
-                    handleSuccess(verification.uuid);
+            if (!uuid || verified) return;
+
+            (window as any).AgeCheckerConfig = {
+                key: process.env.NEXT_PUBLIC_AGE_CHECKER_KEY,
+                mode: "manual",
+                autoload: true,
+                show_close: true,
+                onready: () => {
+                    (window as any).AgeCheckerAPI.show(uuid);
+                },
+                onstatuschanged: (verification: { uuid: string; status: string }) => {
+                    if (verification.status === "accepted") {
+                        handleSuccess(verification.uuid);
+                    }
+                },
+                onpagehide: () => {
+                    (window as any).AgeCheckerAPI.close();
                 }
-            },
-            onpagehide: () => {
-                (window as any).AgeCheckerAPI.close();
+            };
+
+            const existing = document.querySelector('script[src*="agechecker.net"]');
+
+            if (existing) {
+                (window as any).AgeCheckerAPI?.show(uuid);
+                return;
             }
-        };
 
-        const existing = document.querySelector('script[src*="agechecker.net"]');
-        if (existing) {
-            (window as any).AgeCheckerAPI?.show(uuid);
-            return;
+            const script = document.createElement("script");
+            script.src = "https://cdn.agechecker.net/static/popup/v1/popup.js";
+            script.crossOrigin = "anonymous";
+
+            script.onerror = () => {
+                window.location.href = "https://agechecker.net/loaderror";Pp
+            };
+
+            document.head.insertBefore(script, document.head.firstChild);
+
+        } catch (err: any) {
+            dispatch(showToast({
+                message: err?.data?.message || "Failed to initiate age verification. Please try again.",
+                variant: ToastVariant.ERROR
+            }))
         }
+    };
 
-        const script = document.createElement("script");
-        script.src = "https://cdn.agechecker.net/static/popup/v1/popup.js";
-        script.crossOrigin = "anonymous";
-        script.onerror = () => {
-            window.location.href = "https://agechecker.net/loaderror";
-        };
-        document.head.insertBefore(script, document.head.firstChild);
-
-    }, [isSuccess, data, handleSuccess]);
-
-    return null;
+    return (
+        <Button
+            variant="contained"
+            color="primary"
+            fullWidth
+            className="col-span-1 md:col-span-2 mt-2"
+            onClick={openAgeGate}
+            disabled={isLoading}
+        >
+            {isLoading ? "Loading..." : "Verify Account Now"}
+        </Button>
+    );
 }

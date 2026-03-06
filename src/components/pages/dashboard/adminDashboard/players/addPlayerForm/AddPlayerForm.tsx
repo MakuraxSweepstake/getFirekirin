@@ -135,7 +135,7 @@ export default function AddPlayerForm({ formik, id, data, loading, buttonLabel }
                 </div>
 
                 <div className="input__field">
-                    <InputLabel htmlFor="address">Address</InputLabel>
+                    <InputLabel htmlFor="address">Address <span className="text-red-500">*</span></InputLabel>
                     <OutlinedInput
                         fullWidth
                         id="address"
@@ -151,7 +151,7 @@ export default function AddPlayerForm({ formik, id, data, loading, buttonLabel }
                 </div>
 
                 <div className="input__field">
-                    <InputLabel htmlFor="city">City</InputLabel>
+                    <InputLabel htmlFor="city">City <span className="text-red-500">*</span></InputLabel>
                     <OutlinedInput
                         fullWidth
                         id="city"
@@ -167,13 +167,28 @@ export default function AddPlayerForm({ formik, id, data, loading, buttonLabel }
                 </div>
 
                 <div className="input__field">
-                    <InputLabel htmlFor="phone">Phone</InputLabel>
+                    <InputLabel htmlFor="phone">Phone <span className="text-red-500">*</span></InputLabel>
                     <OutlinedInput
                         fullWidth
                         id="phone"
                         name="phone"
                         placeholder="Enter phone number"
                         value={formik.values.phone}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                    />
+                    <span className="error">
+                        {formik.touched.phone && formik.errors.phone ? formik.errors.phone : ""}
+                    </span>
+                </div>
+                <div className="input__field">
+                    <InputLabel htmlFor="zip_code">Zip Code <span className="text-red-500">*</span></InputLabel>
+                    <OutlinedInput
+                        fullWidth
+                        id="zip_code"
+                        name="zip_code"
+                        placeholder="Enter zip code"
+                        value={formik.values.zip_code}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                     />

@@ -1,4 +1,3 @@
-import Toast from '@/components/molecules/Toast'
 import UpdatePassword from '@/components/organism/UpdatePassword'
 import { ThemeContextProvider } from '@/context/ThemeContext'
 import { ClientProvider } from '@/hooks/ReduxProvider'
@@ -11,7 +10,7 @@ export default function ProviderWrapper({ children }: { children: React.ReactNod
             <ClientProvider>
                 <ThemeCustomization>
                     {children}
-                    <Toast />
+
                     <UpdatePassword />
                     {/* <AgeChecker
                         apiKey="lwU8lOYysWXrIZaijSG3Hfcxmzc4DlS9"

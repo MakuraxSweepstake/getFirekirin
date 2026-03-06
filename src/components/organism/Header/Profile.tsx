@@ -1,13 +1,13 @@
 import Avatar from '@/components/atom/Avatar';
 import { useAppDispatch, useAppSelector } from '@/hooks/hook';
 import { PATH } from '@/routes/PATH';
-import { useGetAgeGateUuidQuery } from '@/services/authApi';
+import { useGetAgeGateUuidMutation } from '@/services/authApi';
 import { clearTokens } from '@/slice/authSlice';
-import { Box, ClickAwayListener, Fade, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Paper, Popper } from '@mui/material';
-import { ArrowDown2, Coin, Logout, MoneySend, Profile, TickCircle, Wallet2 } from "@wandersonalwes/iconsax-react";
+import { Box, ClickAwayListener, Fade, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Paper, Popper, Tooltip, Typography } from '@mui/material';
+import { ArrowDown2, CloseCircle, Coin, Logout, MoneySend, Profile, TickCircle, Wallet2 } from "@wandersonalwes/iconsax-react";
 import Link from 'next/link';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 const avataur1 = '/assets/images/avatar-6.png';
 
 
@@ -106,7 +106,25 @@ export default function ProfileBlock() {
         setGlassStyle((prev) => ({ ...prev, opacity: 0 }));
     };
 
-    const { data } = useGetAgeGateUuidQuery();
+    const [getAgeGateUuid] = useGetAgeGateUuidMutation();
+
+    const [isVerified, setIsVerified] = useState<boolean | null>(null);
+
+
+    useEffect(() => {
+        const fetchAgeStatus = async () => {
+            try {
+                const res = await getAgeGateUuid().unwrap();
+                setIsVerified(res?.data?.is_age_verified);
+            } catch (e) {
+                console.log(e)
+                // console.error("Failed to fetch age verification status", err);
+                setIsVerified(false);
+            }
+        };
+
+        fetchAgeStatus();
+    }, [getAgeGateUuid])
 
     return (
         <Box >
@@ -121,21 +139,29 @@ export default function ProfileBlock() {
                     padding: 0
                 }}
             >
-                <div className=' lg:flex items-center gap-1 relative'>
-                    <Avatar alt="profile user" src={avataur1} />
-                    {user?.role && user.role.toLowerCase() !== "user" ? <>
-                        <div className=' hidden lg:block'>
-                            <strong className='text-[14px] leading-[120%] font-bold text-text-title block mb-1 text-nowrap'>{user?.name}</strong>
-                            <p className='text-[12px] text-left leading-[120%] font-[500] text-para-light text-nowrap'>
-                                {user?.role || "User"}
-                            </p>
+                <Tooltip title={isVerified ? "Verified" : "Not Verified"} placement="bottom">
+                    <div className=' lg:flex items-center gap-1 relative'>
+                        <Avatar alt="profile user" src={avataur1} />
+                        {user?.role && user.role.toLowerCase() !== "user" ? <>
+                            <div className=' hidden lg:block'>
+                                <strong className='text-[14px] leading-[120%] font-bold text-text-title block mb-1 text-nowrap'>{user?.name}</strong>
+                                <p className='text-[12px] text-left leading-[120%] font-[500] text-para-light text-nowrap'>
+                                    {user?.role || "User"}
+                                </p>
+                            </div>
+                            <ArrowDown2 size={14} className='text-primary hidden lg:block' />
+                        </> : ""}
+                        <div className="absolute bottom-0 right-0">
+                            {isVerified ? (
+                                <TickCircle variant="Bold" size={14} className="text-green-600" />
+                            ) : (
+                                <span className="flex items-center justify-center w-[14px] h-[14px] rounded-full bg-yellow-400 text-[10px] font-bold text-white">
+                                    !
+                                </span>
+                            )}
                         </div>
-                        <ArrowDown2 size={14} className='text-primary hidden lg:block' />
-                    </> : ""}
-                    <div className="absolute bottom-0 right-0">
-                        {data?.data?.is_age_verified ? <TickCircle variant='Bold' size={16} className="text-green-500" /> : <TickCircle variant='Bold' size={16} className="text-white" />}
                     </div>
-                </div>
+                </Tooltip>
             </a>
             <Popper
                 id={id}
@@ -150,7 +176,7 @@ export default function ProfileBlock() {
                         <Paper
                             elevation={3}
                             sx={{
-                                width: 215,
+                                width: 315,
                                 borderRadius: 2,
                                 mt: 1,
                             }}
@@ -203,6 +229,7 @@ export default function ProfileBlock() {
                                                     >
                                                         <ListItemIcon className="min-w-[30px] mr-1 group-hover:text-primary">{item.icon}</ListItemIcon>
                                                         <ListItemText primary={item.label} className='group-hover:text-primary' />
+
                                                     </Link> : <ListItemButton
                                                         href={item.href || ""}
                                                         onClick={item.onClick}
@@ -255,6 +282,25 @@ export default function ProfileBlock() {
                                                         >
                                                             <ListItemIcon className="min-w-[30px] mr-1 group-hover:text-primary">{item.icon}</ListItemIcon>
                                                             <ListItemText primary={item.label} className='group-hover:text-primary' />
+                                                            {item.label === "Profile" && (
+                                                                <div
+                                                                    className={`status flex flex-nowrap items-center gap-1 ml-auto p-1.5 rounded
+      ${isVerified
+                                                                            ? "bg-green-600/40 text-green-600"
+                                                                            : "bg-red-600/40 text-red-600"
+                                                                        }`}
+                                                                >
+                                                                    {isVerified ? (
+                                                                        <TickCircle variant="Bold" size={12} />
+                                                                    ) : (
+                                                                        <CloseCircle variant="Bold" size={12} />
+                                                                    )}
+
+                                                                    <Typography className="text-[10px]!">
+                                                                        {isVerified ? "Verified" : "Not Verified"}
+                                                                    </Typography>
+                                                                </div>
+                                                            )}
                                                         </Link> :
                                                         <ListItemButton
                                                             href={item.href || ""}
@@ -263,6 +309,7 @@ export default function ProfileBlock() {
                                                         >
                                                             <ListItemIcon className="min-w-[30px] mr-1 group-hover:text-primary">{item.icon}</ListItemIcon>
                                                             <ListItemText primary={item.label} className='group-hover:text-primary' />
+
                                                         </ListItemButton>}
                                                 </ListItem>
                                             ))}

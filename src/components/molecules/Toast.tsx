@@ -1,11 +1,11 @@
 "use client";
 
-import React from "react";
-import { Snackbar, Alert, IconButton } from "@mui/material";
+import { Alert, IconButton, Snackbar } from "@mui/material";
 import { CloseCircle } from "@wandersonalwes/iconsax-react";
+import React from "react";
 
-import { closeToast } from "@/slice/toastSlice";
 import { useAppDispatch, useAppSelector } from "@/hooks/hook";
+import { closeToast } from "@/slice/toastSlice";
 
 export default function Toast() {
     const { variant, message, isActive, autoTimeout, duration } = useAppSelector(
@@ -28,10 +28,9 @@ export default function Toast() {
     return (
         <Snackbar
             open={isActive}
-            anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
             onClose={() => dispatch(closeToast())}
             autoHideDuration={autoTimeout ? duration || 3000 : null}
-            sx={{ zIndex: 9999 }}
+            sx={{ position: "relative" }}
         >
             <Alert
                 severity={currentVariant as "success" | "error" | "warning" | "info"}

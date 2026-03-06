@@ -12,7 +12,7 @@ export default function Chatbot() {
 
   return (
     <Button
-      className="fixed! bottom-2 right-2 lg:bottom-4 lg:right-4 max-w-fit px-8!"
+      className=" max-w-fit px-8!"
       variant="contained"
       color="primary"
       fullWidth
