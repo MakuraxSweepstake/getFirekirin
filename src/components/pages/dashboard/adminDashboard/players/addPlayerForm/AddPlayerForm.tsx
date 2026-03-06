@@ -184,7 +184,7 @@ export default function AddPlayerForm({ formik, id, data, loading, buttonLabel }
                 </div>
 
                 <div className="input__field">
-                    <InputLabel htmlFor="pob">State</InputLabel>
+                    <InputLabel htmlFor="pob">State <span className="text-red-500">*</span></InputLabel>
 
                     <Select
                         fullWidth
@@ -291,6 +291,7 @@ export default function AddPlayerForm({ formik, id, data, loading, buttonLabel }
 
                 <div className="input__field">
                     <PasswordField
+                    required={id ? false : true}
                         name="password"
                         label="Password*"
                         placeholder="Enter password"
@@ -303,6 +304,8 @@ export default function AddPlayerForm({ formik, id, data, loading, buttonLabel }
 
                 <div className="input__field">
                     <PasswordField
+                        required={id ? false : true}
+
                         name="password_confirmation"
                         label="Confirm Password*"
                         placeholder="Confirm password"
