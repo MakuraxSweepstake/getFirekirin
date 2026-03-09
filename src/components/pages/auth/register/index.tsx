@@ -232,7 +232,7 @@ export default function RegisterPage() {
                 <form action="" onSubmit={handleSubmit}>
                     <div className="flex flex-col md:grid md:grid-cols-2 lg:grid-cols-6 gap-x-3 gap-y-5">
                         {/* First Name */}
-                        <div className="col-span-2 lg:col-span-2">
+                        <div className="col-span-3 lg:col-span-3">
                             <div className="input__field">
                                 <InputLabel htmlFor="first_name">First Name<span className="text-red-500">*</span></InputLabel>
                                 <OutlinedInput
@@ -250,7 +250,7 @@ export default function RegisterPage() {
                         </div>
 
                         {/* Middle Name */}
-                        <div className="col-span-2 lg:col-span-2">
+                        {/* <div className="col-span-2 lg:col-span-2">
                             <div className="input__field">
                                 <InputLabel htmlFor="middle_name">Middle Name</InputLabel>
                                 <OutlinedInput
@@ -265,10 +265,10 @@ export default function RegisterPage() {
                                 />
                                 <span className="error">{touched.middle_name && errors.middle_name}</span>
                             </div>
-                        </div>
+                        </div> */}
 
                         {/* Last Name */}
-                        <div className="col-span-2 lg:col-span-2">
+                        <div className="col-span-3 lg:col-span-3">
                             <div className="input__field">
                                 <InputLabel htmlFor="last_name">Last Name<span className="text-red-500">*</span></InputLabel>
                                 <OutlinedInput
