@@ -1,6 +1,7 @@
 "use client";
 
 import GlassWrapper from '@/components/molecules/GlassWrapper';
+import { useAppSelector } from '@/hooks/hook';
 import { useGetUserGameCredentialsQuery } from '@/services/userApi';
 import CredentialsCard from './CredentialsCard';
 
@@ -41,8 +42,15 @@ function CredentialsCardShimmer() {
     );
 }
 export default function GameCredentialsPage() {
-    const { data: creds, isLoading: loadingCreds } = useGetUserGameCredentialsQuery();
 
+    const token = useAppSelector((state) => state.auth.access_token);
+
+    const { data: creds, isLoading: loadingCreds } =
+        useGetUserGameCredentialsQuery(undefined, {
+            skip: !token
+        });
+
+    // const { data: creds, isLoading: loadingCreds } = useGetUserGameCredentialsQuery();
 
     return (
         <section className="credentials__listing ">
