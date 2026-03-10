@@ -195,6 +195,7 @@ export default function PaymentForm({ id, amount, type }: DepositProps & { type:
             },
             callback: async (response: any) => {
                 try {
+                    console.log("token value is", response);
                     await payViaFortPay({
                         id,
                         amount,
@@ -225,14 +226,11 @@ export default function PaymentForm({ id, amount, type }: DepositProps & { type:
     };
 
 
-
-
-
     return (
         <>
             <Script
                 src="https://secure.fppgateway.com/token/Collect.js"
-                data-tokenization-key="5mN8N7-jhr55W-N22pxX-uAW2s9"
+                data-tokenization-key="NAhDuk-7V4u2u-tUAsT5-dCqbH5"
                 strategy="afterInteractive"
                 onReady={handleCollectJSLoad}
             />
@@ -242,7 +240,7 @@ export default function PaymentForm({ id, amount, type }: DepositProps & { type:
 
                     {/* ── Billing fields ── */}
                     <div className="form-group">
-                        <InputLabel htmlFor="name">First Name<span className="text-red-500">*</span></InputLabel>
+                        <InputLabel htmlFor="name">First Name</InputLabel>
 
                         <OutlinedInput
                             id="fname"
@@ -261,7 +259,7 @@ export default function PaymentForm({ id, amount, type }: DepositProps & { type:
                     </div>
 
                     <div className="form-group">
-                        <InputLabel htmlFor="name">Last Name<span className="text-red-500">*</span></InputLabel>
+                        <InputLabel htmlFor="name">Last Name</InputLabel>
 
                         <OutlinedInput
                             id="lname"
@@ -280,7 +278,7 @@ export default function PaymentForm({ id, amount, type }: DepositProps & { type:
                     </div>
 
                     <div className="form-group">
-                        <InputLabel htmlFor="address1">Address<span className="text-red-500">*</span></InputLabel>
+                        <InputLabel htmlFor="address1">Address</InputLabel>
                         <OutlinedInput
                             id="address1"
                             name="address1"
@@ -298,7 +296,7 @@ export default function PaymentForm({ id, amount, type }: DepositProps & { type:
                     </div>
 
                     <div className="form-group">
-                        <InputLabel htmlFor="city">City<span className="text-red-500">*</span></InputLabel>
+                        <InputLabel htmlFor="city">City</InputLabel>
                         <OutlinedInput
                             id="city"
                             name="city"
@@ -316,7 +314,7 @@ export default function PaymentForm({ id, amount, type }: DepositProps & { type:
                     </div>
 
                     <div className="form-group">
-                        <InputLabel htmlFor="state">State<span className="text-red-500">*</span></InputLabel>
+                        <InputLabel htmlFor="state">State</InputLabel>
                         <OutlinedInput
                             id="state"
                             name="state"
@@ -334,7 +332,7 @@ export default function PaymentForm({ id, amount, type }: DepositProps & { type:
                     </div>
 
                     <div className="form-group">
-                        <InputLabel htmlFor="zip">Zip Code<span className="text-red-500">*</span></InputLabel>
+                        <InputLabel htmlFor="zip">Zip Code</InputLabel>
                         <OutlinedInput
                             id="zip"
                             name="zip"
