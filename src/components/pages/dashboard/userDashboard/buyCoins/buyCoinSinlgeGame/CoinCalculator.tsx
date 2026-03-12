@@ -40,10 +40,10 @@ export default function CoinCalculator({ slug }: { slug: string }) {
     };
 
     const handleBuy = () => {
-        if (Number(amount) < 20) {
+        if (Number(amount) < 2) {
             return dispatch(
                 showToast({
-                    message: "Minimum amount is 20",
+                    message: "Minimum amount is 2",
                     variant: ToastVariant.ERROR,
                 })
             )

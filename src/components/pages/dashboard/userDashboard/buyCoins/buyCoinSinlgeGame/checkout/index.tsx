@@ -14,16 +14,6 @@ import PaymentForm from './FortPay';
 
 export type PaymentModeProps = "crypto" | "fortpay"
 
-/**
- * Before redirecting to an external payment gateway, we back up every auth-related
- * key from localStorage into sessionStorage.
- *
- * Why sessionStorage?
- *  - It survives external redirects (the tab stays open, session is preserved).
- *  - It is scoped to the tab, so it won't leak to other tabs.
- *  - Unlike localStorage it won't be touched by any app boot logic that
- *    reinitialises the store and accidentally clears auth keys.
- */
 const AUTH_KEYS = ['token', 'access_token', 'authToken', 'user', 'refresh_token'];
 const BACKUP_PREFIX = '__payment_backup__';
 
@@ -173,8 +163,8 @@ export default function CheckoutPage({ amount, slug, bonus }: {
 
 
                                         backupAuthToSession();
-
-                                        window.location.href = response?.data?.payment_url;
+                                        window.open(response?.data?.payment_url, "_blank");
+                                        // window.location.href = response?.data?.payment_url;
 
                                     } catch (e: any) {
                                         dispatch(

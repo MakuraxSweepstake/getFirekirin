@@ -12,24 +12,16 @@ import ReduxHydrator from "./ReduxHydrator";
 // }
 
 export default async function ServerPrivate({ children }: { children: React.ReactNode }) {
-    // ✅ Read cookie server-side
     const cookieStore = await cookies();
     const access_token = cookieStore.get("access_token")?.value;
-
-    if (!access_token) return;
-
-    // const payload = decodeJwt(access_token);
-    // if (!payload || !payload.exp || payload.exp < Math.floor(Date.now() / 1000)) {
-    //     redirect("/");
-    // }
-
-
-    // const user = payload; 
+    const user_cookie = cookieStore.get("user")?.value;
+    const user = user_cookie ? JSON.parse(user_cookie) : null;
+    if (!access_token||!user) return;
 
     return (
         <>
             {/* ✅ Hydrate Redux store on client */}
-            <ReduxHydrator token={access_token} />
+            <ReduxHydrator token={access_token} user={user}/>
             {children}
         </>
     );

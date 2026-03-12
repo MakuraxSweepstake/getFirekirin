@@ -61,6 +61,7 @@ export const authSlice = createSlice({
                 localStorage.removeItem("token");
             }
             Cookies.remove("access_token");
+            Cookies.remove("user");
         },
     }
 })

@@ -73,6 +73,11 @@ export default function LoginPage() {
                         secure: process.env.NODE_ENV === 'production',
                         sameSite: 'Strict',
                     });
+                    Cookies.set('user', JSON.stringify(response?.data?.user), {
+                        expires: 1,
+                        secure: process.env.NODE_ENV === 'production',
+                        sameSite: 'Strict',
+                    });
                     router.replace(PATH.DASHBOARD.ROOT);
                 }
                 catch (e: any) {
