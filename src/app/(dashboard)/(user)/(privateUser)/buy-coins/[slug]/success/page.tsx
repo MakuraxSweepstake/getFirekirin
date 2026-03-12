@@ -4,21 +4,26 @@ import GlassWrapper from '@/components/molecules/GlassWrapper'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 
 export default function PaymentSuccess() {
     const params = useParams();
-    const [mounted, setMounted] = useState(false);
+    const slug = params?.slug as string;
 
     useEffect(() => {
-        setMounted(true);
-    }, []);
+        // Check if this is a fresh redirect (not a refresh)
+        const hasLoaded = sessionStorage.getItem(`payment-success-${slug}`);
 
-    if (!mounted) {
-        return null; // or a loading skeleton
-    }
+        if (!hasLoaded) {
+            sessionStorage.setItem(`payment-success-${slug}`, 'true');
+            window.location.reload();
+        }
 
-    const slug = params?.slug as string;
+        // Cleanup on unmount (so it works again if they revisit)
+        return () => {
+            sessionStorage.removeItem(`payment-success-${slug}`);
+        }
+    }, [slug]);
 
     return (
         <GlassWrapper className="max-w-[520px] mx-auto flex flex-col gap-3 items-center text-center p-6">
