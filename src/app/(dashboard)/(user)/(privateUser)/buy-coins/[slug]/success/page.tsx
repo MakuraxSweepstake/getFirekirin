@@ -1,11 +1,24 @@
+"use client"
+
 import GlassWrapper from '@/components/molecules/GlassWrapper'
 import Image from 'next/image'
 import Link from 'next/link'
-import React from 'react'
+import { useParams } from 'next/navigation'
+import { useEffect, useState } from 'react'
 
+export default function PaymentSuccess() {
+    const params = useParams();
+    const [mounted, setMounted] = useState(false);
 
-export default async function PaymentSuccess({ params }: { params: Promise<{ slug: number }> }) {
-    const { slug } = await params
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+
+    if (!mounted) {
+        return null; // or a loading skeleton
+    }
+
+    const slug = params?.slug as string;
 
     return (
         <GlassWrapper className="max-w-[520px] mx-auto flex flex-col gap-3 items-center text-center p-6">
@@ -15,22 +28,17 @@ export default async function PaymentSuccess({ params }: { params: Promise<{ slu
                 width={180}
                 height={140}
             />
-
             <h1 className="text-[24px] lg:text-[32px] leading-[120%] font-bold mb-4 text-green-500">
-                Payment Successful 🎉
+                Payment Successful
             </h1>
-
             <p className="text-[14px] leading-[150%] font-normal lg:text-[16px] mb-4">
-                Your payment was processed successfully. You’ll be redirected to the game
-                page shortly.
+                Your payment was processed successfully.
             </p>
-
             <Link
                 href={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/exclusive-games/${slug}`}
                 className="ss-btn bg-primary-grad"
             >
                 View Game Detail
-
             </Link>
         </GlassWrapper>
     )
