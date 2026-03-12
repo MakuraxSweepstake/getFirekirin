@@ -11,18 +11,24 @@ export default function PaymentSuccess() {
     const slug = params?.slug as string;
 
     useEffect(() => {
-        // Check if this is a fresh redirect (not a refresh)
-        const hasLoaded = sessionStorage.getItem(`payment-success-${slug}`);
+        const storageKey = `payment-success-${slug}`;
+        const hasLoaded = sessionStorage.getItem(storageKey);
 
         if (!hasLoaded) {
-            sessionStorage.setItem(`payment-success-${slug}`, 'true');
+            console.log("First visit - reloading page");
+            sessionStorage.setItem(storageKey, 'true');
             window.location.reload();
+            return;
         }
 
-        // Cleanup on unmount (so it works again if they revisit)
-        return () => {
-            sessionStorage.removeItem(`payment-success-${slug}`);
-        }
+        console.log("Page already loaded once - rendering content");
+
+        // Clean up after 5 seconds (user has seen the page)
+        const timeout = setTimeout(() => {
+            sessionStorage.removeItem(storageKey);
+        }, 5000);
+
+        return () => clearTimeout(timeout);
     }, [slug]);
 
     return (
