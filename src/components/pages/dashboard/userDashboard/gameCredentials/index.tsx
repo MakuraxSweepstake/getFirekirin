@@ -43,14 +43,14 @@ function CredentialsCardShimmer() {
 }
 export default function GameCredentialsPage() {
 
-    const token = useAppSelector((state) => state.auth.access_token);
+    // const token = useAppSelector((state) => state.auth.access_token);
 
-    const { data: creds, isLoading: loadingCreds } =
-        useGetUserGameCredentialsQuery(undefined, {
-            skip: !token
-        });
+    // const { data: creds, isLoading: loadingCreds } =
+    //     useGetUserGameCredentialsQuery(undefined, {
+    //         skip: !token
+    //     });
 
-    // const { data: creds, isLoading: loadingCreds } = useGetUserGameCredentialsQuery();
+    const { data: creds, isLoading: loadingCreds } = useGetUserGameCredentialsQuery();
 
     return (
         <section className="credentials__listing ">
