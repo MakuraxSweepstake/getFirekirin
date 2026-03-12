@@ -1,13 +1,13 @@
 import DashboardLayout from '@/components/layouts/DashboardLayout'
-import ServerPrivate from '@/routes/ServerPrivate'
+import Private from '@/routes/Private'
 import React from 'react'
 
 export default function PrivateUserLayout({ children }: { children: React.ReactNode }) {
     return (
-        <ServerPrivate>
+        <Private>
             <DashboardLayout>
                 {children}
             </DashboardLayout>
-        </ServerPrivate>
+        </Private>
     )
 }

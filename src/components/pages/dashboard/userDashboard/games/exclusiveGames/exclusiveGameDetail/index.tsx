@@ -1,25 +1,30 @@
-
+"use client";
 import ScreenShotSlider from "@/components/molecules/Sliders/ScreenShotSlider";
 import CustomLightGallery from "@/components/organism/LightGallery";
 import ProtectedLink from "@/routes/ProtectedLink";
-import { SingleGameResponse } from "@/types/game";
+import { useGetSingleGameFormUserQuery } from "@/services/gameApi";
 import { renderHTML } from "@/utils/RenderHTML";
 import { Box } from "@mui/material";
 import Image from "next/image";
+import { useParams } from "next/navigation";
 import GameCredentialsBlock from "./GameCredentialsBlock";
 import GameIframeDialog from "./GameIframeDialog";
 import UserCoin from "./UserCoin";
 
-export default function ExclusiveGameDetail({ game }: { game: SingleGameResponse }) {
+export default function ExclusiveGameDetail() {
+    const { id } = useParams();
+    const { data: game } = useGetSingleGameFormUserQuery({ id: Number(id) }, { skip: !id });
 
+    if (!game) {
+        return;
+    }
     return (
         <>
             <section className="detail__banner mb-8">
                 <div className="md:grid md:grid-cols-12  flex flex-col gap-8 lg:gap-20">
-
                     <div className="col-span-12 md:col-span-4">
                         <div className="aspect-[420/433]  relative rounded-xl overflow-hidden mb-4">
-                            <Image src={game?.data?.thumbnail || "/assets/images/fallback.png"} fill className="object-cover " alt={game?.data?.name} />
+                            <Image src={game?.data?.thumbnail || "/assets/images/fallback.png"} fill className="object-cover " alt={game?.data?.name || ""} />
                         </div>
                         <GameCredentialsBlock game={game} />
                     </div>
@@ -31,7 +36,7 @@ export default function ExclusiveGameDetail({ game }: { game: SingleGameResponse
                             </ul>
                             <div className="general-content-box styled-list !text-white">
                                 <h1 className="text-[2rem]">{game?.data?.name}</h1>
-                                {renderHTML(game?.data?.description)}
+                                {renderHTML(game?.data?.description || "")}
                             </div>
                             <div className="action__group flex  flex-col lg:grid lg:grid-cols-3 gap-2">
 

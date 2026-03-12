@@ -44,6 +44,13 @@ export const gameApi = createApi({
             }),
             providesTags: (result, error, { id }) => [{ type: "Games", id }],
         }),
+        getSingleGameFormUser: builder.query<SingleGameResponse, { id: string | number }>({
+            query: ({ id }) => ({
+                url: `/api/game/${id}`,
+                method: "GET",
+            }),
+            providesTags: (_result, _error, { id }) => [{ type: "Games", id }],
+        }),
 
         // ✏️ Update game by ID
         updateGameById: builder.mutation<
@@ -72,6 +79,7 @@ export const gameApi = createApi({
                 { type: "Games", id: "LIST" },
             ],
         }),
+
     }),
 });
 
@@ -81,4 +89,5 @@ export const {
     useGetGameByIdQuery,
     useUpdateGameByIdMutation,
     useDeleteGameByIdMutation,
+    useGetSingleGameFormUserQuery
 } = gameApi;
