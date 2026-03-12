@@ -1,7 +1,4 @@
 import CheckoutPage from "@/components/pages/dashboard/userDashboard/buyCoins/buyCoinSinlgeGame/checkout";
-
-
-
 export default async function Checkout(props: {
     params: Promise<{ slug: string }>;
     searchParams: Promise<{ amount?: string; bonus?: string }>;
