@@ -1,7 +1,6 @@
 "use client";
 
 import GlassWrapper from '@/components/molecules/GlassWrapper';
-import { useAppSelector } from '@/hooks/hook';
 import { useGetUserGameCredentialsQuery } from '@/services/userApi';
 import CredentialsCard from './CredentialsCard';
 
