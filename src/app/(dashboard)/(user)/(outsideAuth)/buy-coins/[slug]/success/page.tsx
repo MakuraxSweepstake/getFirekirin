@@ -1,35 +1,18 @@
 "use client"
 
 import GlassWrapper from '@/components/molecules/GlassWrapper'
+import { useAppSelector } from '@/hooks/hook'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
-import { useEffect } from 'react'
 
 export default function PaymentSuccess() {
     const params = useParams();
     const slug = params?.slug as string;
+    const user = useAppSelector((state) => state.auth.user);
+    const localUser = JSON.parse(localStorage.getItem("token") || "");
 
-    useEffect(() => {
-        const storageKey = `payment-success-${slug}`;
-        const hasLoaded = sessionStorage.getItem(storageKey);
-
-        if (!hasLoaded) {
-            console.log("First visit - reloading page");
-            sessionStorage.setItem(storageKey, 'true');
-            window.location.reload();
-            return;
-        }
-
-        console.log("Page already loaded once - rendering content");
-
-        // Clean up after 5 seconds (user has seen the page)
-        const timeout = setTimeout(() => {
-            sessionStorage.removeItem(storageKey);
-        }, 5000);
-
-        return () => clearTimeout(timeout);
-    }, [slug]);
+    console.log("auth data", { user, localUser: localUser });
 
     return (
         <GlassWrapper className="max-w-[520px] mx-auto flex flex-col gap-3 items-center text-center p-6">
