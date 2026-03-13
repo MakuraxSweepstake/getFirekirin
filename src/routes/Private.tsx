@@ -63,7 +63,6 @@ export default function Private({ children }: { children: React.ReactNode }) {
             return;
         }
 
-        // If Redux was empty, rehydrate it
         if (!token && accessToken) {
             const userStr = localStorage.getItem('user');
             let userData = user;
@@ -91,11 +90,7 @@ export default function Private({ children }: { children: React.ReactNode }) {
     }
 
     if (!user) {
-        return (
-            <div className="flex items-center justify-center min-h-[200px] text-white">
-                <p>User Not Found. Please log in again.</p>
-            </div>
-        );
+        return null;
     }
 
     return <>{children}</>;
