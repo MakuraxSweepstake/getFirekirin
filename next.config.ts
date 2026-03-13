@@ -36,6 +36,17 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+
+  async redirects() {
+    return [
+      {
+        source: '/buy-coins/:slug/tryspeed',
+        destination: '/buy-coins/:slug/success',
+        permanent: false,
+      },
+    ];
+  },
+
   async rewrites() {
     const backendUrl = process.env.NEXT_PUBLIC_BASE_URL || ""
     return [
