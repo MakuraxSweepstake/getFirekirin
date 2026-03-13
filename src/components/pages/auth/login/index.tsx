@@ -78,7 +78,7 @@ export default function LoginPage() {
                         secure: process.env.NODE_ENV === 'production',
                         sameSite: 'Strict',
                     });
-                    router.replace(PATH.DASHBOARD.ROOT);
+                    router.replace("/credentials");
                 }
                 catch (e: any) {
                     dispatch(
