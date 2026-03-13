@@ -3,6 +3,8 @@
 "use client"
 
 import GlassWrapper from '@/components/molecules/GlassWrapper'
+import { useAppDispatch } from '@/hooks/hook'
+import { setTokens } from '@/slice/authSlice'
 import { restoreAuthFromCookies } from '@/utils/authSession'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -13,17 +15,32 @@ export default function PaymentSuccess() {
     const params = useParams();
     const slug = params?.slug as string;
     const [isReady, setIsReady] = useState(false);
+    const dispatch = useAppDispatch();
 
     useEffect(() => {
+        // Restore auth from cookies to localStorage
         const wasRestored = restoreAuthFromCookies();
 
         if (wasRestored) {
-            window.location.reload();
-            return;
+            // Manually hydrate Redux from localStorage (no reload needed)
+            const userStr = localStorage.getItem('user');
+            const token = localStorage.getItem('access_token');
+
+            if (userStr && token) {
+                try {
+                    const user = JSON.parse(userStr);
+                    dispatch(setTokens({
+                        access_token: token,
+                        user: user
+                    }));
+                } catch (e) {
+                    console.error('Failed to parse user data:', e);
+                }
+            }
         }
 
         setIsReady(true);
-    }, []);
+    }, [dispatch]);
 
     if (!isReady) {
         return (

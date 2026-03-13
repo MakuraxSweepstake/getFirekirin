@@ -17,7 +17,7 @@ function isTokenExpired(token: string): boolean {
         const now = Math.floor(Date.now() / 1000);
         return exp < now;
     } catch (error) {
-    console.error("Failed to decode token:", error);
+        console.error("Failed to decode token:", error);
         return true;
     }
 }
@@ -35,11 +35,27 @@ export default function Private({ children }: { children: React.ReactNode }) {
         const wasRestored = restoreAuthFromCookies();
 
         if (wasRestored) {
-            window.location.reload();
-            return;
+            // Manually hydrate Redux from localStorage
+            const userStr = localStorage.getItem('user');
+            const accessToken = localStorage.getItem('access_token');
+
+            if (userStr && accessToken) {
+                try {
+                    const userData = JSON.parse(userStr);
+                    dispatch(setTokens({
+                        access_token: accessToken,
+                        user: userData
+                    }));
+                    setIsHydrating(false);
+                    return;
+                } catch (e) {
+                    console.error('Failed to parse user data:', e);
+                }
+            }
         }
 
-        const accessToken = token || Cookies.get("access_token");
+        // Normal flow - check existing auth
+        const accessToken = token || Cookies.get("access_token") || localStorage.getItem('access_token');
 
         if (!accessToken || isTokenExpired(accessToken)) {
             dispatch(clearTokens());
@@ -47,8 +63,20 @@ export default function Private({ children }: { children: React.ReactNode }) {
             return;
         }
 
+        // If Redux was empty, rehydrate it
         if (!token && accessToken) {
-            dispatch(setTokens({ access_token: accessToken, user: user || null }));
+            const userStr = localStorage.getItem('user');
+            let userData = user;
+
+            if (!userData && userStr) {
+                try {
+                    userData = JSON.parse(userStr);
+                } catch (e) {
+                    console.error('Failed to parse user:', e);
+                }
+            }
+
+            dispatch(setTokens({ access_token: accessToken, user: userData || null }));
         }
 
         setIsHydrating(false);
