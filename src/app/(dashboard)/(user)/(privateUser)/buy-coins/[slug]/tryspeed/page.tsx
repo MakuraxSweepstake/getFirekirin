@@ -1,15 +1,18 @@
-
 "use client"
 
 import { useParams, useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function TryspeedRoot() {
     const { slug } = useParams();
-    const route = useRouter()
-    console.log(slug)
+    const router = useRouter();
 
-    if (slug) {
-        route.replace(`/buy-coins/${slug}/success`)
-    }
-    return null
+    useEffect(() => {
+        if (slug) {
+            console.log(slug);
+            router.replace(`/buy-coins/${slug}/success`);
+        }
+    }, [slug, router]);
+
+    return null;
 }
