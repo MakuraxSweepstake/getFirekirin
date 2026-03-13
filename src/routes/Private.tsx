@@ -1,10 +1,13 @@
+// components/Private.tsx
+
 "use client";
 
 import { useAppDispatch, useAppSelector } from "@/hooks/hook";
 import { clearTokens, setTokens } from "@/slice/authSlice";
+import { restoreAuthFromCookies } from "@/utils/authSession";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 function isTokenExpired(token: string): boolean {
     try {
@@ -14,7 +17,7 @@ function isTokenExpired(token: string): boolean {
         const now = Math.floor(Date.now() / 1000);
         return exp < now;
     } catch (error) {
-        console.error("Failed to decode token:", error);
+    console.error("Failed to decode token:", error);
         return true;
     }
 }
@@ -22,33 +25,50 @@ function isTokenExpired(token: string): boolean {
 export default function Private({ children }: { children: React.ReactNode }) {
     const router = useRouter();
     const dispatch = useAppDispatch();
+    const [isHydrating, setIsHydrating] = useState(true);
 
     const user = useAppSelector((state) => state.auth.user);
     const token = useAppSelector((state) => state.auth.access_token);
 
     useEffect(() => {
+        // First, try to restore auth from cookies (for payment redirects)
+        const wasRestored = restoreAuthFromCookies();
+
+        if (wasRestored) {
+            window.location.reload();
+            return;
+        }
+
         const accessToken = token || Cookies.get("access_token");
 
         if (!accessToken || isTokenExpired(accessToken)) {
             dispatch(clearTokens());
-            // router.replace("/");
+            setIsHydrating(false);
             return;
         }
 
-        // ✅ optional: if Redux was empty, rehydrate it from cookie
         if (!token && accessToken) {
             dispatch(setTokens({ access_token: accessToken, user: user || null }));
         }
 
-        // if (!user) {
-        //     router.replace("/");
-        // }
-
+        setIsHydrating(false);
     }, [token, user, dispatch, router]);
 
-    if (!user) return null;
+    if (isHydrating) {
+        return (
+            <div className="flex items-center justify-center min-h-[200px]">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
+            </div>
+        );
+    }
+
+    if (!user) {
+        return (
+            <div className="flex items-center justify-center min-h-[200px] text-white">
+                <p>User Not Found. Please log in again.</p>
+            </div>
+        );
+    }
 
     return <>{children}</>;
 }
-
-

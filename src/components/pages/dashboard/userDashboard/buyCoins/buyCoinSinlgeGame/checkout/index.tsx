@@ -6,6 +6,7 @@ import BitCoinIcon from '@/icons/BitCoinIcon';
 import GoldCoinIcon from '@/icons/GoldCoinIcon';
 import { useDepositMutation } from '@/services/transaction';
 import { showToast, ToastVariant } from '@/slice/toastSlice';
+import { backupAuthToCookies, restoreAuthFromCookies } from '@/utils/authSession';
 import { Box, Button } from '@mui/material';
 import { Card, TickCircle } from '@wandersonalwes/iconsax-react';
 import Image from 'next/image';
@@ -14,37 +15,7 @@ import PaymentForm from './FortPay';
 
 export type PaymentModeProps = "crypto" | "fortpay"
 
-const AUTH_KEYS = ['token', 'access_token', 'authToken', 'user', 'refresh_token'];
-const BACKUP_PREFIX = '__payment_backup__';
 
-function backupAuthToSession() {
-    AUTH_KEYS.forEach((key) => {
-        const value = localStorage.getItem(key);
-        if (value !== null) {
-            sessionStorage.setItem(`${BACKUP_PREFIX}${key}`, value);
-        }
-    });
-    sessionStorage.setItem(`${BACKUP_PREFIX}redirected`, 'true');
-}
-
-function restoreAuthFromSession() {
-    const wasRedirected = sessionStorage.getItem(`${BACKUP_PREFIX}redirected`);
-    if (!wasRedirected) return;
-
-    AUTH_KEYS.forEach((key) => {
-        const backup = sessionStorage.getItem(`${BACKUP_PREFIX}${key}`);
-        if (backup !== null) {
-            if (localStorage.getItem(key) === null) {
-                localStorage.setItem(key, backup);
-            }
-        }
-    });
-
-    AUTH_KEYS.forEach((key) => {
-        sessionStorage.removeItem(`${BACKUP_PREFIX}${key}`);
-    });
-    sessionStorage.removeItem(`${BACKUP_PREFIX}redirected`);
-}
 
 export default function CheckoutPage({ amount, slug, bonus }: {
     amount: number;
@@ -56,7 +27,7 @@ export default function CheckoutPage({ amount, slug, bonus }: {
     const [currentPaymentMode, setCurrentPaymentMode] = React.useState("crypto");
 
     useEffect(() => {
-        restoreAuthFromSession();
+        restoreAuthFromCookies();
     }, []);
 
     return (
@@ -161,10 +132,8 @@ export default function CheckoutPage({ amount, slug, bonus }: {
                                             type: currentPaymentMode as PaymentModeProps
                                         }).unwrap();
 
-
-                                        backupAuthToSession();
+                                        backupAuthToCookies();
                                         window.open(response?.data?.payment_url, "_blank");
-                                        // window.location.href = response?.data?.payment_url;
 
                                     } catch (e: any) {
                                         dispatch(
