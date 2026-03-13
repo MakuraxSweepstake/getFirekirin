@@ -3,6 +3,7 @@
 import GlassWrapper from "@/components/molecules/GlassWrapper";
 import { useAppDispatch, useAppSelector } from "@/hooks/hook";
 import TapIcon from "@/icons/Tap";
+import { useGetUserBalanceBySlugQuery } from "@/services/transaction";
 import { useChangeUserGamePasswordMutation } from "@/services/userApi";
 import { openPasswordDialog } from "@/slice/updatePasswordSlice";
 import { CredentialsProps } from "@/types/game";
@@ -16,7 +17,6 @@ import BalanceRefresh from "./BalanceRefresh";
 import { CardPasswordField } from "./CardPasswordHandler";
 import CopyToClipboard from "./CopyToClipboard";
 import ResetPasswordDialog from "./ResetPasswordDialog";
-import { useGetUserBalanceBySlugQuery } from "@/services/transaction";
 
 export default function CredentialsCard({ cred }: { cred: CredentialsProps }) {
     const {
@@ -73,12 +73,9 @@ export default function CredentialsCard({ cred }: { cred: CredentialsProps }) {
                         </div>
                     ) : (
                         <p className="text-[14px] my-[6px] uppercase">
-                            <p className="text-[14px] my-[6px] uppercase">
-                                {providerBalance
-                                    ? `${providerBalance.flag.toUpperCase()}: ${providerBalance?.balance}`
-                                    : "Balance: 0"}
-                            </p>
-
+                            {providerBalance
+                                ? `${providerBalance.flag.toUpperCase()}: ${providerBalance?.balance}`
+                                : "Balance: 0"}
                         </p>
                     )}
 
