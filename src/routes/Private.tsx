@@ -31,11 +31,9 @@ export default function Private({ children }: { children: React.ReactNode }) {
     const token = useAppSelector((state) => state.auth.access_token);
 
     useEffect(() => {
-        // First, try to restore auth from cookies (for payment redirects)
         const wasRestored = restoreAuthFromCookies();
 
         if (wasRestored) {
-            // Manually hydrate Redux from localStorage
             const userStr = localStorage.getItem('user');
             const accessToken = localStorage.getItem('access_token');
 
@@ -74,7 +72,6 @@ export default function Private({ children }: { children: React.ReactNode }) {
                     console.error('Failed to parse user:', e);
                 }
             }
-
             dispatch(setTokens({ access_token: accessToken, user: userData || null }));
         }
 

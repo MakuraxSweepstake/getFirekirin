@@ -17,11 +17,6 @@ export default function ProviderWrapper({ children }: { children: React.ReactNod
                         <Toast />
                     </div>
                     <UpdatePassword />
-                    {/* <AgeChecker
-                        apiKey="lwU8lOYysWXrIZaijSG3Hfcxmzc4DlS9"
-                        onVerified={() => { }}
-                        onSkipped={() => { }}
-                    /> */}
                 </ThemeCustomization>
             </ClientProvider>
         </ThemeContextProvider>
