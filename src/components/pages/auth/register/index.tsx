@@ -201,7 +201,7 @@ export default function RegisterPage() {
                             autoTime: true,
                         }),
                     );
-                    router.replace(`${PATH.AUTH.VERIFY_EMAIL.ROOT}?email=${values.emailAddress}`);
+                    router.replace(`${PATH.AUTH.LOGIN.ROOT}`);
                     localStorage.removeItem("visitor_id");
                 }
                 catch (e: any) {
