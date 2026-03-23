@@ -155,10 +155,10 @@ export default function WithdrawlPage({
     };
 
     const handleWithdrawClick = (balance: number, provider: string) => {
-        if (balance < 40) {
+        if (balance < 40 || balance > 400) {
             dispatch(
                 showToast({
-                    message: "Withdraw Amount must be at least $40",
+                    message: "Withdraw Amount must be at least $40 and below $400",
                     variant: ToastVariant.ERROR,
                 })
             );
