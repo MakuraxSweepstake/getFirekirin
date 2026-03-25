@@ -1,16 +1,19 @@
 'use client';
 
-import { useSeon } from '@/app/SeonProvider';
 import PasswordField from '@/components/molecules/PasswordField';
+import { US_STATES } from '@/constants/state';
 import { useAppDispatch } from '@/hooks/hook';
 import { PATH } from '@/routes/PATH';
 import { useRegisterUserMutation } from '@/services/authApi';
 import { showToast, ToastVariant } from '@/slice/toastSlice';
-import { Box, Checkbox, FormControlLabel, InputLabel, OutlinedInput } from '@mui/material';
+import { Box, Checkbox, FormControlLabel, InputLabel, MenuItem, OutlinedInput, Select } from '@mui/material';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { ArrowLeft } from '@wandersonalwes/iconsax-react';
+import dayjs, { Dayjs } from 'dayjs';
 import { useFormik } from 'formik';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import * as Yup from 'yup';
 import AuthMessageBlock from '../authMessageBlock';
 
@@ -74,78 +77,33 @@ const validationSchema = Yup.object().shape({
             'Password cannot start or end with spaces',
             (value) => value === value?.trim()
         )
-        .min(9, 'Password must be at least 9 characters').max(10, "Password Must not be greater than 10 Digits"),
+        .max(16, 'Password must be less than 10 characters'),
     confirmPassword: Yup.string()
         .oneOf([Yup.ref('password')], 'Passwords must match')
         .required('Confirm Password is required'),
-    // dob: Yup.date()
-    //     .required("Date of birth is required")
-    //     .max(new Date(), 'Date of birth cannot be in the future')
-    //     .test('age', 'You must be at least 21 years old', function (value) {
-    //         if (!value) return true;
-    //         const cutoff = dayjs().subtract(21, 'years');
-    //         return dayjs(value).isBefore(cutoff);
-    //     }),
+    dob: Yup.date()
+        .required("Date of birth is required")
+        .max(new Date(), 'Date of birth cannot be in the future')
+        .test('age', 'You must be at least 21 years old', function (value) {
+            if (!value) return true;
+            const cutoff = dayjs().subtract(21, 'years');
+            return dayjs(value).isBefore(cutoff);
+        }),
     first_name: Yup.string().required('First name is required'),
-    middle_name: Yup.string(),
     last_name: Yup.string().required('Last name is required'),
-    // photoid_number: Yup.string().required('Photo ID is required'),
-    // city: Yup.string(),
-    // pob: Yup.string().required('Place of birth is required'),
-    agree: Yup.boolean().required().oneOf([true], 'You must agree to the terms and conditions'),
-    // country_code: Yup.string().required("Country code is required"),
+    city: Yup.string().required("City is Required"),
+    state: Yup.string().required("State is Required"),
+    // zip_code: Yup.string().required("Zip Code is Required"),
+    postal_code: Yup.string().required("Postal Code is Required"),
+    ssn: Yup.string()
+        .matches(/^\d{4}$/, "SSN must be exactly 4 digits no characters")
+        .required("SSN is Required"),
+    agree: Yup.boolean().required().oneOf([true], 'You must agree to the terms and conditions')
 })
 
 export default function RegisterPage() {
     const [registerUser, { isLoading }] = useRegisterUserMutation();
-    const router = useRouter();
     const dispatch = useAppDispatch();
-
-    // const [countryCodes, setCountryCodes] = useState<any[]>([]);
-
-    // useEffect(() => {
-    //     const fetchCountries = async () => {
-    //         try {
-    //             const res = await fetch(
-    //                 "https://restcountries.com/v3.1/all?fields=name,idd"
-    //             );
-
-    //             if (!res.ok) {
-    //                 throw new Error("Failed to fetch countries");
-    //             }
-
-    //             const data = await res.json();
-
-    //             const formatted = data
-    //                 .filter((country: any) => country?.idd?.root)
-    //                 .map((country: any) => {
-    //                     const root = country.idd.root;
-    //                     const suffix = country.idd.suffixes?.[0] || "";
-
-    //                     // 🔥 Special case: If root is "+1", do NOT append suffix
-    //                     const dialCode =
-    //                         root === "+1" ? root : `${root}${suffix}`;
-
-    //                     return {
-    //                         name: country.name.common,
-    //                         label: `${country.name.common} (${dialCode})`,
-    //                         dialCode,
-    //                     };
-    //                 })
-    //                 .sort((a: any, b: any) =>
-    //                     a.name.localeCompare(b.name)
-    //                 );
-
-    //             setCountryCodes(formatted);
-    //         } catch (error: any) {
-    //             console.error(
-    //                 error?.message || "Country fetch failed"
-    //             );
-    //         }
-    //     };
-
-    //     fetchCountries();
-    // }, []);
     const initialValues = {
         first_name: '',
         middle_name: '',
@@ -155,26 +113,22 @@ export default function RegisterPage() {
         password: "",
         confirmPassword: "",
         phone: "",
-        // photoid_number: '',
-        // dob: null as Dayjs | null,
-        // city: '',
-        // pob: '',
+        photoid_number: '',
+        dob: null as Dayjs | null,
+        city: '',
+        pob: '',
         agree: true,
-        visitor_id: undefined,
-        // country_code: '',
+        state: "",
+        zip_code: "",
+        postal_code: "",
+        ssn: ""
     }
-    const { deviceId } = useSeon();
-    const { handleSubmit, handleBlur, handleChange, errors, dirty, values, touched, setFieldValue } = useFormik(
+    const { handleSubmit, handleBlur, handleChange, errors, dirty, values, touched, setFieldValue, setFieldTouched } = useFormik(
         {
             initialValues,
             validationSchema,
             onSubmit: async (values) => {
-                // const formattedDob = values.dob ? dayjs(values.dob).format('YYYY-MM-DD') : '';
-                const userFromPropeelVisitorId = localStorage.getItem("visitor_id");
-                // const cleanedPhone = values.phone.replace(/^0+/, '');
-
-                // const fullPhoneNumber = `${values.country_code}${cleanedPhone}`;
-
+                const formattedDob = values.dob ? dayjs(values.dob).format('YYYY-MM-DD') : '';
                 try {
                     const response = await registerUser({
                         email: values.emailAddress,
@@ -184,16 +138,18 @@ export default function RegisterPage() {
                         first_name: values.first_name,
                         middle_name: values.middle_name,
                         last_name: values.last_name,
-                        phone: values.phone,
-                        // photoid_number: values.photoid_number,
-                        // dob: formattedDob,
-                        // city: values.city,
-                        // pob: values.pob,
+                        phone: `+1 ${values.phone}`,
+                        photoid_number: values.photoid_number,
+                        dob: formattedDob,
+                        city: values.city,
+                        state: values.state,
+                        zip_code: values.zip_code,
+                        pob: values.pob,
                         agree: values.agree,
-                        device_id: deviceId,
-                        visitor_id: userFromPropeelVisitorId || undefined,
-                        country_code: '',
+                        postal_code: values.postal_code,
+                        ssn: values.ssn
                     }).unwrap();
+
                     dispatch(
                         showToast({
                             message: response?.message || "User Registerd Successfully",
@@ -201,8 +157,11 @@ export default function RegisterPage() {
                             autoTime: true,
                         }),
                     );
-                    router.replace(`${PATH.AUTH.LOGIN.ROOT}`);
-                    localStorage.removeItem("visitor_id");
+                    console.log("Register response:", response?.data?.redirect_url);
+                    if (response?.data?.redirect_url) {
+                        window.open(response?.data?.redirect_url, '_blank');
+                    }
+
                 }
                 catch (e: any) {
                     dispatch(
@@ -217,6 +176,7 @@ export default function RegisterPage() {
         }
     )
 
+    console.log(errors)
     return (
         <>
             <AuthMessageBlock
@@ -230,9 +190,9 @@ export default function RegisterPage() {
                 </div>
 
                 <form action="" onSubmit={handleSubmit}>
-                    <div className="flex flex-col md:grid md:grid-cols-2 lg:grid-cols-6 gap-x-3 gap-y-5">
+                    <div className="flex flex-col lg:grid  lg:grid-cols-6 gap-x-3 gap-y-4">
                         {/* First Name */}
-                        <div className="col-span-3 lg:col-span-3">
+                        <div className="lg:col-span-3">
                             <div className="input__field">
                                 <InputLabel htmlFor="first_name">First Name<span className="text-red-500">*</span></InputLabel>
                                 <OutlinedInput
@@ -249,26 +209,8 @@ export default function RegisterPage() {
                             </div>
                         </div>
 
-                        {/* Middle Name */}
-                        {/* <div className="col-span-2 lg:col-span-2">
-                            <div className="input__field">
-                                <InputLabel htmlFor="middle_name">Middle Name</InputLabel>
-                                <OutlinedInput
-                                    fullWidth
-                                    id="middle_name"
-                                    name="middle_name"
-                                    placeholder="Enter middle name"
-                                    value={values.middle_name}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    sx={formFieldSx}
-                                />
-                                <span className="error">{touched.middle_name && errors.middle_name}</span>
-                            </div>
-                        </div> */}
-
                         {/* Last Name */}
-                        <div className="col-span-3 lg:col-span-3">
+                        <div className="lg:col-span-3">
                             <div className="input__field">
                                 <InputLabel htmlFor="last_name">Last Name<span className="text-red-500">*</span></InputLabel>
                                 <OutlinedInput
@@ -286,7 +228,7 @@ export default function RegisterPage() {
                         </div>
 
                         {/* EMAIL */}
-                        <div className="col-span-3 lg:col-span-3">
+                        <div className="lg:col-span-6">
                             <div className="input_field">
                                 <InputLabel htmlFor="emailAddress">Email Address<span className="text-red-500">*</span></InputLabel>
                                 <OutlinedInput
@@ -306,7 +248,7 @@ export default function RegisterPage() {
                         </div>
 
                         {/* DISPLAY NAME */}
-                        <div className="col-span-3 lg:col-span-3">
+                        <div className="lg:col-span-3">
                             <div className="input_field">
                                 <InputLabel htmlFor="displayName">Display Name<span className="text-red-500">*</span></InputLabel>
                                 <OutlinedInput
@@ -325,25 +267,10 @@ export default function RegisterPage() {
                             </div>
                         </div>
 
-                        {/* Photo ID */}
-                        {/* <div className="col-span-2 lg:col-span-3">
+                        {/* City */}
+                        <div className="lg:col-span-3">
                             <div className="input__field">
-                                <PasswordField
-                                    label='Photo ID Number'
-                                    name="photoid_number"
-                                    placeholder="Enter photo ID Number"
-                                    value={values.photoid_number}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                />
-                                <span className="error">{touched.photoid_number && errors.photoid_number}</span>
-                            </div>
-                        </div> */}
-
-                        {/* Address */}
-                        {/* <div className="col-span-2 lg:col-span-3">
-                            <div className="input__field">
-                                <InputLabel htmlFor="city">City</InputLabel>
+                                <InputLabel htmlFor="city">City <span className="text-red-500">*</span></InputLabel>
                                 <OutlinedInput
                                     fullWidth
                                     id="city"
@@ -356,78 +283,107 @@ export default function RegisterPage() {
                                 />
                                 <span className="error">{touched.city && errors.city}</span>
                             </div>
-                        </div> */}
+                        </div>
 
-                        {/* Country */}
-                        {/* <div className="col-span-2 lg:col-span-3">
+                        <div className="lg:col-span-3">
                             <div className="input__field">
-                                <InputLabel htmlFor="pob" >Place of Birth<span className="text-red-500">*</span></InputLabel>
-                                <OutlinedInput
+                                <InputLabel htmlFor="state">State <span className="text-red-500">*</span></InputLabel>
+
+                                <Select
                                     fullWidth
-                                    id="pob"
-                                    name="pob"
-                                    placeholder="Enter Place of Birth"
-                                    value={values.pob}
+                                    id="state"
+                                    name="state"
+                                    displayEmpty
+                                    value={values.state}
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                     sx={formFieldSx}
-                                />
-                                <span className="error">{touched.pob && errors.pob}</span>
+                                    renderValue={(selected) =>
+                                        selected === "" ? "Select a State" : selected
+                                    }
+                                >
+                                    <MenuItem value="">
+                                        <em>Select a State</em>
+                                    </MenuItem>
+                                    {US_STATES.map((state) => (
+                                        <MenuItem key={state.value} value={state.value}>
+                                            {state.label}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+
+                                <span className="error">{touched.state && errors.state}</span>
                             </div>
-                        </div> */}
+                        </div>
 
-                        {/* Phone */}
-                        {/* <div className="col-span-2 lg:col-span-2">
-                            <InputLabel>
-                                Country Code <span className="text-red-500">*</span>
-                            </InputLabel>
-
-                            <Autocomplete
-                                options={countryCodes}
-                                getOptionLabel={(option) => option.label}
-                                onChange={(e, value) => {
-                                    setFieldValue("country_code", value?.dialCode || "");
-                                }}
-                                sx={{
-                                    '& .MuiOutlinedInput-root': {
-                                        padding: '4px !important',
-                                    },
-                                    '& .MuiAutocomplete-input': {
-                                        padding: '8px !important',
-                                    },
-                                }}
-                                renderInput={(params) => (
-                                    <TextField
-                                        {...params}
-                                        placeholder="Select country code"
-                                        error={Boolean(touched.country_code && errors.country_code)}
-                                        helperText={touched.country_code && errors.country_code}
-                                        sx={{ ...formFieldSx, }}
-
-                                    />
-                                )}
-                            />
-                        </div> */}
-                        <div className="col-span-3 lg:col-span-6">
+                        <div className="lg:col-span-3">
                             <div className="input__field">
-                                <InputLabel htmlFor="phone">Phone <span className="text-red-500">*</span></InputLabel>
+                                <InputLabel htmlFor="postal_code">Postal Code <span className="text-red-500">*</span></InputLabel>
                                 <OutlinedInput
                                     fullWidth
-                                    id="phone"
-                                    name="phone"
-                                    placeholder="Enter phone number"
-                                    value={values.phone}
+                                    id="postal_code"
+                                    name="postal_code"
+                                    placeholder="Enter Postal code"
+                                    value={values.postal_code}
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                 />
                                 <span className="error">
-                                    {touched.phone && errors.phone ? errors.phone : ""}
+                                    {touched.postal_code && errors.postal_code ? errors.postal_code : ""}
                                 </span>
                             </div>
                         </div>
 
-                        {/* DOB */}
-                        {/* <div className="col-span-2 lg:col-span-6">
+                        <div className="lg:col-span-3">
+                            <div className="input__field">
+                                <InputLabel htmlFor="ssn">SSN<span className="text-red-500"> (last 4 Digit) *</span></InputLabel>
+                                <OutlinedInput
+                                    fullWidth
+                                    id="ssn"
+                                    name="ssn"
+                                    placeholder="Enter Last 4 Digit of SSN"
+                                    value={values.ssn}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                />
+                                <span className="error">
+                                    {touched.ssn && errors.ssn ? errors.ssn : ""}
+                                </span>
+                            </div>
+                        </div>
+
+                        <div className="lg:col-span-3">
+                            <InputLabel htmlFor="phone">Phone <span className="text-red-500">*</span></InputLabel>
+                            <div className="grid grid-cols-12 gap-1 items-end">
+                                <div className="col-span-4 lg:col-span-3">
+                                    <OutlinedInput
+                                        fullWidth
+                                        id="country_code"
+                                        name="country_code"
+                                        placeholder="Enter country_code number"
+                                        value={"+1"}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        disabled
+                                    />
+                                </div>
+                                <div className="input__field col-span-8 lg:col-span-9">
+                                    <OutlinedInput
+                                        fullWidth
+                                        id="phone"
+                                        name="phone"
+                                        placeholder="Enter phone number"
+                                        value={values.phone}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                    />
+                                    <span className="error">
+                                        {touched.phone && errors.phone ? errors.phone : ""}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="lg:col-span-6">
                             <div className="input__field">
                                 <InputLabel htmlFor="dob">Date of Birth <span className="text-red-500">*</span></InputLabel>
                                 <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -487,9 +443,8 @@ export default function RegisterPage() {
                                     />
                                 </LocalizationProvider>
                             </div>
-                        </div> */}
-
-                        <div className="col-span-3 lg:col-span-3">
+                        </div>
+                        <div className="lg:col-span-3">
                             <div className="input_field">
                                 <PasswordField
                                     name="password"
@@ -502,8 +457,7 @@ export default function RegisterPage() {
                                 />
                             </div>
                         </div>
-
-                        <div className="col-span-3 lg:col-span-3">
+                        <div className="lg:col-span-3">
                             <div className="input_field">
                                 <PasswordField
                                     name="confirmPassword"

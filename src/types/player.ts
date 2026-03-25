@@ -18,6 +18,7 @@ export interface CommonPlayerProps {
     dob?: string | Dayjs | null;
     zip_code?: string;
     pob?: string;
+    is_acuity_verified?: boolean
 
 }
 export interface PlayerProps extends CommonPlayerProps {

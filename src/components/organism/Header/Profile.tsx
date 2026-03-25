@@ -1,13 +1,12 @@
 import Avatar from '@/components/atom/Avatar';
 import { useAppDispatch, useAppSelector } from '@/hooks/hook';
 import { PATH } from '@/routes/PATH';
-import { useGetAgeGateUuidMutation } from '@/services/authApi';
 import { clearTokens } from '@/slice/authSlice';
 import { Box, ClickAwayListener, Fade, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Paper, Popper, Tooltip, Typography } from '@mui/material';
 import { ArrowDown2, CloseCircle, Coin, Logout, MoneySend, Profile, TickCircle, Wallet2 } from "@wandersonalwes/iconsax-react";
 import Link from 'next/link';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 const avataur1 = '/assets/images/avatar-6.png';
 
 
@@ -22,6 +21,7 @@ export default function ProfileBlock() {
     const dispatch = useAppDispatch();
     const router = useRouter();
     const user = useAppSelector((state) => state?.auth.user);
+    const isVerified = user?.is_acuity_verified;
     const handleClose = (event: MouseEvent | TouchEvent) => {
         if (anchorRef.current && anchorRef.current.contains(event.target)) {
             return;
@@ -106,25 +106,25 @@ export default function ProfileBlock() {
         setGlassStyle((prev) => ({ ...prev, opacity: 0 }));
     };
 
-    const [getAgeGateUuid] = useGetAgeGateUuidMutation();
+    // const [getAgeGateUuid] = useGetAgeGateUuidMutation();
 
-    const [isVerified, setIsVerified] = useState<boolean | null>(null);
+    // const [isVerified, setIsVerified] = useState<boolean | null>(null);
 
 
-    useEffect(() => {
-        const fetchAgeStatus = async () => {
-            try {
-                const res = await getAgeGateUuid().unwrap();
-                setIsVerified(res?.data?.is_age_verified);
-            } catch (e) {
-                console.log(e)
-                // console.error("Failed to fetch age verification status", err);
-                setIsVerified(false);
-            }
-        };
+    // useEffect(() => {
+    //     const fetchAgeStatus = async () => {
+    //         try {
+    //             const res = await getAgeGateUuid().unwrap();
+    //             setIsVerified(res?.data?.is_age_verified);
+    //         } catch (e) {
+    //             console.log(e)
+    //             // console.error("Failed to fetch age verification status", err);
+    //             setIsVerified(false);
+    //         }
+    //     };
 
-        fetchAgeStatus();
-    }, [getAgeGateUuid])
+    //     fetchAgeStatus();
+    // }, [getAgeGateUuid])
 
     return (
         <Box >

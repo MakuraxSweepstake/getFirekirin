@@ -17,6 +17,10 @@ export interface User {
     address: string;
     city: string
     role: RoleProps;
+    zip_code?: string;
+    state?: string;
+    postal_code: string;
+    ssn: string;
 }
 
 export interface LoginResponse {
@@ -25,7 +29,7 @@ export interface LoginResponse {
         access_token: string,
         // expires_in: 3600,
         user: User,
-        redirection_link: string;
+        redirect_url: string;
     }
     message: string
 }
@@ -36,11 +40,14 @@ export interface RegisterProps extends LoginProps {
     middle_name: string;
     last_name: string;
     phone: string;
-    dob?: string;
-    city?: string;
-    pob?: string;
+    photoid_number: string;
+    dob: string;
+    city: string;
+    pob: string;
     agree: boolean;
     device_id?: string;
-    visitor_id?: string;
-    country_code?: string;
+    zip_code?: string;
+    state?: string;
+    postal_code: string;
+    ssn: string;
 }

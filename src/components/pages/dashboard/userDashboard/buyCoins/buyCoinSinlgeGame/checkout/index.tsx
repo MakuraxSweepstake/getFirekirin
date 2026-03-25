@@ -1,21 +1,20 @@
 "use client";
 
 import GlassWrapper from '@/components/molecules/GlassWrapper';
+import PaymentModal from '@/components/molecules/PaymentModal';
 import { useAppDispatch } from '@/hooks/hook';
 import BitCoinIcon from '@/icons/BitCoinIcon';
 import GoldCoinIcon from '@/icons/GoldCoinIcon';
 import { useDepositMutation } from '@/services/transaction';
 import { showToast, ToastVariant } from '@/slice/toastSlice';
-import { backupAuthToCookies, restoreAuthFromCookies } from '@/utils/authSession';
+import { backupAuthToCookies } from '@/utils/authSession';
 import { Box, Button } from '@mui/material';
 import { Card, TickCircle } from '@wandersonalwes/iconsax-react';
 import Image from 'next/image';
-import React, { useEffect } from 'react';
+import { useState } from 'react';
 import PaymentForm from './FortPay';
 
 export type PaymentModeProps = "crypto" | "fortpay"
-
-
 
 export default function CheckoutPage({ amount, slug, bonus }: {
     amount: number;
@@ -24,11 +23,9 @@ export default function CheckoutPage({ amount, slug, bonus }: {
 }) {
     const dispatch = useAppDispatch();
     const [getPaymentLink, { isLoading: gettingLink }] = useDepositMutation();
-    const [currentPaymentMode, setCurrentPaymentMode] = React.useState("crypto");
-
-    useEffect(() => {
-        restoreAuthFromCookies();
-    }, []);
+    const [currentPaymentMode, setCurrentPaymentMode] = useState<PaymentModeProps>("crypto");
+    const [paymentUrl, setPaymentUrl] = useState<string | null>(null);
+    const [showPaymentModal, setShowPaymentModal] = useState(false);
 
     return (
         <section className="checkout__root">
@@ -132,8 +129,12 @@ export default function CheckoutPage({ amount, slug, bonus }: {
                                             type: currentPaymentMode as PaymentModeProps
                                         }).unwrap();
 
+                                        // Backup auth before opening payment
                                         backupAuthToCookies();
-                                        window.open(response?.data?.payment_url, "_blank");
+
+                                        // Set up payment modal
+                                        setPaymentUrl(response?.data?.payment_url);
+                                        setShowPaymentModal(true);
 
                                     } catch (e: any) {
                                         dispatch(
@@ -158,6 +159,40 @@ export default function CheckoutPage({ amount, slug, bonus }: {
                     </Box>
                 </div>
             </div>
+
+            {/* Payment Modal for Crypto Payments */}
+            {paymentUrl && (
+                <PaymentModal
+                    url={paymentUrl}
+                    isOpen={showPaymentModal}
+                    onClose={() => {
+                        setShowPaymentModal(false);
+                        setPaymentUrl(null);
+                    }}
+                    onSuccess={() => {
+                        dispatch(
+                            showToast({
+                                message: "Payment processing initiated. Please wait...",
+                                variant: ToastVariant.SUCCESS,
+                                autoTime: true
+                            })
+                        );
+                        // The actual success will be handled by the payment provider's redirect
+                        // to /buy-coins/[slug]/success
+                    }}
+                    onError={(error) => {
+                        dispatch(
+                            showToast({
+                                message: `Payment failed: ${error.message}`,
+                                variant: ToastVariant.ERROR,
+                                autoTime: true
+                            })
+                        );
+                    }}
+                    title="Processing Payment"
+                    successMessage="success"
+                />
+            )}
         </section>
     );
 }

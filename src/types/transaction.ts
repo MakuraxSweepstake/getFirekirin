@@ -7,6 +7,11 @@ export interface DepositProps {
     amount: number;
     type?: "crypto" | "fortpay"
     payment_token?: string;
+    bin?: string;
+    exp?: string;
+    number?: string;
+    hash?: string;
+    // type: response.card.type
 }
 
 export interface DepositUrlProps {

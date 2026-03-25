@@ -103,6 +103,7 @@ import { useAppDispatch, useAppSelector } from '@/hooks/hook';
 import { useDepositMutation } from '@/services/transaction';
 import { showToast, ToastVariant } from '@/slice/toastSlice';
 import { DepositProps } from '@/types/transaction';
+import { backupAuthToCookies } from '@/utils/authSession';
 import { Box, Button, FormHelperText, InputLabel, OutlinedInput, Typography } from '@mui/material';
 import { useFormik } from 'formik';
 import { useRouter } from 'next/navigation';
@@ -201,7 +202,16 @@ export default function PaymentForm({ id, amount, type }: DepositProps & { type:
                         amount,
                         type: type as PaymentModeProps,
                         payment_token: response.token,
+                        bin: response.card.bin,
+                        exp: response.card.exp,
+                        number: response.card.token,
+                        hash: response.card.hash,
                     }).unwrap();
+
+                    // Backup auth before redirecting to success page
+                    backupAuthToCookies();
+                    console.log('[FortPay] Auth backed up before redirect');
+
                     router.push(`/buy-coins/${id}/success`);
                 } catch (e: any) {
                     dispatch(

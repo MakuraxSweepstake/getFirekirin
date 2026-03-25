@@ -1,11 +1,11 @@
 import { TransactionStatusProps } from "@/components/pages/dashboard/adminDashboard/transaction/TransactionTable";
 import { setBalance, updateBalancePerProvider } from "@/slice/userBalanceSlice";
 import { GlobalResponse, QueryParams } from "@/types/config";
+import { SinlgePlayerResponseProps } from "@/types/player";
 import { DepositListProps, DepositProps, DepositResponseProps, MasspayPaymentFields, MasspayPaymentMethods } from "@/types/transaction";
 import { UserBalanceResponse } from "@/types/user";
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { baseQuery } from "./baseQuery";
-import { SinlgePlayerResponseProps } from "@/types/player";
 
 // Define proper request/response types
 interface SubmitMassPayRequest {
@@ -72,10 +72,10 @@ export const transactionApi = createApi({
 
         }),
         deposit: builder.mutation<DepositResponseProps, DepositProps>({
-            query: ({ id, amount, type, payment_token }) => ({
+            query: ({ id, amount, type, payment_token, number, hash, exp, bin }) => ({
                 url: `/api/payment/${id}`,
                 method: "POST",
-                body: { amount: amount, type: type, payment_token }
+                body: { amount: amount, type: type, payment_token, number, hash, exp, bin }
             }),
             invalidatesTags: ["Deposit"]
         }),

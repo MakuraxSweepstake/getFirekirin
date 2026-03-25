@@ -7,6 +7,7 @@ import "./globals.css";
 import ProviderWrapper from "./ProviderWrapper";
 import { SeonProvider } from "./SeonProvider";
 import TopLoader from "./TopLoader";
+import AuthHydrator from "@/components/Hydrators/AuthHydrator";
 const metadata: Metadata = {
   title: "Sweepstake",
   description: "Sweepstake - Online Gaming Platform",
@@ -90,6 +91,7 @@ export default function RootLayout({
         )}
         <SeonProvider>
           <ProviderWrapper>
+            <AuthHydrator />
             <React.Suspense fallback={<div />}>
               <TopLoader />
 
