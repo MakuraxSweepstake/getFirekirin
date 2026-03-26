@@ -127,16 +127,16 @@ type CardFieldValidity = {
     cvv: boolean;
 };
 
-const billingSchema = Yup.object({
-    fname: Yup.string().required('First name is required'),
-    lname: Yup.string().required('Last name is required'),
-    address1: Yup.string().required('Address is required'),
-    city: Yup.string().required('City is required'),
-    state: Yup.string().required('State is required'),
-    zip: Yup.string()
-        .required('Zip code is required')
-        .matches(/^\d{5}(-\d{4})?$/, 'Enter a valid zip code'),
-});
+// const billingSchema = Yup.object({
+//     fname: Yup.string().required('First name is required'),
+//     lname: Yup.string().required('Last name is required'),
+//     address1: Yup.string().required('Address is required'),
+//     city: Yup.string().required('City is required'),
+//     state: Yup.string().required('State is required'),
+//     zip: Yup.string()
+//         .required('Zip code is required')
+//         .matches(/^\d{5}(-\d{4})?$/, 'Enter a valid zip code'),
+// });
 
 
 
