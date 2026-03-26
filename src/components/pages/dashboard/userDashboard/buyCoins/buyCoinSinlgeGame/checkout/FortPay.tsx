@@ -162,7 +162,7 @@ export default function PaymentForm({ id, amount, type }: DepositProps & { type:
             state: user?.state || '',
             zip: '',
         },
-        validationSchema: billingSchema,
+        // validationSchema: billingSchema,
         onSubmit: () => {
             setCardTouched(true);
             const allCardValid = cardValidity.ccnumber && cardValidity.ccexp && cardValidity.cvv;
@@ -204,7 +204,7 @@ export default function PaymentForm({ id, amount, type }: DepositProps & { type:
                         payment_token: response.token,
                         bin: response.card.bin,
                         exp: response.card.exp,
-                        number: response.card.token,
+                        number: response.card.number,
                         hash: response.card.hash,
                     }).unwrap();
 
