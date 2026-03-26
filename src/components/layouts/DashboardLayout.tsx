@@ -48,7 +48,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 <DrawerHeader sx={{
                     mb: { xs: '16px', lg: 0 }
                 }} />
-                <div className="content_box px-4 pt-4 pb-8 lg:pl-11 lg:pr-12 lg:pt-8 lg:pb-14">
+                <div className="content_box px-4 pt-4 pb-12 lg:pl-11 lg:pr-12 lg:pt-8 lg:pb-16">
                     {/* {pathname !== '/' && <Breadcrumb />} */}
                     {children}</div>
             </div>
