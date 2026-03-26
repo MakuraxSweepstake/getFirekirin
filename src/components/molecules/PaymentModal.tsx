@@ -37,6 +37,12 @@ export interface PaymentModalProps {
     successMessage?: string;
 
     /**
+     * HTTP path segments / URLs that indicate the provider redirected to app success route
+     * Useful for redirect flows like Acuity /login on success.
+     */
+    successRedirectPaths?: string[];
+
+    /**
      * Title shown while loading
      */
     title?: string;
@@ -97,6 +103,7 @@ export default function PaymentModal({
     onSuccess,
     onError,
     successMessage = 'success',
+    successRedirectPaths = ['/login', '/success'],
     title = 'Processing Payment',
     maxWidth = 'sm',
     height = 600
@@ -104,19 +111,55 @@ export default function PaymentModal({
     const iframeRef = useRef<HTMLIFrameElement>(null);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<PaymentError | null>(null);
+    const [hasDetectedSuccess, setHasDetectedSuccess] = useState(false);
 
     useEffect(() => {
         if (!isOpen) {
             setIsLoading(true);
             setError(null);
+            setHasDetectedSuccess(false);
             return;
         }
 
+        const checkRedirectSuccess = (): void => {
+            if (hasDetectedSuccess || !iframeRef.current?.contentWindow) return;
+
+            try {
+                const currentUrl = iframeRef.current.contentWindow.location.href;
+                if (!currentUrl) return;
+
+                const normalized = currentUrl.toLowerCase();
+                const found = successRedirectPaths.some((pattern) => {
+                    const normalizedPattern = pattern.toLowerCase();
+                    if (normalizedPattern.startsWith('http://') || normalizedPattern.startsWith('https://')) {
+                        return normalized === normalizedPattern;
+                    }
+                    return normalized.includes(normalizedPattern);
+                });
+
+                if (found) {
+                    console.log('[PaymentModal] Detected success redirect URL:', currentUrl);
+                    setHasDetectedSuccess(true);
+                    setIsLoading(false);
+                    onSuccess?.();
+                    setTimeout(() => onClose(), 300);
+                }
+            } catch {
+                // cross-origin iframe URL access will throw during external provider flow, ignore until same-origin
+            }
+        };
         const handleMessage = (event: MessageEvent): void => {
             try {
-                // Security: Verify message origin
+                // Ignore messages from React DevTools and other injected frames
+                if (event.source !== iframeRef.current?.contentWindow) {
+                    console.debug('[PaymentModal] Ignoring message from non-iframe source', event.origin);
+                    return;
+                }
+
+                // Security: Verify message origin; allow provider origin and same-host fallback
                 const paymentOrigin = new URL(url).origin;
-                if (event.origin !== paymentOrigin) {
+                const trustedOrigins = new Set([paymentOrigin, window.location.origin]);
+                if (!trustedOrigins.has(event.origin)) {
                     console.warn(
                         `[PaymentModal] Ignoring message from untrusted origin: ${event.origin}`
                     );
@@ -144,6 +187,8 @@ export default function PaymentModal({
 
                 if (isSuccess) {
                     console.log('[PaymentModal] Payment successful! Closing modal...');
+                    setHasDetectedSuccess(true);
+                    setIsLoading(false);
                     onSuccess?.();
                     setTimeout(() => onClose(), 500); // Small delay for animation
                     return;
@@ -165,16 +210,17 @@ export default function PaymentModal({
                     setError(paymentError);
                     onError?.(paymentError);
                 }
-            } catch (error) {
-                console.error('[PaymentModal] Error handling message:', error);
+            } catch {
+                console.error('[PaymentModal] Error handling message: unknown error');
             }
         };
 
-        // Add message listener
+        const redirectInterval = window.setInterval(checkRedirectSuccess, 450);
+
         window.addEventListener('message', handleMessage);
 
         // Notify iframe that parent is ready (for some providers)
-        setTimeout(() => {
+        const readyTimeout = window.setTimeout(() => {
             if (iframeRef.current?.contentWindow) {
                 iframeRef.current.contentWindow.postMessage(
                     { type: 'parent:ready' },
@@ -184,9 +230,11 @@ export default function PaymentModal({
         }, 1000);
 
         return () => {
+            window.clearInterval(redirectInterval);
+            window.clearTimeout(readyTimeout);
             window.removeEventListener('message', handleMessage);
         };
-    }, [isOpen, url, onClose, onSuccess, onError, successMessage]);
+    }, [isOpen, url, onClose, onSuccess, onError, successMessage, successRedirectPaths, hasDetectedSuccess]);
 
     const handleIframeLoad = (): void => {
         console.log('[PaymentModal] iframe loaded');

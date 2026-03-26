@@ -1,6 +1,7 @@
 'use client';
 
 import PasswordField from '@/components/molecules/PasswordField';
+import PaymentModal from '@/components/molecules/PaymentModal';
 import { US_STATES } from '@/constants/state';
 import { useAppDispatch } from '@/hooks/hook';
 import { PATH } from '@/routes/PATH';
@@ -14,6 +15,8 @@ import { ArrowLeft } from '@wandersonalwes/iconsax-react';
 import dayjs, { Dayjs } from 'dayjs';
 import { useFormik } from 'formik';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import * as Yup from 'yup';
 import AuthMessageBlock from '../authMessageBlock';
 
@@ -104,6 +107,9 @@ const validationSchema = Yup.object().shape({
 export default function RegisterPage() {
     const [registerUser, { isLoading }] = useRegisterUserMutation();
     const dispatch = useAppDispatch();
+    const [isAcuityModalOpen, setIsAcuityModalOpen] = useState(false);
+    const [acuityUrl, setAcuityUrl] = useState('');
+    const route = useRouter();
     const initialValues = {
         first_name: '',
         middle_name: '',
@@ -157,9 +163,12 @@ export default function RegisterPage() {
                             autoTime: true,
                         }),
                     );
-                    console.log("Register response:", response?.data?.redirect_url);
-                    if (response?.data?.redirect_url) {
-                        window.open(response?.data?.redirect_url, '_blank');
+                    console.log("Register response:", response?.data?.redirection_url);
+                    if (response?.data?.redirection_url) {
+                        window.open(response?.data?.redirection_url, "_blank");
+                        setAcuityUrl(response.data.redirection_url);
+                        // setIsAcuityModalOpen(true);
+                        route.replace(PATH.AUTH.LOGIN.ROOT)
                     }
 
                 }
@@ -487,6 +496,25 @@ export default function RegisterPage() {
                 </form>
 
             </Box>
+
+            <PaymentModal
+                url={acuityUrl}
+                isOpen={isAcuityModalOpen}
+                onClose={() => setIsAcuityModalOpen(false)}
+                onSuccess={() => {
+                    setIsAcuityModalOpen(false);
+                    dispatch(showToast({ message: 'Verification complete!', variant: ToastVariant.SUCCESS, autoTime: true }));
+                }}
+                onError={(error: { message: string }) => {
+                    console.error('Acuity verification error', error);
+                    dispatch(showToast({ message: error.message || 'Verification failed', variant: ToastVariant.ERROR, autoTime: true }));
+                }}
+                successMessage="verified"
+                title="Acuity identity verification"
+                maxWidth="md"
+                height={700}
+            />
+
         </>
     )
 }
