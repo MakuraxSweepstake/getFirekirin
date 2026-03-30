@@ -77,7 +77,8 @@ export default function LoginPage() {
                         secure: process.env.NODE_ENV === 'production',
                         sameSite: 'Strict',
                     });
-                    router.replace("/credentials");
+                    console.log("Login Response:", response?.data?.user?.role.toLowerCase() === "admin");
+                    router.replace(response?.data?.user?.role?.toLowerCase() === "admin" ? "/" : "/credentials");
                 }
                 catch (e: any) {
                     dispatch(

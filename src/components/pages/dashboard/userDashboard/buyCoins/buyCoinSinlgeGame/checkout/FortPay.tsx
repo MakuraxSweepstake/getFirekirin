@@ -109,7 +109,6 @@ import { useFormik } from 'formik';
 import { useRouter } from 'next/navigation';
 import Script from 'next/script';
 import { useState } from 'react';
-import * as Yup from 'yup';
 import { PaymentModeProps } from '.';
 
 declare global {
