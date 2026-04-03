@@ -30,7 +30,7 @@ export default function PasswordField({
     const handleClickShowPassword = () => setShowPassword((prev) => !prev);
     const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => event.preventDefault();
     return (
-        <div className="input_field">
+        <div className="input__field">
             <InputLabel htmlFor={name}>{label} {required && <span className="text-red-500">*</span>}</InputLabel>
             <OutlinedInput
                 id={name}
@@ -48,9 +48,9 @@ export default function PasswordField({
                             onMouseDown={handleMouseDownPassword}
                             edge="end"
                             color="secondary"
-                        // sx={{
-                        //     padding: 0,
-                        // }}
+                            sx={{
+                                padding: "0 4px",
+                            }}
                         >
                             {showPassword ? <Eye size={16} /> : <EyeSlash size={16} />}
                         </IconButton>

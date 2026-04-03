@@ -10,43 +10,14 @@ import dayjs from 'dayjs';
 import { FormikProps } from 'formik';
 
 const formFieldSx = {
-    '& .MuiOutlinedInput-root, & .MuiPickersInputBase-root, & .MuiPickersOutlinedInput-root': {
-        borderRadius: '27px',
-        background: 'rgba(118, 107, 120, 0.55)',
-        color: '#fff',
-        '& .MuiOutlinedInput-notchedOutline, & .MuiPickersOutlinedInput-notchedOutline': {
-            border: '0.576px solid rgba(255, 255, 255, 0.04)',
-        },
-        '&:hover .MuiOutlinedInput-notchedOutline, &:hover .MuiPickersOutlinedInput-notchedOutline': {
-            borderColor: 'rgba(255,255,255,0.2)',
-        },
-        '&.Mui-focused .MuiOutlinedInput-notchedOutline, &.Mui-focused .MuiPickersOutlinedInput-notchedOutline': {
-            borderColor: '#B801C0',
-        },
+    "&& .MuiPickersInputBase-input": {
+        borderRadius: "8px !important",
+        padding: "10px 0px !important",
     },
-    '& .MuiOutlinedInput-input, & .MuiPickersInputBase-input': {
-        padding: '12px 16px',
-        color: '#fff',
-        '&::placeholder': {
-            color: 'rgba(255, 255, 255, 0.2)',
-            fontWeight: 300,
-            fontSize: '12px',
-            opacity: 1,
-        },
+
+    "&& .MuiPickersSectionList-root": {
+        padding: "4px  16px 4px 0 !important",
     },
-    '& .MuiInputAdornment-root': {
-        marginRight: '8px',
-    },
-    '& .MuiInputAdornment-root button': {
-        color: 'rgba(255, 255, 255, 0.7)',
-        '&:hover': {
-            color: '#fff',
-            background: 'rgba(255, 255, 255, 0.08)',
-        }
-    },
-    '& .MuiIconButton-root': {
-        padding: '8px',
-    }
 };
 
 export default function AddPlayerForm({ formik, id, data, loading, buttonLabel }: { formik: FormikProps<PlayerProps>, id?: string, data?: SinlgePlayerResponseProps, loading?: boolean, buttonLabel?: string }) {
@@ -194,7 +165,6 @@ export default function AddPlayerForm({ formik, id, data, loading, buttonLabel }
                         value={formik.values.pob}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
-                        sx={formFieldSx}
                         renderValue={(selected) =>
                             selected === "" ? "Select a State" : selected
                         }
@@ -249,39 +219,7 @@ export default function AddPlayerForm({ formik, id, data, loading, buttonLabel }
                                     helperText: formik.touched.dob && formik.errors.dob,
                                     sx: formFieldSx
                                 },
-                                popper: {
-                                    sx: {
-                                        '& .MuiPickersCalendarHeader-label': {
-                                            color: '#fff',
-                                        },
-                                        '& .MuiDayCalendar-weekDayLabel': {
-                                            color: '#fff',
-                                        },
-                                        '& .MuiPickersDay-root': {
-                                            color: '#fff',
-                                        },
-                                        '& .MuiPickersDay-root.Mui-selected': {
-                                            backgroundColor: '#B801C0',
-                                        },
-                                        '& .MuiPickersDay-root:hover': {
-                                            backgroundColor: 'rgba(184, 1, 192, 0.3)',
-                                        },
-                                        '& .MuiPickersArrowSwitcher-button': {
-                                            color: '#fff',
-                                        },
-                                        '& .MuiPickersCalendarHeader-root': {
-                                            color: '#fff',
-                                        },
-                                        '& .MuiPickersDay-root.MuiPickersDay-today': {
-                                            backgroundColor: '#B801C0',
-                                            border: '1px solid #fff',
-                                            '&:not(.Mui-selected)': {
-                                                backgroundColor: '#B801C0',
-                                            }
-                                        },
 
-                                    }
-                                }
                             }}
                             maxDate={dayjs()}
                             format="MM/DD/YYYY"

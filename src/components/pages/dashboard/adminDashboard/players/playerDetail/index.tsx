@@ -198,6 +198,7 @@ export default function PlayerDetailPage({ id }: { id: number }) {
                                     percentage: info.percentage,
                                     logo: info.game_logo,
                                     type: info.type,
+                                    username: info.name
                                 };
 
                                 return (

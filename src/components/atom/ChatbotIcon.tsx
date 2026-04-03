@@ -11,6 +11,10 @@ export default function Chatbot() {
 
   const isVideo = fileUrl?.toLowerCase().endsWith(".mp4");
 
+  if (!fileUrl || !label) {
+    return null;
+  }
+
   return (
     <Button
       className=" max-w-fit px-8!"

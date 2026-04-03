@@ -10,6 +10,7 @@ import { useFormik } from 'formik';
 import { useRouter } from 'next/navigation';
 import Script from 'next/script';
 import { useState } from 'react';
+import * as Yup from 'yup';
 import { PaymentModeProps } from '.';
 
 declare global {
@@ -27,16 +28,16 @@ type CardFieldValidity = {
     cvv: boolean;
 };
 
-// const billingSchema = Yup.object({
-//     fname: Yup.string().required('First name is required'),
-//     lname: Yup.string().required('Last name is required'),
-//     address1: Yup.string().required('Address is required'),
-//     city: Yup.string().required('City is required'),
-//     state: Yup.string().required('State is required'),
-//     zip: Yup.string()
-//         .required('Zip code is required')
-//         .matches(/^\d{5}(-\d{4})?$/, 'Enter a valid zip code'),
-// });
+const billingSchema = Yup.object({
+    fname: Yup.string().required('First name is required'),
+    lname: Yup.string().required('Last name is required'),
+    address1: Yup.string().required('Address is required'),
+    city: Yup.string().required('City is required'),
+    state: Yup.string().required('State is required'),
+    zip: Yup.string()
+        .required('Zip code is required')
+        .matches(/^\d{5}(-\d{4})?$/, 'Enter a valid zip code'),
+});
 
 
 
@@ -62,7 +63,7 @@ export default function PaymentForm({ id, amount, type }: DepositProps & { type:
             state: user?.state || '',
             zip: '',
         },
-        // validationSchema: billingSchema,
+        validationSchema: billingSchema,
         onSubmit: () => {
             setCardTouched(true);
             const allCardValid = cardValidity.ccnumber && cardValidity.ccexp && cardValidity.cvv;
@@ -150,7 +151,7 @@ export default function PaymentForm({ id, amount, type }: DepositProps & { type:
 
                     {/* ── Billing fields ── */}
                     <div className="form-group">
-                        <InputLabel htmlFor="name">First Name</InputLabel>
+                        <InputLabel htmlFor="name">First Name <span className="text-red-500">*</span></InputLabel>
 
                         <OutlinedInput
                             id="fname"
@@ -169,7 +170,7 @@ export default function PaymentForm({ id, amount, type }: DepositProps & { type:
                     </div>
 
                     <div className="form-group">
-                        <InputLabel htmlFor="name">Last Name</InputLabel>
+                        <InputLabel htmlFor="name">Last Name <span className="text-red-500">*</span></InputLabel>
 
                         <OutlinedInput
                             id="lname"
@@ -188,7 +189,7 @@ export default function PaymentForm({ id, amount, type }: DepositProps & { type:
                     </div>
 
                     <div className="form-group">
-                        <InputLabel htmlFor="address1">Address</InputLabel>
+                        <InputLabel htmlFor="address1">Address<span className="text-red-500">*</span></InputLabel>
                         <OutlinedInput
                             id="address1"
                             name="address1"
@@ -206,7 +207,7 @@ export default function PaymentForm({ id, amount, type }: DepositProps & { type:
                     </div>
 
                     <div className="form-group">
-                        <InputLabel htmlFor="city">City</InputLabel>
+                        <InputLabel htmlFor="city">City<span className="text-red-500">*</span></InputLabel>
                         <OutlinedInput
                             id="city"
                             name="city"
@@ -224,7 +225,7 @@ export default function PaymentForm({ id, amount, type }: DepositProps & { type:
                     </div>
 
                     <div className="form-group">
-                        <InputLabel htmlFor="state">State</InputLabel>
+                        <InputLabel htmlFor="state">State<span className="text-red-500">*</span></InputLabel>
                         <OutlinedInput
                             id="state"
                             name="state"
@@ -242,7 +243,7 @@ export default function PaymentForm({ id, amount, type }: DepositProps & { type:
                     </div>
 
                     <div className="form-group">
-                        <InputLabel htmlFor="zip">Zip Code</InputLabel>
+                        <InputLabel htmlFor="zip">Zip Code<span className="text-red-500">*</span></InputLabel>
                         <OutlinedInput
                             id="zip"
                             name="zip"

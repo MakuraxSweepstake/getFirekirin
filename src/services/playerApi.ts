@@ -67,7 +67,6 @@ export const playerApi = createApi({
             providesTags: (result, error, { id }) => [{ type: "Players", id }],
         }),
 
-        // UPDATE PLAYER
         updatePlayerById: builder.mutation<SinlgePlayerResponseProps, { id: string; body: FormData }>({
             query: ({ id, body }) => ({
                 url: `/api/admin/update-user/${id}`,

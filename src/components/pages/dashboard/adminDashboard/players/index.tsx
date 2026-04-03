@@ -2,6 +2,7 @@
 
 import CustomSwitch from '@/components/atom/Switch';
 import ActionGroup from '@/components/molecules/Action';
+import TablePaginationControls from '@/components/molecules/Pagination';
 import TabController from '@/components/molecules/TabController';
 import TableHeader from '@/components/molecules/TableHeader';
 import CustomTable from '@/components/organism/Table';
@@ -13,20 +14,22 @@ import { showToast, ToastVariant } from '@/slice/toastSlice';
 import { PlayerItem } from '@/types/player';
 import { formatDateTime } from '@/utils/formatDateTime';
 import { getInitials } from '@/utils/getInitials';
-import { Box, Checkbox, Pagination } from '@mui/material';
-import { ColumnDef, getCoreRowModel, getPaginationRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
+import { Box, Checkbox } from '@mui/material';
+import { ColumnDef, getCoreRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
 import React, { useMemo, useState } from 'react';
 
 export default function PlayerListing() {
     const dispatch = useAppDispatch();
     const [search, setSearch] = useState("");
     const [sorting, setSorting] = useState<{ id: string; desc: boolean }[]>([]);
-    const [pageIndex, setPageIndex] = useState(1);
-    const [pageSize, setPageSize] = useState(10);
+    const [qp, setQp] = useState({
+        pageIndex: 1,
+        pageSize: 10,
+    });
     const [currentTab, setCurrentTab] = React.useState("");
     const { data, isLoading: loadingPlayer } = useGetAllPlayerQuery({
-        pageIndex: pageIndex,
-        pageSize: pageSize,
+        pageIndex: qp.pageIndex,
+        pageSize: qp.pageSize,
         search: search || "",
         status: currentTab || ""
     });
@@ -180,30 +183,17 @@ export default function PlayerListing() {
             ),
         },
     ], []);
-    // const table = useReactTable({
-    //     data: data?.data?.data || [],
-    //     columns,
-    //     state: {
-    //         sorting,
 
-    //     },
-    //     onSortingChange: setSorting,
-    //     getCoreRowModel: getCoreRowModel(),
-    //     getPaginationRowModel: getPaginationRowModel(),
-    //     getSortedRowModel: getSortedRowModel(),
-    // })
     const table = useReactTable({
         data: data?.data?.data || [],
         columns,
         state: {
             sorting,
-
         },
         onSortingChange: setSorting,
-
         getCoreRowModel: getCoreRowModel(),
         getSortedRowModel: getSortedRowModel(),
-        getPaginationRowModel: getPaginationRowModel(),
+        manualPagination: true,
     });
 
 
@@ -262,25 +252,11 @@ export default function PlayerListing() {
                     table={table}
                     loading={loadingPlayer}
                 />
-                <div className="flex flex-col md:flex-row justify-between items-start md:items-center mt-4 px-8 py-6 gap-4">
-                    <div>
-                        <span>Row per page:</span>
-                        <select
-                            value={pageSize}
-                            onChange={(e) => setPageSize(Number(e.target.value))}
-                            className="ml-2 border border-gray-300 rounded p-1"
-                        >
-                            {[5, 10, 15, 20].map((size) => (
-                                <option key={size} value={size}>
-                                    {size}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
-                    <Pagination count={data?.data?.pagination?.total_pages || 1}
-                        page={pageIndex}
-                        onChange={(_, value) => setPageIndex(value)} variant="outlined" shape="rounded" sx={{ gap: "8px" }} />
-                </div>
+                <TablePaginationControls
+                    qp={qp}
+                    setQp={setQp}
+                    totalPages={data?.data?.pagination?.total_pages || 1}
+                />
             </div>
         </section>
     )

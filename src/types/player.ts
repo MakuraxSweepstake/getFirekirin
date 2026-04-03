@@ -54,6 +54,7 @@ type GameInformation = {
     game_name: string,
     percentage: number,
     type: string
+    name: string;
 }
 export interface PlayerItem extends CommonPlayerProps {
     id: string;
