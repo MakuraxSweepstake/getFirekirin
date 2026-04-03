@@ -11,7 +11,7 @@ import Palette from './palette';
 
 export default function ThemeCustomization({ children }: { children: React.ReactNode }) {
 
-    const [theme, setTheme] = React.useState(ThemeMode.DARK);
+    const [_theme, setTheme] = React.useState(ThemeMode.DARK);
     const user = useAppSelector((state) => state.auth.user);
     const globalStyles = {
 
@@ -33,7 +33,6 @@ export default function ThemeCustomization({ children }: { children: React.React
     }, [user]);
 
 
-    console.log(theme)
     return (
         <StyledEngineProvider injectFirst>
             <NextAppDirEmotionCacheProvider options={{ key: 'mui' }}>

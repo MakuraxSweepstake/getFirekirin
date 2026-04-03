@@ -131,7 +131,6 @@ export default function WithdrawlPage({
                     })
                 );
             } catch (e: any) {
-                console.log("Withdrawal Error:", e);
                 dispatch(
                     showToast({
                         message: e?.data?.message || "Something went wrong",
@@ -179,7 +178,6 @@ export default function WithdrawlPage({
         }
     };
 
-    console.log("Formik Errors:", formik.values.withdrawl_amounts);
     return (
         <section className="withdrawl__root">
             <div className="section__title mb-4 lg:mb-8 max-w-[560px]">

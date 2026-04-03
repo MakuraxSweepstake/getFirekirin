@@ -27,7 +27,7 @@ export const PlayerValidationSchema = (isEdit: boolean) => Yup.object().shape({
         .matches(/^\+?\d{7,15}$/, "Invalid phone number")
         .required("Phone is required"),
     password: isEdit
-        ? Yup.string().nullable() // not required in edit mode
+        ? Yup.string().nullable()
         : Yup.string().min(6, "Password must be at least 6 characters").required("Password is required"),
     password_confirmation: isEdit ? Yup.string().nullable() : Yup.string().when("password", {
         is: (val: string) => !!val,

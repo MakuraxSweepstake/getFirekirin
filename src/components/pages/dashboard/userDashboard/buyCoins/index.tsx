@@ -19,7 +19,6 @@ export default function BuyCoinGameListPage({
     const gameInfo = coins?.data?.game_information || {}
     const dispatch = useAppDispatch();
 
-    console.log("coins", coins);
     return (
         <section className="buy__coin__root">
             <div className="section__title mb-4 lg:mb-8 max-w-[520px]">
@@ -33,7 +32,6 @@ export default function BuyCoinGameListPage({
                 {games.data?.data.map((game) => {
                     const info = gameInfo[game.provider.toLowerCase()] || { balance: 0, type: 'sc' }
                     const CoinIcon = info.type === 'gc' ? GoldCoinIcon : SilverCoinIcon
-                    console.log(info.has_changed_password)
 
                     return (
                         <div key={game.id} className={`col-span-1 ${info.type === 'gc' ? "hidden" : ""}`}>

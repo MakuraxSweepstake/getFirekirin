@@ -15,9 +15,7 @@ export default function UpdatePassword() {
     const { open, provider } = useSelector((state: RootState) => state?.updatePasswordSlice);
 
     const [updateNewPassword, { isLoading }] = useUpdateUserGamePasswordMutation();
-    console.log({
-        open, provider
-    })
+  
     const formik = useFormik({
         initialValues: { password: "" },
         validationSchema: Yup.object({
@@ -28,7 +26,6 @@ export default function UpdatePassword() {
         onSubmit: async (values) => {
 
             try {
-                console.log("New password:", values.password);
                 const response = await updateNewPassword({
                     password: values.password,
                     provider: provider || ""

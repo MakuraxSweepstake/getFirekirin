@@ -43,7 +43,6 @@ export default function CredentialsCard({ cred }: { cred: CredentialsProps }) {
     const dispatch = useAppDispatch();
 
     const newBalance = useAppSelector((state) => state.userBalanceSlice);
-    console.log("newBalance in cred card:", newBalance);
     const providerBalance: any = newBalance.providerAndBalance
         ?.find((item: any) => item?.provider === cred.name);
     return (
@@ -85,13 +84,11 @@ export default function CredentialsCard({ cred }: { cred: CredentialsProps }) {
                         icon={true}
                         onClick={() => {
                             if (balance?.has_changed_password) {
-                                console.log("password changes");
                                 dispatch(openPasswordDialog({
                                     provider: cred?.name,
                                 }));
                             }
                             else {
-                                console.log("password not changes");
                                 refetch();
                             }
                         }}
@@ -139,7 +136,6 @@ export default function CredentialsCard({ cred }: { cred: CredentialsProps }) {
                     onClick={(e) => {
                         if (balance?.has_changed_password) {
                             e.preventDefault();
-                            console.log("password changes");
                             dispatch(openPasswordDialog({
                                 provider: cred?.name,
                             }));

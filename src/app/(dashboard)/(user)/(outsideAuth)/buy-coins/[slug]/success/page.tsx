@@ -22,13 +22,11 @@ export default function PaymentSuccess() {
     useEffect(() => {
         const hydrateAuthOnSuccess = async () => {
             try {
-                console.log('[PaymentSuccess] Starting auth hydration...');
 
                 // Try to restore auth from backup
                 const result = restoreAuthFromCookies();
 
                 if (result.success && result.data) {
-                    console.log(`[PaymentSuccess] Auth restored from ${result.source}`);
 
                     // Update Redux store
                     dispatch(setTokens({

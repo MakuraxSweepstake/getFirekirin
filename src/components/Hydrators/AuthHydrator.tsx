@@ -23,7 +23,6 @@ export default function AuthHydrator() {
                 const result = restoreAuthFromCookies();
 
                 if (result.success && result.data) {
-                    console.log(`[AuthHydrator] Restored auth from ${result.source}`);
 
                     // Dispatch to Redux to update app state
                     dispatch(setTokens({

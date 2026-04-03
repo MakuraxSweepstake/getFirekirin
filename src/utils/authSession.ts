@@ -64,7 +64,6 @@ export function backupAuthToCookies(): void {
         });
 
         sessionStorage.setItem(TIMESTAMP_KEY, timestamp.toString());
-        console.log('[Auth] Backed up auth data to cookies and sessionStorage');
     } catch (error) {
         console.error('[Auth] Failed to backup auth data:', error);
     }
@@ -88,7 +87,6 @@ export function restoreAuthFromCookies(): AuthRestorationResult {
         const sessionUser = sessionStorage.getItem(`${SESSION_BACKUP_PREFIX}user`);
 
         if (sessionAccessToken && sessionUser) {
-            console.log('[Auth] Restoring from sessionStorage');
             const userData = JSON.parse(sessionUser);
             const authData: AuthData = {
                 access_token: sessionAccessToken,
@@ -108,7 +106,6 @@ export function restoreAuthFromCookies(): AuthRestorationResult {
         // Try cookies (cross-tab scenario from payment provider)
         const wasRedirected = Cookies.get(`${BACKUP_PREFIX}redirected`);
         if (!wasRedirected) {
-            console.log('[Auth] No redirect marker found');
             return { success: false, source: 'none', data: null };
         }
 
@@ -117,7 +114,6 @@ export function restoreAuthFromCookies(): AuthRestorationResult {
         const cookieUser = Cookies.get(`${BACKUP_PREFIX}user`);
 
         if (cookieAccessToken && cookieUser) {
-            console.log('[Auth] Restoring from cookies');
             const userData = JSON.parse(cookieUser);
             const authData: AuthData = {
                 access_token: cookieAccessToken,
@@ -138,7 +134,6 @@ export function restoreAuthFromCookies(): AuthRestorationResult {
             return { success: true, source: 'cookies', data: authData };
         }
 
-        console.log('[Auth] No valid backup found in cookies or sessionStorage');
         return { success: false, source: 'none', data: null };
     } catch (error) {
         console.error('[Auth] Failed to restore auth data:', error);
@@ -156,7 +151,6 @@ function cleanupAuthCookies(): void {
         Cookies.remove(`${BACKUP_PREFIX}${key}`);
     });
     Cookies.remove(`${BACKUP_PREFIX}redirected`);
-    console.log('[Auth] Cleaned up backup cookies');
 }
 
 /**
@@ -169,7 +163,6 @@ function cleanupAuthSessionStorage(): void {
         sessionStorage.removeItem(`${SESSION_BACKUP_PREFIX}${key}`);
     });
     sessionStorage.removeItem(TIMESTAMP_KEY);
-    console.log('[Auth] Cleaned up sessionStorage backup');
 }
 
 /**

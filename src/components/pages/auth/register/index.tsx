@@ -168,7 +168,6 @@ export default function RegisterPage() {
                             autoTime: true,
                         }),
                     );
-                    console.log("Register response:", response?.data?.redirection_url);
                     if (response?.data?.redirection_url) {
                         window.open(response?.data?.redirection_url, "_blank");
                         setAcuityUrl(response.data.redirection_url);

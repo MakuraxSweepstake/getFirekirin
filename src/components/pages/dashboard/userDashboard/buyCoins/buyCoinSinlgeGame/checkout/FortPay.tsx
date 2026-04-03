@@ -97,7 +97,6 @@ export default function PaymentForm({ id, amount, type }: DepositProps & { type:
             },
             callback: async (response: any) => {
                 try {
-                    console.log("token value is", response);
                     await payViaFortPay({
                         id,
                         amount,
@@ -111,7 +110,6 @@ export default function PaymentForm({ id, amount, type }: DepositProps & { type:
 
                     // Backup auth before redirecting to success page
                     backupAuthToCookies();
-                    console.log('[FortPay] Auth backed up before redirect');
 
                     router.push(`/buy-coins/${id}/success`);
                 } catch (e: any) {

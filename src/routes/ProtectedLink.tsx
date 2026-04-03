@@ -21,7 +21,6 @@ export default function ProtectedLink({ href, className, children, target, rel, 
 
     const { data } = useGetGamesPasswordStatusQuery({ provider: provider || "" }, { skip: !provider });
 
-    console.log("user data", { data, provider });
 
     const handleClick = (e: React.MouseEvent) => {
         if (!user) {

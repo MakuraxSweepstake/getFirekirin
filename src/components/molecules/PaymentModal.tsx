@@ -138,7 +138,6 @@ export default function PaymentModal({
                 });
 
                 if (found) {
-                    console.log('[PaymentModal] Detected success redirect URL:', currentUrl);
                     setHasDetectedSuccess(true);
                     setIsLoading(false);
                     onSuccess?.();
