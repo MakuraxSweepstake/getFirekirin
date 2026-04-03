@@ -50,7 +50,7 @@ const formFieldSx = {
     }
 };
 
-export default function AddPlayerForm({ formik, id, data, loading, buttonLabel }: { formik: FormikProps<PlayerProps>, id?: string, data?: SinlgePlayerResponseProps, loading?: boolean, buttonLabel?: string }) {
+export default function AddPlayerForm({ formik, id, data, loading, buttonLabel, isAdmin = false }: { formik: FormikProps<PlayerProps>, id?: string, data?: SinlgePlayerResponseProps, loading?: boolean, buttonLabel?: string; isAdmin?: boolean }) {
     const user = useAppSelector(state => state.auth.user);
     return (
         <form onSubmit={formik.handleSubmit}>
@@ -120,7 +120,7 @@ export default function AddPlayerForm({ formik, id, data, loading, buttonLabel }
                     </span>
                 </div>
 
-                <div className="input__field">
+                {isAdmin ? "" : <div className="input__field">
                     <InputLabel htmlFor="wallet_address">Wallet Address</InputLabel>
                     <OutlinedInput
                         fullWidth
@@ -134,55 +134,57 @@ export default function AddPlayerForm({ formik, id, data, loading, buttonLabel }
                     <span className="error">
                         {formik.touched.wallet_address && formik.errors.wallet_address ? formik.errors.wallet_address : ""}
                     </span>
-                </div>
+                </div>}
 
-                <div className="input__field col-span-1">
-                    <InputLabel htmlFor="address">Address Line 1<span className="text-red-500">*</span></InputLabel>
-                    <OutlinedInput
-                        fullWidth
-                        id="address"
-                        name="address"
-                        placeholder="Enter address"
-                        value={formik.values.address}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                    />
-                    <span className="error">
-                        {formik.touched.address && formik.errors.address ? formik.errors.address : ""}
-                    </span>
-                </div>
+                {isAdmin? "":<>
+                    <div className="input__field col-span-1">
+                        <InputLabel htmlFor="address">Address Line 1<span className="text-red-500">*</span></InputLabel>
+                        <OutlinedInput
+                            fullWidth
+                            id="address"
+                            name="address"
+                            placeholder="Enter address"
+                            value={formik.values.address}
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                        />
+                        <span className="error">
+                            {formik.touched.address && formik.errors.address ? formik.errors.address : ""}
+                        </span>
+                    </div>
 
-                <div className="input__field col-span-1">
-                    <InputLabel htmlFor="address_line_two">Address Line 2</InputLabel>
-                    <OutlinedInput
-                        fullWidth
-                        id="address_line_two"
-                        name="address_line_two"
-                        placeholder="Enter address line 2"
-                        value={formik.values.address_line_two}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                    />
-                    <span className="error">
-                        {formik.touched.address_line_two && formik.errors.address_line_two ? formik.errors.address_line_two : ""}
-                    </span>
-                </div>
+                    <div className="input__field col-span-1">
+                        <InputLabel htmlFor="address_line_two">Address Line 2</InputLabel>
+                        <OutlinedInput
+                            fullWidth
+                            id="address_line_two"
+                            name="address_line_two"
+                            placeholder="Enter address line 2"
+                            value={formik.values.address_line_two}
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                        />
+                        <span className="error">
+                            {formik.touched.address_line_two && formik.errors.address_line_two ? formik.errors.address_line_two : ""}
+                        </span>
+                    </div>
 
-                <div className="input__field">
-                    <InputLabel htmlFor="city">City <span className="text-red-500">*</span></InputLabel>
-                    <OutlinedInput
-                        fullWidth
-                        id="city"
-                        name="city"
-                        placeholder="Enter city"
-                        value={formik.values.city}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                    />
-                    <span className="error">
-                        {formik.touched.city && formik.errors.city ? formik.errors.city : ""}
-                    </span>
-                </div>
+                    <div className="input__field">
+                        <InputLabel htmlFor="city">City <span className="text-red-500">*</span></InputLabel>
+                        <OutlinedInput
+                            fullWidth
+                            id="city"
+                            name="city"
+                            placeholder="Enter city"
+                            value={formik.values.city}
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                        />
+                        <span className="error">
+                            {formik.touched.city && formik.errors.city ? formik.errors.city : ""}
+                        </span>
+                    </div>
+                </>}
 
                 <div className="lg:col-span-2">
                     <InputLabel htmlFor="phone">Phone <span className="text-red-500">*</span></InputLabel>
@@ -243,7 +245,8 @@ export default function AddPlayerForm({ formik, id, data, loading, buttonLabel }
                     <span className="error">{formik.touched.state && formik.errors.state}</span>
                 </div>
 
-                <div className="input__field">
+
+                {isAdmin ? "" : <div className="input__field">
                     <InputLabel htmlFor="ssn">SSN<span className="text-red-500"> (last 4 Digit) *</span></InputLabel>
                     <OutlinedInput
                         fullWidth
@@ -257,7 +260,7 @@ export default function AddPlayerForm({ formik, id, data, loading, buttonLabel }
                     <span className="error">
                         {formik.touched.ssn && formik.errors.ssn ? formik.errors.ssn : ""}
                     </span>
-                </div>
+                </div>}
                 <div className="input__field">
                     <InputLabel htmlFor="gender">Gender <span className="text-red-500">*</span></InputLabel>
                     <Select
@@ -289,7 +292,7 @@ export default function AddPlayerForm({ formik, id, data, loading, buttonLabel }
                     <span className="error">{formik.touched.gender && formik.errors.gender}</span>
                 </div>
 
-                <div className="input__field">
+                {isAdmin ? <div className="input__field">
                     <InputLabel htmlFor="postal_code">Zip Code <span className="text-red-500">*</span></InputLabel>
                     <OutlinedInput
                         fullWidth
@@ -303,7 +306,7 @@ export default function AddPlayerForm({ formik, id, data, loading, buttonLabel }
                     <span className="error">
                         {formik.touched.postal_code && formik.errors.postal_code ? formik.errors.postal_code : ""}
                     </span>
-                </div>
+                </div> : ""}
 
                 {/* DOB */}
                 <div className="input__field">

@@ -17,12 +17,12 @@ export const PlayerValidationSchema = (isEdit: boolean) => Yup.object().shape({
         .required("Email is required"),
     first_name: Yup.string().required("First name is required"),
     last_name: Yup.string().required("Last name is required"),
-    wallet_address: Yup.string().nullable(),
-    address: Yup.string().required("Address is required"),
-    city: Yup.string().required("City is required"),
+    // wallet_address: Yup.string().nullable(),
+    // address: Yup.string().required("Address is required"),
+    // city: Yup.string().required("City is required"),
     postal_code: Yup.string().required("Zip code is required"),
     state: Yup.string().required("State is required"),
-    ssn: Yup.string().required("SSN is required"),
+    // ssn: Yup.string().required("SSN is required"),
     gender: Yup.string().required("Gender is required"),
     phone: Yup.string()
         .matches(/^\+?\d{7,15}$/, "Invalid phone number")
@@ -30,7 +30,7 @@ export const PlayerValidationSchema = (isEdit: boolean) => Yup.object().shape({
     password: isEdit
         ? Yup.string().nullable()
         : Yup.string().min(6, "Password must be at least 6 characters").required("Password is required"),
-    password_confirmation: isEdit ? Yup.string().nullable() : Yup.string().when("password", {
+    password_confirmation:  Yup.string().when("password", {
         is: (val: string) => !!val,
         then: (schema) => schema.oneOf([Yup.ref("password")], "Passwords must match").required("Password confirmation is required"),
         otherwise: (schema) => schema.nullable(),
@@ -111,10 +111,10 @@ export default function AddPlayerPage({ id }: { id?: string }) {
 
             if (id) {
                 try {
-                    const response = await updatePlayer({ id: id, body: formData });
+                    const response = await updatePlayer({ id: id, body: formData }).unwrap();
                     dispatch(
                         showToast({
-                            message: response?.data?.message || "User Updated Successfully",
+                            message: response?.message || "User Updated Successfully",
                             variant: ToastVariant.SUCCESS
                         })
                     );
@@ -158,7 +158,7 @@ export default function AddPlayerPage({ id }: { id?: string }) {
                 <h2 className="text-[20px] leading-[140%] font-bold">Player Details</h2>
             </div>
 
-            <AddPlayerForm formik={formik} id={id} data={data} loading={isLoading || updating} />
+            <AddPlayerForm formik={formik} id={id} data={data} loading={isLoading || updating} isAdmin={true} />
         </div>
     )
 }
