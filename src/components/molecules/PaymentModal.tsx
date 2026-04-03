@@ -179,6 +179,7 @@ export default function PaymentModal({
                     data.type === 'payment:success' ||
                     data.type === `payment:${successMessage}` ||
                     data.result === 'success' ||
+                    data.verification_status === 'verification.accepted' ||
                     data.result === successMessage ||
                     (typeof data === 'string' && (
                         data === successMessage ||

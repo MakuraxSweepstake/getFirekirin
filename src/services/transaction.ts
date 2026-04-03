@@ -69,7 +69,7 @@ export const transactionApi = createApi({
                 method: "GET"
             }),
             providesTags: ['Deposit', 'Withdrawl']
-
+   
         }),
         deposit: builder.mutation<DepositResponseProps, DepositProps>({
             query: ({ id, amount, type, payment_token, number, hash, exp, bin }) => ({

@@ -6,10 +6,10 @@ import AdminDashboardRoot from '../../(admin)/AdminDashboard';
 export default function DashboardProvider({ children }: { children: React.ReactNode }) {
 
     const user = useAppSelector(state => state?.auth.user);
-    if (user?.role && user.role.toUpperCase() === "ADMIN") {
-        return <AdminDashboardRoot />
+    if (user?.role && user.role.toUpperCase() === "USER") {
+        return (
+            <div>{children}</div>
+        )
     }
-    return (
-        <div>{children}</div>
-    )
+    return <AdminDashboardRoot />
 }

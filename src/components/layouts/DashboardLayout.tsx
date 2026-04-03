@@ -40,10 +40,16 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
     return (
         <Box sx={{ display: 'flex' }}>
-            <Header open={open} handleDrawerOpen={handleDrawerOpen} handleMobileMenuToggle={handleMobileMenuToggle} />
-            <Sidebar open={open} handleDrawerOpen={handleDrawerOpen} handleMobileMenuToggle={handleMobileMenuToggle} mobileMenuOpen={openMobile
+            <Header
+                open={open}
+                handleDrawerOpen={handleDrawerOpen}
+                handleMobileMenuToggle={handleMobileMenuToggle} />
 
-            } />
+            <Sidebar open={open}
+                handleDrawerOpen={handleDrawerOpen}
+                handleMobileMenuToggle={handleMobileMenuToggle}
+                mobileMenuOpen={openMobile
+                } />
             <div className="root_container w-full overflow-hidden">
                 <DrawerHeader sx={{
                     mb: { xs: '16px', lg: 0 }

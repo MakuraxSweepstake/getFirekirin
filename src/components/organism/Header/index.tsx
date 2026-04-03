@@ -106,10 +106,10 @@ export default function Header({ open, handleDrawerOpen, handleMobileMenuToggle 
                     <HambergerMenu className='!text-para-light' />
                 </IconButton>}
                 {
-                    user?.role && user.role.toUpperCase() === 'ADMIN' ? (
-                        <AdminHeader />
-                    ) : (
+                    user?.role && user.role.toUpperCase() === 'USER' ? (
                         <UserHeader />
+                    ) : (
+                        <AdminHeader />
                     )
                 }
             </Toolbar>
