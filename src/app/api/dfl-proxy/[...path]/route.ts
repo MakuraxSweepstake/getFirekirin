@@ -2,9 +2,10 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { path: string[] } }
+  { params }: { params: Promise<{ path: string[] }> }
 ) {
-  const path = params.path.join("/");
+  const { path: segments } = await params;
+  const path = segments.join("/");
   const search = request.nextUrl.search;
   const targetUrl = `https://dfl.acuitytec.com/${path}${search}`;
 
