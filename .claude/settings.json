@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "additionalDirectories": [
+      "d:\\Makura\\getFirekirin\\src\\app\\api\\dfl-proxy"
+    ]
+  }
+}

@@ -34,6 +34,7 @@ export default function EditUserProfile({ id, buttonLabel }: { id: string, butto
             gender: user.gender || "",
             state: user.state || "",
             address_line_two: user.address_line_two || "",
+            ssn: user.ssn || "",
         } : initialPlayerValues,
         validationSchema: PlayerValidationSchema(user?.id ? true : false),
         enableReinitialize: true,
@@ -50,6 +51,7 @@ export default function EditUserProfile({ id, buttonLabel }: { id: string, butto
             if (values.wallet_address) formData.append("wallet_address", values.wallet_address);
             if (values.address) formData.append("address", values.address);
             if (values.city) formData.append("city", values.city);
+            if (values.ssn) formData.append("ssn", values.ssn);
             if (values.phone) formData.append("phone", values.phone);
             if (values.dob) formData.append("dob", formattedDob);
             if (values.postal_code) formData.append("postal_code", values.postal_code);
@@ -120,6 +122,7 @@ export default function EditUserProfile({ id, buttonLabel }: { id: string, butto
                 gender: user?.gender || "",
                 address_line_two: user?.address_line_two || "",
                 state: user?.state || "",
+                ssn: user?.ssn || "",
             } as PlayerItem,
         }
         : undefined;

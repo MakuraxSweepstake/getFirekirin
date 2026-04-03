@@ -1,3 +1,5 @@
+import AuthHydrator from "@/components/Hydrators/AuthHydrator";
+import FingerprintLogger from "@/components/FingerprintLogger";
 import { pageSEO } from "@/serverApi/game";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
@@ -7,7 +9,6 @@ import "./globals.css";
 import ProviderWrapper from "./ProviderWrapper";
 import { SeonProvider } from "./SeonProvider";
 import TopLoader from "./TopLoader";
-import AuthHydrator from "@/components/Hydrators/AuthHydrator";
 const metadata: Metadata = {
   title: "Sweepstake",
   description: "Sweepstake - Online Gaming Platform",
@@ -92,6 +93,7 @@ export default function RootLayout({
         <SeonProvider>
           <ProviderWrapper>
             <AuthHydrator />
+            <FingerprintLogger />
             <React.Suspense fallback={<div />}>
               <TopLoader />
 

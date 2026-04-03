@@ -22,6 +22,7 @@ export const PlayerValidationSchema = (isEdit: boolean) => Yup.object().shape({
     city: Yup.string().required("City is required"),
     postal_code: Yup.string().required("Zip code is required"),
     state: Yup.string().required("State is required"),
+    ssn: Yup.string().required("SSN is required"),
     gender: Yup.string().required("Gender is required"),
     phone: Yup.string()
         .matches(/^\+?\d{7,15}$/, "Invalid phone number")
@@ -74,6 +75,7 @@ export default function AddPlayerPage({ id }: { id?: string }) {
             state: data?.data.state || "",
             gender: data?.data.gender || "",
             address_line_two: data?.data.address_line_two || "",
+            ssn: data?.data.ssn || "",
         } : initialPlayerValues,
         validationSchema: PlayerValidationSchema(!!id),
         enableReinitialize: true,
@@ -93,6 +95,7 @@ export default function AddPlayerPage({ id }: { id?: string }) {
             if (values.postal_code) formData.append("postal_code", values.postal_code);
             if (values.state) formData.append("state", values.state);
             if (values.gender) formData.append("gender", values.gender);
+            if (values.ssn) formData.append("ssn", values.ssn);
             if (values.address_line_two) formData.append("address_line_two", values.address_line_two);
             if (values.profile_image) {
                 if (Array.isArray(values.profile_image)) {

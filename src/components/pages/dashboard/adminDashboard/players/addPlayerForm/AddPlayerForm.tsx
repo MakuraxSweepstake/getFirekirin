@@ -244,6 +244,21 @@ export default function AddPlayerForm({ formik, id, data, loading, buttonLabel }
                 </div>
 
                 <div className="input__field">
+                    <InputLabel htmlFor="ssn">SSN<span className="text-red-500"> (last 4 Digit) *</span></InputLabel>
+                    <OutlinedInput
+                        fullWidth
+                        id="ssn"
+                        name="ssn"
+                        placeholder="Enter Last 4 Digit of SSN"
+                        value={formik.values.ssn}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                    />
+                    <span className="error">
+                        {formik.touched.ssn && formik.errors.ssn ? formik.errors.ssn : ""}
+                    </span>
+                </div>
+                <div className="input__field">
                     <InputLabel htmlFor="gender">Gender <span className="text-red-500">*</span></InputLabel>
                     <Select
                         fullWidth

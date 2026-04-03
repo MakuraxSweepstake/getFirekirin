@@ -20,6 +20,7 @@ export interface CommonPlayerProps {
     is_acuity_verified?: boolean
     gender: string;
     address_line_two?: string;
+    ssn: string;
 }
 export interface PlayerProps extends CommonPlayerProps {
     id?: string;
@@ -47,6 +48,7 @@ export const initialPlayerValues: PlayerProps = {
     postal_code: "",
     gender: "",
     address_line_two: "",
+    ssn: "",
 };
 
 type GameInformation = {
