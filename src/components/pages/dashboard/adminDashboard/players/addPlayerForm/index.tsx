@@ -20,16 +20,17 @@ export const PlayerValidationSchema = (isEdit: boolean) => Yup.object().shape({
     wallet_address: Yup.string().nullable(),
     address: Yup.string().required("Address is required"),
     city: Yup.string().required("City is required"),
-    zip_code: Yup.string().required("Zip code is required"),
-    pob: Yup.string().required("State is required"),
+    postal_code: Yup.string().required("Zip code is required"),
+    state: Yup.string().required("State is required"),
+    gender: Yup.string().required("Gender is required"),
     phone: Yup.string()
         .matches(/^\+?\d{7,15}$/, "Invalid phone number")
         .required("Phone is required"),
     password: isEdit
         ? Yup.string().nullable() // not required in edit mode
         : Yup.string().min(6, "Password must be at least 6 characters").required("Password is required"),
-    password_confirmation: Yup.string().when("password", {
-        is: (val: string) => !!val, // required only if password is filled
+    password_confirmation: isEdit ? Yup.string().nullable() : Yup.string().when("password", {
+        is: (val: string) => !!val,
         then: (schema) => schema.oneOf([Yup.ref("password")], "Passwords must match").required("Password confirmation is required"),
         otherwise: (schema) => schema.nullable(),
     }),
@@ -69,8 +70,10 @@ export default function AddPlayerPage({ id }: { id?: string }) {
             password_confirmation: data?.data.password_confirmation,
             profile_image: null,
             dob: data?.data.dob || null as Dayjs | null,
-            zip_code: data?.data.zip_code || "",
-            pob: data?.data.pob || "",
+            postal_code: data?.data.postal_code || "",
+            state: data?.data.state || "",
+            gender: data?.data.gender || "",
+            address_line_two: data?.data.address_line_two || "",
         } : initialPlayerValues,
         validationSchema: PlayerValidationSchema(!!id),
         enableReinitialize: true,
@@ -87,8 +90,10 @@ export default function AddPlayerPage({ id }: { id?: string }) {
             if (values.city) formData.append("city", values.city);
             if (values.phone) formData.append("phone", values.phone);
             if (values.dob) formData.append("dob", values.dob.toString());
-            if (values.zip_code) formData.append("zip_code", values.zip_code);
-            if (values.pob) formData.append("pob", values.pob);
+            if (values.postal_code) formData.append("postal_code", values.postal_code);
+            if (values.state) formData.append("state", values.state);
+            if (values.gender) formData.append("gender", values.gender);
+            if (values.address_line_two) formData.append("address_line_two", values.address_line_two);
             if (values.profile_image) {
                 if (Array.isArray(values.profile_image)) {
                     values.profile_image.forEach((file) => formData.append("profile_image", file));

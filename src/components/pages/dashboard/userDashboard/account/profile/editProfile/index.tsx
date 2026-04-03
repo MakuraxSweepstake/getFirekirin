@@ -30,7 +30,10 @@ export default function EditUserProfile({ id, buttonLabel }: { id: string, butto
             password_confirmation: '',
             profile_image: null,
             dob: user.dob || null as Dayjs | null,
-            zip_code: user.zip_code || "",
+            postal_code: user.postal_code || "",
+            gender: user.gender || "",
+            state: user.state || "",
+            address_line_two: user.address_line_two || "",
         } : initialPlayerValues,
         validationSchema: PlayerValidationSchema(user?.id ? true : false),
         enableReinitialize: true,
@@ -49,8 +52,11 @@ export default function EditUserProfile({ id, buttonLabel }: { id: string, butto
             if (values.city) formData.append("city", values.city);
             if (values.phone) formData.append("phone", values.phone);
             if (values.dob) formData.append("dob", formattedDob);
-            if (values.zip_code) formData.append("zip_code", values.zip_code);
-            if (values.pob) formData.append("pob", values.pob);
+            if (values.postal_code) formData.append("postal_code", values.postal_code);
+            if (values.state) formData.append("state", values.state);
+            if (values.gender) formData.append("gender", values.gender);
+            if (values.address_line_two) formData.append("address_line_two", values.address_line_two);
+
 
             if (values.profile_image) {
                 if (Array.isArray(values.profile_image)) {
@@ -110,6 +116,10 @@ export default function EditUserProfile({ id, buttonLabel }: { id: string, butto
                 total_deposited: user.total_deposited ?? undefined,
                 profile_image_file: user.profile_image_file ?? undefined,
                 dob: user.dob ? dayjs(user.dob).format('YYYY-MM-DD') : undefined,
+                postal_code: user?.postal_code || "",
+                gender: user?.gender || "",
+                address_line_two: user?.address_line_two || "",
+                state: user?.state || "",
             } as PlayerItem,
         }
         : undefined;

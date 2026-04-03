@@ -41,6 +41,7 @@ export interface SingleDepositProps {
     type: string;
     amount: number;
     sweepcoins: number;
+    gc?: number;
     transaction_date: string;
     available_balance?: string;
     status: TransactionStatus;

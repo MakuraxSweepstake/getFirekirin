@@ -61,7 +61,7 @@ export default function PaymentForm({ id, amount, type }: DepositProps & { type:
             address1: user?.address || '',
             city: user?.city || '',
             state: user?.state || '',
-            zip: '',
+            zip: user?.postal_code || '',
         },
         validationSchema: billingSchema,
         onSubmit: () => {

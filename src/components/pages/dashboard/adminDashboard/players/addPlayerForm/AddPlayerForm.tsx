@@ -2,6 +2,7 @@
 import InputFile from '@/components/atom/InputFile';
 import PasswordField from '@/components/molecules/PasswordField';
 import { US_STATES } from '@/constants/state';
+import { useAppSelector } from '@/hooks/hook';
 import { PlayerProps, SinlgePlayerResponseProps } from '@/types/player';
 import { Button, InputLabel, MenuItem, OutlinedInput, Select } from '@mui/material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
@@ -10,22 +11,51 @@ import dayjs from 'dayjs';
 import { FormikProps } from 'formik';
 
 const formFieldSx = {
-    "&& .MuiPickersInputBase-input": {
-        borderRadius: "8px !important",
-        padding: "10px 0px !important",
+    '& .MuiOutlinedInput-root, & .MuiPickersInputBase-root, & .MuiPickersOutlinedInput-root': {
+        borderRadius: '27px',
+        background: 'rgba(118, 107, 120, 0.55)',
+        color: '#fff',
+        '& .MuiOutlinedInput-notchedOutline, & .MuiPickersOutlinedInput-notchedOutline': {
+            border: '0.576px solid rgba(255, 255, 255, 0.04)',
+        },
+        '&:hover .MuiOutlinedInput-notchedOutline, &:hover .MuiPickersOutlinedInput-notchedOutline': {
+            borderColor: 'rgba(255,255,255,0.2)',
+        },
+        '&.Mui-focused .MuiOutlinedInput-notchedOutline, &.Mui-focused .MuiPickersOutlinedInput-notchedOutline': {
+            borderColor: '#B801C0',
+        },
     },
-
-    "&& .MuiPickersSectionList-root": {
-        padding: "4px  16px 4px 0 !important",
+    '& .MuiOutlinedInput-input, & .MuiPickersInputBase-input': {
+        padding: '12px 16px',
+        color: '#fff',
+        '&::placeholder': {
+            color: 'rgba(255, 255, 255, 0.2)',
+            fontWeight: 300,
+            fontSize: '12px',
+            opacity: 1,
+        },
     },
+    '& .MuiInputAdornment-root': {
+        marginRight: '8px',
+    },
+    '& .MuiInputAdornment-root button': {
+        color: 'rgba(255, 255, 255, 0.7)',
+        '&:hover': {
+            color: '#fff',
+            background: 'rgba(255, 255, 255, 0.08)',
+        }
+    },
+    '& .MuiIconButton-root': {
+        padding: '8px',
+    }
 };
 
 export default function AddPlayerForm({ formik, id, data, loading, buttonLabel }: { formik: FormikProps<PlayerProps>, id?: string, data?: SinlgePlayerResponseProps, loading?: boolean, buttonLabel?: string }) {
-
+    const user = useAppSelector(state => state.auth.user);
     return (
         <form onSubmit={formik.handleSubmit}>
-            <div className="form__fields p-6 lg:p-10 flex flex-col gap-4 lg:gap-6 lg:grid grid-cols-2">
-                <div className="input__field">
+            <div className="form__fields p-6 lg:p-10 flex flex-col gap-4 lg:gap-6 lg:grid lg:grid-cols-2">
+                <div className="input__field col-span-1">
                     <InputLabel htmlFor="name">Username<span className="text-red-500">*</span></InputLabel>
                     <OutlinedInput
                         fullWidth
@@ -41,7 +71,7 @@ export default function AddPlayerForm({ formik, id, data, loading, buttonLabel }
                         {formik.touched.name && formik.errors.name ? formik.errors.name : ""}
                     </span>
                 </div>
-                <div className="input__field">
+                <div className="input__field col-span-1">
                     <InputLabel htmlFor="email">Email<span className="text-red-500">*</span></InputLabel>
                     <OutlinedInput
                         fullWidth
@@ -106,8 +136,8 @@ export default function AddPlayerForm({ formik, id, data, loading, buttonLabel }
                     </span>
                 </div>
 
-                <div className="input__field">
-                    <InputLabel htmlFor="address">Address <span className="text-red-500">*</span></InputLabel>
+                <div className="input__field col-span-1">
+                    <InputLabel htmlFor="address">Address Line 1<span className="text-red-500">*</span></InputLabel>
                     <OutlinedInput
                         fullWidth
                         id="address"
@@ -119,6 +149,22 @@ export default function AddPlayerForm({ formik, id, data, loading, buttonLabel }
                     />
                     <span className="error">
                         {formik.touched.address && formik.errors.address ? formik.errors.address : ""}
+                    </span>
+                </div>
+
+                <div className="input__field col-span-1">
+                    <InputLabel htmlFor="address_line_two">Address Line 2</InputLabel>
+                    <OutlinedInput
+                        fullWidth
+                        id="address_line_two"
+                        name="address_line_two"
+                        placeholder="Enter address line 2"
+                        value={formik.values.address_line_two}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                    />
+                    <span className="error">
+                        {formik.touched.address_line_two && formik.errors.address_line_two ? formik.errors.address_line_two : ""}
                     </span>
                 </div>
 
@@ -138,31 +184,46 @@ export default function AddPlayerForm({ formik, id, data, loading, buttonLabel }
                     </span>
                 </div>
 
-                <div className="input__field">
+                <div className="lg:col-span-2">
                     <InputLabel htmlFor="phone">Phone <span className="text-red-500">*</span></InputLabel>
-                    <OutlinedInput
-                        fullWidth
-                        id="phone"
-                        name="phone"
-                        placeholder="Enter phone number"
-                        value={formik.values.phone}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                    />
-                    <span className="error">
-                        {formik.touched.phone && formik.errors.phone ? formik.errors.phone : ""}
-                    </span>
+                    <div className="grid grid-cols-12 gap-1 items-start">
+                        <div className="col-span-4 lg:col-span-3">
+                            <OutlinedInput
+                                fullWidth
+                                id="country_code"
+                                name="country_code"
+                                placeholder="Enter country_code number"
+                                value={"+1"}
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                                disabled
+                            />
+                        </div>
+                        <div className="input__field col-span-8 lg:col-span-9">
+                            <OutlinedInput
+                                fullWidth
+                                id="phone"
+                                name="phone"
+                                placeholder="Enter phone number"
+                                value={formik.values.phone}
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                            />
+                            <span className="error">
+                                {formik.touched.phone && formik.errors.phone ? formik.errors.phone : ""}
+                            </span>
+                        </div>
+                    </div>
                 </div>
 
                 <div className="input__field">
-                    <InputLabel htmlFor="pob">State <span className="text-red-500">*</span></InputLabel>
-
+                    <InputLabel htmlFor="state">State <span className="text-red-500">*</span></InputLabel>
                     <Select
                         fullWidth
-                        id="pob"
-                        name="pob"
+                        id="state"
+                        name="state"
                         displayEmpty
-                        value={formik.values.pob}
+                        value={formik.values.state}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                         renderValue={(selected) =>
@@ -179,22 +240,53 @@ export default function AddPlayerForm({ formik, id, data, loading, buttonLabel }
                         ))}
                     </Select>
 
-                    <span className="error">{formik.touched.pob && formik.errors.pob}</span>
+                    <span className="error">{formik.touched.state && formik.errors.state}</span>
                 </div>
 
                 <div className="input__field">
-                    <InputLabel htmlFor="zip_code">Zip Code <span className="text-red-500">*</span></InputLabel>
+                    <InputLabel htmlFor="gender">Gender <span className="text-red-500">*</span></InputLabel>
+                    <Select
+                        fullWidth
+                        id="gender"
+                        name="gender"
+                        displayEmpty
+                        value={formik.values.gender}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        renderValue={(selected) =>
+                            selected === "" ? "Select a Gender" : selected
+                        }
+                    >
+                        <MenuItem value="">
+                            <em>Select a Gender</em>
+                        </MenuItem>
+                        {[
+                            { label: "Male", value: "M" },
+                            { label: "Female", value: "F" },
+                            { label: "Other", value: "O" },
+                        ].map((state) => (
+                            <MenuItem key={state.value} value={state.value}>
+                                {state.label}
+                            </MenuItem>
+                        ))}
+                    </Select>
+
+                    <span className="error">{formik.touched.gender && formik.errors.gender}</span>
+                </div>
+
+                <div className="input__field">
+                    <InputLabel htmlFor="postal_code">Zip Code <span className="text-red-500">*</span></InputLabel>
                     <OutlinedInput
                         fullWidth
-                        id="zip_code"
-                        name="zip_code"
+                        id="postal_code"
+                        name="postal_code"
                         placeholder="Enter zip code"
-                        value={formik.values.zip_code}
+                        value={formik.values.postal_code}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                     />
                     <span className="error">
-                        {formik.touched.phone && formik.errors.phone ? formik.errors.phone : ""}
+                        {formik.touched.postal_code && formik.errors.postal_code ? formik.errors.postal_code : ""}
                     </span>
                 </div>
 
@@ -217,7 +309,15 @@ export default function AddPlayerForm({ formik, id, data, loading, buttonLabel }
                                     error: Boolean(formik.touched.dob && formik.errors.dob),
                                     onBlur: formik.handleBlur,
                                     helperText: formik.touched.dob && formik.errors.dob,
-                                    sx: formFieldSx
+                                    sx: user?.role === "user" ? { ...formFieldSx } : {
+                                        "&& .MuiPickersInputBase-input": {
+                                            padding: "10px 14px !important",
+                                        },
+                                        "&& .MuiPickersSectionList-root": {
+                                            borderRadius: "8px !important",
+                                            padding: "4px 12px 4px 0 !important",
+                                        },
+                                    }
                                 },
 
                             }}

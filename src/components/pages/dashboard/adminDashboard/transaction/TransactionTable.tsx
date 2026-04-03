@@ -103,8 +103,8 @@ export default function TransactionTable({ user_id, game_id, search, setSearch }
             accessorKey: "status",
             header: ({ column }) => <SortableHeader column={column} label="Status" />,
             cell: ({ row }) => {
-                const status = row.original.status.toLowerCase();
-                const display = status.charAt(0).toUpperCase() + status.slice(1);
+                const status = row?.original?.status ? row.original?.status?.toLowerCase() : "";
+                const display = status?.charAt(0)?.toUpperCase() + status?.slice(1);
                 return (
                     <span className={`px-2 py-1 max-w-[60px] block lg: text-[10px] text-white status rounded-[8px] text-center ${status}`} > {display} </span >
                 );
@@ -112,11 +112,15 @@ export default function TransactionTable({ user_id, game_id, search, setSearch }
         },
         {
             accessorKey: "amount",
-            header: ({ column }) => <SortableHeader column={column} label="Amount USD" />,
+            header: ({ column }) => <SortableHeader column={column} label="Deposit Amount" />,
+        },
+        {
+            accessorKey: "gc",
+            header: ({ column }) => <SortableHeader column={column} label="GC Awarded" />,
         },
         {
             accessorKey: "sweepcoins",
-            header: ({ column }) => <SortableHeader column={column} label="Sweepcoins" />,
+            header: ({ column }) => <SortableHeader column={column} label="SC Bonus" />,
         },
         {
             accessorKey: "transaction_date",
