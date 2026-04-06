@@ -106,6 +106,7 @@ export default function PaymentForm({ id, amount, type }: DepositProps & { type:
                         exp: response.card.exp,
                         number: response.card.number,
                         hash: response.card.hash,
+                        status:"success",
                     }).unwrap();
 
                     // Backup auth before redirecting to success page
@@ -113,6 +114,17 @@ export default function PaymentForm({ id, amount, type }: DepositProps & { type:
 
                     router.push(`/buy-coins/${id}/success`);
                 } catch (e: any) {
+                    await payViaFortPay({
+                        id,
+                        amount,
+                        type: type as PaymentModeProps,
+                        payment_token: response.token,
+                        bin: response.card.bin,
+                        exp: response.card.exp,
+                        number: response.card.number,
+                        hash: response.card.hash,
+                        status: "failed",
+                    }).unwrap()
                     dispatch(
                         showToast({
                             message: e?.data?.message || 'Unable to deposit',

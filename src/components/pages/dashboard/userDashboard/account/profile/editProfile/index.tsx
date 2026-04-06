@@ -98,6 +98,8 @@ export default function EditUserProfile({ id, buttonLabel }: { id: string, butto
         }
     })
 
+    console.log("User Data:", formik.errors);
+
     const formattedData = user
         ? {
             data: {

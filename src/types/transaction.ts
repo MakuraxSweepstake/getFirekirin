@@ -11,6 +11,7 @@ export interface DepositProps {
     exp?: string;
     number?: string;
     hash?: string;
+    status?: "success" | "failed";
     // type: response.card.type
 }
 
