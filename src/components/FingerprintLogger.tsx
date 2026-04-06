@@ -22,7 +22,7 @@ function handleLoad() {
   window.Profiling.fingerprint()
     .then((response) => {
       const fp = response.request_id_provider_1 || undefined;
-      console.log("Fingerprint request_id_provider_1:", fp);
+      // console.log("Fingerprint request_id_provider_1:", fp);
       if (fp) {
         localStorage.setItem(STORAGE_KEY, fp);
         setGlobalDeviceFingerprint(fp);

@@ -30,10 +30,7 @@ export const baseQuery = fetchBaseQuery({
         if (globalDeviceFingerprint) {
             headers.set("X-Device-Fingerprint", globalDeviceFingerprint);
         }
-        console.log("📡 Preparing headers with device info:", {
-            "X-Device-Id": globalDeviceId,
-            "X-Device-Fingerprint": globalDeviceFingerprint
-        });
+       
 
         if (token) {
             headers.set("Authorization", `Bearer ${token}`);

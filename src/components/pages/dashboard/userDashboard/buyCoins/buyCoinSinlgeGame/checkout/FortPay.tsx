@@ -68,7 +68,7 @@ export default function PaymentForm({ id, amount, type }: DepositProps & { type:
             setCardTouched(true);
             const allCardValid = cardValidity.ccnumber && cardValidity.ccexp && cardValidity.cvv;
             if (!allCardValid) return;
-
+            console.log('All fields valid, starting CollectJS payment request');
             if (typeof window !== 'undefined' && window.CollectJS) {
                 window.CollectJS.startPaymentRequest();
             }
@@ -106,25 +106,12 @@ export default function PaymentForm({ id, amount, type }: DepositProps & { type:
                         exp: response.card.exp,
                         number: response.card.number,
                         hash: response.card.hash,
-                        status:"success",
                     }).unwrap();
-
-                    // Backup auth before redirecting to success page
                     backupAuthToCookies();
 
                     router.push(`/buy-coins/${id}/success`);
                 } catch (e: any) {
-                    await payViaFortPay({
-                        id,
-                        amount,
-                        type: type as PaymentModeProps,
-                        payment_token: response.token,
-                        bin: response.card.bin,
-                        exp: response.card.exp,
-                        number: response.card.number,
-                        hash: response.card.hash,
-                        status: "failed",
-                    }).unwrap()
+                    console.error('Payment error:', e);
                     dispatch(
                         showToast({
                             message: e?.data?.message || 'Unable to deposit',
