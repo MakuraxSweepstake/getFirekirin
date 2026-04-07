@@ -1,8 +1,11 @@
 "use client";
 
+import { useGetSeoDataQuery } from "@/services/menuApi";
 import Image from "next/image";
 
 export default function ComingSoon() {
+    const { data } = useGetSeoDataQuery();
+
     return (
         <div className="min-h-screen flex flex-col items-center justify-center px-6 text-center"
             style={{
@@ -11,7 +14,7 @@ export default function ComingSoon() {
         >
             <div className="max-w-lg w-full flex flex-col items-center gap-6">
                 <Image
-                    src="/assets/images/logo.png"
+                    src={data?.data?.logo}
                     alt="Logo"
                     width={120}
                     height={120}
