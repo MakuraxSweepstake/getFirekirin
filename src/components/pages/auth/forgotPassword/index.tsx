@@ -1,20 +1,19 @@
 "use client";
 
-import React from "react";
-import Link from "next/link";
+import { useAppDispatch } from "@/hooks/hook";
 import { PATH } from "@/routes/PATH";
+import { useForgotPasswordMutation } from "@/services/authApi";
+import { showToast, ToastVariant } from "@/slice/toastSlice";
 import {
     Box,
     InputLabel,
     OutlinedInput,
 } from "@mui/material";
-import AuthMessageBlock from "../authMessageBlock";
 import { useFormik } from "formik";
-import * as Yup from "yup";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useAppDispatch } from "@/hooks/hook";
-import { useForgotPasswordMutation } from "@/services/authApi";
-import { showToast, ToastVariant } from "@/slice/toastSlice";
+import * as Yup from "yup";
+import AuthMessageBlock from "../authMessageBlock";
 
 export default function ForgotPasswordPage() {
     const router = useRouter();
@@ -66,7 +65,7 @@ export default function ForgotPasswordPage() {
 
                 dispatch(
                     showToast({
-                        message: error.message || "Something went wrong",
+                        message: error?.data?.message || "Something went wrong",
                         variant: ToastVariant.ERROR,
                     })
                 );

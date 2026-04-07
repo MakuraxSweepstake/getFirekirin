@@ -74,3 +74,26 @@ export interface ChatbotProps {
     chatbot_image_url?: string;
     chatbot_label: string;
 }
+
+export interface TransactionLimitSettings {
+    min_deposit: number | null;
+    max_deposit: number | null;
+    min_withdrawal: number | null;
+    max_withdrawal: number | null;
+}
+
+export interface TransactionLimitResponse {
+    success: boolean;
+    message: string;
+    data: TransactionLimitSettings;
+}
+
+export interface SiteAvailabilitySettings {
+    coming_soon: boolean;
+}
+
+export interface SiteAvailabilityResponse {
+    success: boolean;
+    message: string;
+    data: SiteAvailabilitySettings;
+}

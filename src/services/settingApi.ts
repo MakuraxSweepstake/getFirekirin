@@ -1,5 +1,5 @@
 import { GlobalResponse } from "@/types/config";
-import { BannerResponseProps, ChatbotProps, SiteSettingResponseProps } from "@/types/setting";
+import { BannerResponseProps, ChatbotProps, SiteAvailabilityResponse, SiteAvailabilitySettings, SiteSettingResponseProps, TransactionLimitResponse, TransactionLimitSettings } from "@/types/setting";
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { baseQuery } from "./baseQuery";
 
@@ -55,6 +55,39 @@ export const settingApi = createApi({
             providesTags: ['Chatbot']
         }),
 
+        getTransactionLimits: builder.query<TransactionLimitResponse, void>({
+            query: () => ({
+                url: "/api/settings/transaction-limits",
+                method: "GET",
+            }),
+            providesTags: ['settings']
+        }),
+        updateTransactionLimits: builder.mutation<GlobalResponse, TransactionLimitSettings>({
+            query: (body) => ({
+                url: "/api/admin/settings/transaction-limits",
+                method: "POST",
+                body,
+            }),
+            invalidatesTags: ['settings']
+        }),
+
+        getSiteAvailability: builder.query<SiteAvailabilityResponse, void>({
+            query: () => ({
+                url: "/api/settings/site-availability",
+                method: "GET",
+            }),
+            providesTags: ['settings']
+        }),
+        
+        updateSiteAvailability: builder.mutation<GlobalResponse, SiteAvailabilitySettings>({
+            query: (body) => ({
+                url: "/api/admin/settings/site-availability",
+                method: "POST",
+                body,
+            }),
+            invalidatesTags: ['settings']
+        }),
+
     })
 })
 
@@ -64,5 +97,10 @@ export const {
     useUpdateBannerMutation,
     useGetAllBannerQuery,
     useUpdateChatbotMutation,
-    useGetChatbotSettingQuery
+    useGetChatbotSettingQuery,
+    useGetTransactionLimitsQuery,
+    useUpdateTransactionLimitsMutation,
+    useGetSiteAvailabilityQuery,
+    useUpdateSiteAvailabilityMutation,
+    
 } = settingApi;

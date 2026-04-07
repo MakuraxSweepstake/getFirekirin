@@ -2,6 +2,7 @@
 
 import DashboardLayout from '@/components/layouts/DashboardLayout';
 import AgeVerificationModal from '@/components/organism/dialog';
+import ComingSoonGate from '@/components/organism/ComingSoonGate';
 import { useSearchParams } from 'next/navigation';
 import React, { Suspense, useEffect } from 'react';
 
@@ -17,14 +18,15 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
         }
     }, [visitorId]);
     return (
-        <DashboardLayout>
-            {children}
-            <AgeVerificationModal />
+        <ComingSoonGate>
+            <DashboardLayout>
+                {children}
+                <AgeVerificationModal />
 
+                {/* <AgeGate /> */}
 
-            {/* <AgeGate /> */}
-
-        </DashboardLayout>
+            </DashboardLayout>
+        </ComingSoonGate>
     )
 }
 export default function DashboardRootLayout({ children }: { children: React.ReactNode }) {
