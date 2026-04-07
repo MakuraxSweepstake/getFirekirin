@@ -1,5 +1,5 @@
-import AuthHydrator from "@/components/Hydrators/AuthHydrator";
 import FingerprintLogger from "@/components/FingerprintLogger";
+import AuthHydrator from "@/components/Hydrators/AuthHydrator";
 import { pageSEO } from "@/serverApi/game";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
@@ -77,6 +77,22 @@ export default function RootLayout({
             }}
           />
         )}
+
+        {/* <Script id="makura-chatbot-config" strategy="afterInteractive">
+          {`
+    window.MakuraBotConfig = {
+      chatbotId: "diva-XQpszNrG",
+      apiUrl: "https://chatbot.makuracreations.xyz/api",
+      primaryColor: "#1CA201",
+      secondaryColor: "#FFF81F",
+      position: "right",
+      theme: "light",
+      botName: "Diva",
+      welcomeMessage: "Hi! How can I help you today?"
+    };
+  `}
+        </Script>
+        <Script src="https://chatbot.makuracreations.xyz/widget/makura-widget.js" async></Script> */}
       </head>
       {/* className="dark" */}
       <body className={`${inter.className} scroll-smooth`} cz-shortcut-listen="true">

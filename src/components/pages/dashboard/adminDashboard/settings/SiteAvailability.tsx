@@ -42,7 +42,7 @@ export default function SiteAvailability() {
                                 color="primary"
                             />
                         }
-                        label={<Typography className="text-primary-dark">Coming Soon Mode</Typography>}
+                        label={<Typography className="text-primary-dark">Toggle Site Availability</Typography>}
                     />
                 </div>
             </div>
