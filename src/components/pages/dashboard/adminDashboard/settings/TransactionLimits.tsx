@@ -41,10 +41,10 @@ export default function TransactionLimits() {
         onSubmit: async (values) => {
             try {
                 const response = await updateLimits({
-                    min_deposit: values.min_deposit === "" ? null : values.min_deposit,
-                    max_deposit: values.max_deposit === "" ? null : values.max_deposit,
-                    min_withdrawal: values.min_withdrawal === "" ? null : values.min_withdrawal,
-                    max_withdrawal: values.max_withdrawal === "" ? null : values.max_withdrawal,
+                    min_deposit: values.min_deposit?.toString() === "" ? null : values.min_deposit,
+                    max_deposit: values.max_deposit?.toString() === "" ? null : values.max_deposit,
+                    min_withdrawal: values.min_withdrawal?.toString() === "" ? null : values.min_withdrawal,
+                    max_withdrawal: values.max_withdrawal?.toString() === "" ? null : values.max_withdrawal,
                 }).unwrap();
                 dispatch(showToast({ message: response.message || "Saved successfully", variant: ToastVariant.SUCCESS }));
             } catch (e: any) {
