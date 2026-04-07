@@ -15,7 +15,7 @@ export default function ComingSoonGate({ children }: { children: React.ReactNode
     // const isAdmin = user?.role === "ADMIN" || user?.role === "SUPER_ADMIN";
     const isUser = !user || user?.role?.toUpperCase() === "USER";
 
-    if (isUser && data?.data?.coming_soon === false) {
+    if (isUser && data?.data?.coming_soon === true) {
         return <ComingSoon />;
     }
 
