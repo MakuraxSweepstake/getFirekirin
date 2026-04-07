@@ -192,7 +192,7 @@ export default function AdminAnalytics() {
                                 </Box>
                             </div>
                             <div className="card__content">
-                                <div className="flex gap-2 items-end justify-between mb-2">
+                                <div className="flex flex-wrap-reverse 2xl:flex-nowrap gap-2 items-end justify-between mb-2">
                                     <div className="content flex gap-2 items-center">
                                         <strong className='text-[16px] leading-[120%] font-[600] text-title'>{chart.value}</strong>
                                         <p className={`flex gap-1 items-center ${chart.isIncrease ? "increase" : "decrease"}`}>
