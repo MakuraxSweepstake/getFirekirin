@@ -3,7 +3,7 @@
 import { useAppDispatch } from "@/hooks/hook";
 import { useGetSiteAvailabilityQuery, useUpdateSiteAvailabilityMutation } from "@/services/settingApi";
 import { showToast, ToastVariant } from "@/slice/toastSlice";
-import { Button, FormControlLabel, Switch } from "@mui/material";
+import { Button, FormControlLabel, Switch, Typography } from "@mui/material";
 import { useFormik } from "formik";
 
 export default function SiteAvailability() {
@@ -42,7 +42,7 @@ export default function SiteAvailability() {
                                 color="primary"
                             />
                         }
-                        label="Coming Soon Mode"
+                        label={<Typography className="text-primary-dark">Coming Soon Mode</Typography>}
                     />
                 </div>
             </div>
