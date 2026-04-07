@@ -1,5 +1,9 @@
 {
   "permissions": {
+    "allow": [
+      "WebFetch(domain:secure.fppgateway.com)",
+      "WebFetch(domain:secure.networkmerchants.com)"
+    ],
     "additionalDirectories": [
       "d:\\Makura\\getFirekirin\\src\\app\\api\\dfl-proxy"
     ]
