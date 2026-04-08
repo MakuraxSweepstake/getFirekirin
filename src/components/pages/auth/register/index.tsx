@@ -15,7 +15,6 @@ import { ArrowLeft } from '@wandersonalwes/iconsax-react';
 import dayjs, { Dayjs } from 'dayjs';
 import { useFormik } from 'formik';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import * as Yup from 'yup';
 import AuthMessageBlock from '../authMessageBlock';
@@ -112,7 +111,7 @@ export default function RegisterPage() {
     const dispatch = useAppDispatch();
     const [isAcuityModalOpen, setIsAcuityModalOpen] = useState(false);
     const [acuityUrl, setAcuityUrl] = useState('');
-    const route = useRouter();
+    // const route = useRouter();
     const initialValues = {
         first_name: '',
         middle_name: '',
@@ -169,10 +168,10 @@ export default function RegisterPage() {
                         }),
                     );
                     if (response?.data?.redirection_url) {
-                        window.open(response?.data?.redirection_url, "_blank");
+                        // window.open(response?.data?.redirection_url, "_blank");
                         setAcuityUrl(response.data.redirection_url);
-                        // setIsAcuityModalOpen(true);
-                        route.replace(PATH.AUTH.LOGIN.ROOT)
+                        setIsAcuityModalOpen(true);
+                        // route.replace(PATH.AUTH.LOGIN.ROOT)
                     }
 
                 }
@@ -553,7 +552,7 @@ export default function RegisterPage() {
                             <FormControlLabel
                                 control={<Checkbox
                                     checked={values.agree}
-                                    onChange={() => setFieldValue("agree", !values.agree)}
+                                    onChange={() => setFieldValue("agree", true)}
                                 />}
                                 label="I agree to the terms and conditions" />
                         </div>
