@@ -7,7 +7,7 @@ import { useAppDispatch } from '@/hooks/hook';
 import { PATH } from '@/routes/PATH';
 import { useRegisterUserMutation } from '@/services/authApi';
 import { showToast, ToastVariant } from '@/slice/toastSlice';
-import { Box, Checkbox, FormControlLabel, InputLabel, MenuItem, OutlinedInput, Select } from '@mui/material';
+import { Box, Button, Checkbox, CircularProgress, FormControlLabel, InputLabel, MenuItem, OutlinedInput, Select } from '@mui/material';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -520,6 +520,7 @@ export default function RegisterPage() {
                                 </LocalizationProvider>
                             </div>
                         </div>
+
                         <div className="lg:col-span-3">
                             <div className="input_field">
                                 <PasswordField
@@ -533,6 +534,7 @@ export default function RegisterPage() {
                                 />
                             </div>
                         </div>
+
                         <div className="lg:col-span-3">
                             <div className="input_field">
                                 <PasswordField
@@ -546,6 +548,7 @@ export default function RegisterPage() {
                                 />
                             </div>
                         </div>
+
                         <div className="col-span-6">
                             <FormControlLabel
                                 control={<Checkbox
@@ -556,7 +559,9 @@ export default function RegisterPage() {
                         </div>
                     </div>
                     <div className="action__group text-center flex flex-col gap-4 mt-8">
-                        <button className='ss-btn bg-primary-grad' disabled={!dirty}>{isLoading ? "Signing Up" : "Sign up"}</button>
+                        <Button className='ss-btn bg-primary-grad' disabled={!dirty || isLoading} startIcon={isLoading ? <CircularProgress size={20} /> : undefined}>
+                            {isLoading ? "Signing Up" : "Sign up"}
+                        </Button>
                         <p className='text-[12px] leading-[120%] font-bold lg:text-[16px]'>Already Have an account?</p>
                         <Link href={PATH.AUTH.LOGIN.ROOT} className='ss-btn bg-secondary-grad'>Login</Link>
                     </div>
@@ -580,6 +585,7 @@ export default function RegisterPage() {
                 title="Acuity identity verification"
                 maxWidth="md"
                 height={700}
+                isRegistrationFlow={true}
             />
 
         </>

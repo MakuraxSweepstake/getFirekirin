@@ -1,61 +1,21 @@
 'use client';
 
 import { Box, CircularProgress, Dialog, DialogContent, Typography } from '@mui/material';
+import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 
 export interface PaymentModalProps {
-    /**
-     * The payment URL to load in the iframe
-     */
     url: string;
-
-    /**
-     * Whether the modal is open
-     */
     isOpen: boolean;
-
-    /**
-     * Callback when modal is closed (user clicked X or payment cancelled)
-     */
     onClose: () => void;
-
-    /**
-     * Callback when payment is successful
-     * Called when the payment provider sends success message
-     */
     onSuccess?: () => void;
-
-    /**
-     * Callback when payment fails
-     */
     onError?: (error: PaymentError) => void;
-
-    /**
-     * Custom payment status message to listen for
-     * Examples: 'verified', 'success', 'completed'
-     */
     successMessage?: string;
-
-    /**
-     * HTTP path segments / URLs that indicate the provider redirected to app success route
-     * Useful for redirect flows like Acuity /login on success.
-     */
     successRedirectPaths?: string[];
-
-    /**
-     * Title shown while loading
-     */
     title?: string;
-
-    /**
-     * Max width of the dialog
-     */
     maxWidth?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
-
-    /**
-     * Height of the iframe in pixels
-     */
     height?: number;
+    isRegistrationFlow?: boolean;
 }
 
 export interface PaymentError {
@@ -64,38 +24,6 @@ export interface PaymentError {
     details?: unknown;
 }
 
-/**
- * PaymentModal Component
- * 
- * Handles payment processing in an iframe with message-based communication
- * Supports:
- * - Payment providers that send postMessage on completion
- * - TrySpeed, Acuity Tech, Stripe, and other iframe-based payment systems
- * - Secure origin verification
- * - Automatic modal closing on success
- * 
- * @example
- * ```tsx
- * const [showPayment, setShowPayment] = useState(false);
- * const [paymentUrl, setPaymentUrl] = useState('');
- * 
- * const handlePaymentSuccess = () => {
- *   showToast("Payment successful!");
- *   // Update user balance, close modal, redirect, etc.
- * };
- * 
- * return (
- *   <PaymentModal
- *     url={paymentUrl}
- *     isOpen={showPayment}
- *     onClose={() => setShowPayment(false)}
- *     onSuccess={handlePaymentSuccess}
- *     successMessage="success"
- *     title="Processing Payment..."
- *   />
- * );
- * ```
- */
 export default function PaymentModal({
     url,
     isOpen,
@@ -106,13 +34,14 @@ export default function PaymentModal({
     successRedirectPaths = ['/login', '/success'],
     title = 'Processing Payment',
     maxWidth = 'sm',
-    height = 600
+    height = 600,
+    isRegistrationFlow = false
 }: PaymentModalProps) {
     const iframeRef = useRef<HTMLIFrameElement>(null);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<PaymentError | null>(null);
     const [hasDetectedSuccess, setHasDetectedSuccess] = useState(false);
-
+    const route = useRouter();
     useEffect(() => {
         if (!isOpen) {
             setIsLoading(true);
@@ -138,6 +67,7 @@ export default function PaymentModal({
                 });
 
                 if (found) {
+                    console.log('[PaymentModal] Detected success redirect URL:', currentUrl);
                     setHasDetectedSuccess(true);
                     setIsLoading(false);
                     onSuccess?.();
@@ -167,19 +97,17 @@ export default function PaymentModal({
 
                 console.log('[PaymentModal] Received message:', event.data);
 
-                // Check for success status
                 const data = event.data;
                 if (!data) return;
 
-                // Support multiple success indicators
                 const isSuccess =
                     data.status === successMessage ||
                     data.status === 'success' ||
                     data.type === 'payment:success' ||
                     data.type === `payment:${successMessage}` ||
                     data.result === 'success' ||
-                    data.verification_status === 'verification.accepted' ||
                     data.result === successMessage ||
+                    data.verification_status === 'verification.accepted' ||
                     (typeof data === 'string' && (
                         data === successMessage ||
                         data === 'success'
@@ -191,6 +119,9 @@ export default function PaymentModal({
                     setIsLoading(false);
                     onSuccess?.();
                     setTimeout(() => onClose(), 500); // Small delay for animation
+                    if (isRegistrationFlow) {
+                        route.push('/login');
+                    }
                     return;
                 }
 

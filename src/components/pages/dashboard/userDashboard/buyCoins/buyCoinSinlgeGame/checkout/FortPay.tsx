@@ -79,15 +79,7 @@ export default function PaymentForm({ id, amount, type }: DepositProps & { type:
             if (!allCardValid) return;
             billingRef.current = values;
             if (typeof window !== 'undefined' && window.CollectJS) {
-                window.CollectJS.startPaymentRequest({
-                    billingFirstName: values.first_name,
-                    billingLastName: values.last_name,
-                    billingAddress1: values.address,
-                    billingCity: values.city,
-                    billingState: values.state,
-                    billingZip: values.zip,
-                    billingCountry: 'US',
-                });
+                window.CollectJS.startPaymentRequest();
             }
         },
     });
@@ -114,7 +106,6 @@ export default function PaymentForm({ id, amount, type }: DepositProps & { type:
                 color: 'rgba(0,0,0,0.4)',
             },
             callback: async (response: any) => {
-                console.log('CollectJS response:', {response, values: billingRef.current});
                 if (response) {
                     try {
                         await payViaFortPay({
