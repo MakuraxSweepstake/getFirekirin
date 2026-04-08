@@ -63,7 +63,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                     mb: { xs: '16px', lg: 0 }
                 }} />
                 <div className="content_box px-4 pt-4 pb-12 lg:pl-11 lg:pr-12 lg:pt-8 lg:pb-16">
-                    {!user?.is_acuity_verified ? <ImportantBlock title='Profile Unverified' message='Your profile is not yet verified. Please complete the verification process.' onAction={async () => {
+                    {user && user?.role && user?.role?.toLowerCase() === "user" && !user?.is_acuity_verified ? <ImportantBlock title='Profile Unverified' message='Your profile is not yet verified. Please complete the verification process.' onAction={async () => {
                         try {
                             const response = await verifyAcuity().unwrap();
                             dispatch(showToast({ message: 'Verification successful.', variant: ToastVariant.SUCCESS }));
