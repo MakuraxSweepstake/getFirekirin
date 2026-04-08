@@ -559,7 +559,7 @@ export default function RegisterPage() {
                         </div>
                     </div>
                     <div className="action__group text-center flex flex-col gap-4 mt-8">
-                        <Button className='ss-btn bg-primary-grad' disabled={!dirty || isLoading} startIcon={isLoading ? <CircularProgress size={20} /> : undefined}>
+                        <Button variant='contained' color='primary' type='submit' disabled={!dirty || isLoading} startIcon={isLoading ? <CircularProgress size={20} /> : undefined}>
                             {isLoading ? "Signing Up" : "Sign up"}
                         </Button>
                         <p className='text-[12px] leading-[120%] font-bold lg:text-[16px]'>Already Have an account?</p>
