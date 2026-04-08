@@ -20,6 +20,7 @@ export interface PaymentModalProps {
     maxWidth?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
     height?: number;
     isRegistrationFlow?: boolean;
+    isPurchaseFlow?: boolean;
 }
 
 export interface PaymentError {
@@ -39,17 +40,28 @@ export default function PaymentModal({
     title = 'Processing Payment',
     maxWidth = 'sm',
     height = 600,
-    isRegistrationFlow = false
+    isRegistrationFlow = false,
+    isPurchaseFlow = false
 }: PaymentModalProps) {
     const iframeRef = useRef<HTMLIFrameElement>(null);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<PaymentError | null>(null);
     const [hasDetectedSuccess, setHasDetectedSuccess] = useState(false);
+    const [attention, setAttention] = useState(false);
     const route = useRouter();
     const dispatch = useAppDispatch();
     const access_token = useAppSelector((state) => state.auth.access_token);
     const [fetchMe] = useLazyGetMeQuery();
 
+    const handleDialogClose = (_: unknown, reason?: string) => {
+        if (!isPurchaseFlow && reason === 'backdropClick') {
+            setAttention(true);
+            setTimeout(() => setAttention(false), 600);
+            return;
+        }
+
+        onClose();
+    };
     const syncUserFromServer = useCallback(async () => {
         try {
 
@@ -210,14 +222,20 @@ export default function PaymentModal({
     return (
         <Dialog
             open={isOpen}
-            onClose={onClose}
+            onClose={handleDialogClose}
             maxWidth={maxWidth}
             fullWidth
             PaperProps={{
                 sx: {
                     borderRadius: '12px',
                     background: 'linear-gradient(135deg, rgba(0,0,0,0.8), rgba(184,1,192,0.1))',
-                    backdropFilter: 'blur(10px)'
+                    backdropFilter: 'blur(10px)',
+                    animation: attention ? 'blink 0.3s ease-in-out 2' : 'none',
+                    '@keyframes blink': {
+                        '0%': { transform: 'scale(1)', boxShadow: '0 0 0px rgba(184,1,192,0.0)' },
+                        '50%': { transform: 'scale(1.02)', boxShadow: '0 0 20px rgba(184,1,192,0.8)' },
+                        '100%': { transform: 'scale(1)', boxShadow: '0 0 0px rgba(184,1,192,0.0)' },
+                    }
                 }
             }}
         >

@@ -191,6 +191,7 @@ export default function CheckoutPage({ amount, slug, bonus }: {
                     }}
                     title="Processing Payment"
                     successMessage="success"
+                    isPurchaseFlow={true}
                 />
             )}
         </section>
