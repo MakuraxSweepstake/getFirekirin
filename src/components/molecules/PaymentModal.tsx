@@ -1,8 +1,12 @@
 'use client';
 
+import { useAppDispatch, useAppSelector } from '@/hooks/hook';
+import { useLazyGetMeQuery } from '@/services/authApi';
+import { setTokens } from '@/slice/authSlice';
 import { Box, CircularProgress, Dialog, DialogContent, Typography } from '@mui/material';
+import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 export interface PaymentModalProps {
     url: string;
@@ -31,7 +35,7 @@ export default function PaymentModal({
     onSuccess,
     onError,
     successMessage = 'success',
-    successRedirectPaths = ['/login', '/success'],
+    successRedirectPaths = ['/login', '/success', '/verified'],
     title = 'Processing Payment',
     maxWidth = 'sm',
     height = 600,
@@ -42,6 +46,31 @@ export default function PaymentModal({
     const [error, setError] = useState<PaymentError | null>(null);
     const [hasDetectedSuccess, setHasDetectedSuccess] = useState(false);
     const route = useRouter();
+    const dispatch = useAppDispatch();
+    const access_token = useAppSelector((state) => state.auth.access_token);
+    const [fetchMe] = useLazyGetMeQuery();
+
+    const syncUserFromServer = useCallback(async () => {
+        try {
+
+            const result = await fetchMe().unwrap();
+            const user = result.data?.user;
+            const token = result.data?.access_token || access_token;
+
+            console.log("inside sync", {
+                user, token
+            })
+            if (!user) return;
+            dispatch(setTokens({ access_token: token, user }));
+            Cookies.set('user', JSON.stringify(user), {
+                expires: 1,
+                secure: process.env.NODE_ENV === 'production',
+                sameSite: 'Strict',
+            });
+        } catch (error) {
+            console.error('[PaymentModal] syncUserFromServer failed', error);
+        }
+    }, [fetchMe, dispatch, access_token]);
     useEffect(() => {
         if (!isOpen) {
             setIsLoading(true);
@@ -50,7 +79,7 @@ export default function PaymentModal({
             return;
         }
 
-        const checkRedirectSuccess = (): void => {
+        const checkRedirectSuccess = async (): Promise<void> => {
             if (hasDetectedSuccess || !iframeRef.current?.contentWindow) return;
 
             try {
@@ -70,22 +99,17 @@ export default function PaymentModal({
                     console.log('[PaymentModal] Detected success redirect URL:', currentUrl);
                     setHasDetectedSuccess(true);
                     setIsLoading(false);
+                    if (!isRegistrationFlow) await syncUserFromServer();
                     onSuccess?.();
                     setTimeout(() => onClose(), 300);
                 }
             } catch {
-                // cross-origin iframe URL access will throw during external provider flow, ignore until same-origin
+
             }
         };
-        const handleMessage = (event: MessageEvent): void => {
+        const handleMessage = async (event: MessageEvent): Promise<void> => {
             try {
-                // Ignore messages from React DevTools and other injected frames
-                if (event.source !== iframeRef.current?.contentWindow) {
-                    console.debug('[PaymentModal] Ignoring message from non-iframe source', event.origin);
-                    return;
-                }
 
-                // Security: Verify message origin; allow provider origin and same-host fallback
                 const paymentOrigin = new URL(url).origin;
                 const trustedOrigins = new Set([paymentOrigin, window.location.origin]);
                 if (!trustedOrigins.has(event.origin)) {
@@ -117,15 +141,16 @@ export default function PaymentModal({
                     console.log('[PaymentModal] Payment successful! Closing modal...');
                     setHasDetectedSuccess(true);
                     setIsLoading(false);
-                    onSuccess?.();
-                    setTimeout(() => onClose(), 500); // Small delay for animation
                     if (isRegistrationFlow) {
                         route.push('/login');
+                    } else {
+                        await syncUserFromServer();
                     }
+                    onSuccess?.();
+                    setTimeout(() => onClose(), 500);
                     return;
                 }
 
-                // Check for error status
                 const isError =
                     data.status === 'error' ||
                     data.type === 'payment:error' ||
@@ -165,7 +190,7 @@ export default function PaymentModal({
             window.clearTimeout(readyTimeout);
             window.removeEventListener('message', handleMessage);
         };
-    }, [isOpen, url, onClose, onSuccess, onError, successMessage, successRedirectPaths, hasDetectedSuccess]);
+    }, [isOpen, url, onClose, onSuccess, onError, successMessage, successRedirectPaths, hasDetectedSuccess, isRegistrationFlow, route, syncUserFromServer]);
 
     const handleIframeLoad = (): void => {
         console.log('[PaymentModal] iframe loaded');

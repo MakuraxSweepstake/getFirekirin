@@ -28,14 +28,12 @@ export default function PaymentSuccess() {
 
                 if (result.success && result.data) {
 
-                    // Update Redux store
                     dispatch(setTokens({
                         access_token: result.data.access_token,
                         user: result.data.user,
                         refreshToken: result.data.refresh_token
                     }));
 
-                    // Dispatch custom event for other components
                     window.dispatchEvent(new CustomEvent('auth:hydrated', {
                         detail: {
                             source: result.source,

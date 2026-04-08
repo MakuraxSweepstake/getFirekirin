@@ -26,7 +26,6 @@ export const userApi = createApi({
             invalidatesTags: ['user', "wallet"]
         }),
 
-
         getUserGameCredentials: builder.query<CredentialsResponseProps, void>({
             query: () => ({
                 url: `/api/credentials`,
@@ -64,7 +63,6 @@ export const userApi = createApi({
             providesTags: ['user', "wallet"],
         }),
     })
-
 })
 
-export const { useAddUserWalletMutation, useUpdateUserProfileMutation, useGetUserGameCredentialsQuery, useChangeUserGamePasswordMutation, useUpdateUserGamePasswordMutation, useGetGamesPasswordStatusQuery } = userApi;
+export const { useAddUserWalletMutation, useUpdateUserProfileMutation, useGetUserGameCredentialsQuery, useChangeUserGamePasswordMutation, useUpdateUserGamePasswordMutation, useGetGamesPasswordStatusQuery} = userApi;

@@ -136,7 +136,7 @@ export default function AddPlayerForm({ formik, id, data, loading, buttonLabel, 
                     </span>
                 </div>}
 
-                {isAdmin? "":<>
+                {isAdmin ? "" : <>
                     <div className="input__field col-span-1">
                         <InputLabel htmlFor="address">Address Line 1<span className="text-red-500">*</span></InputLabel>
                         <OutlinedInput
@@ -292,7 +292,7 @@ export default function AddPlayerForm({ formik, id, data, loading, buttonLabel, 
                     <span className="error">{formik.touched.gender && formik.errors.gender}</span>
                 </div>
 
-                {isAdmin ? <div className="input__field">
+                {!isAdmin ? <div className="input__field">
                     <InputLabel htmlFor="postal_code">Zip Code <span className="text-red-500">*</span></InputLabel>
                     <OutlinedInput
                         fullWidth

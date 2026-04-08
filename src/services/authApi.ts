@@ -75,8 +75,21 @@ export const authApi = createApi({
                 method: "POST",
                 body: { age_verify_uuid }
             })
+        }),
+        getMe: builder.query<LoginResponse, void>({
+            query: () => ({
+                url: `/api/auth/me`,
+                method: "GET",
+            }),
+        }),
+
+        verifyProfile: builder.mutation<{ data: { redirection_url: string } }, void>({
+            query: () => ({
+                url: `/api/acuity/verify`,
+                method: "POST",
+            }),
         })
     })
 })
 
-export const { useLoginMutation, useRegisterUserMutation, useSendVerificationLinkAgainMutation, useForgotPasswordMutation, useVerifyOTPMutation, useResetPasswordMutation, useVerifyEmailMutation, useGetAgeGateUuidMutation, useVerifyAgeGateMutation } = authApi;
+export const { useLoginMutation, useRegisterUserMutation, useSendVerificationLinkAgainMutation, useForgotPasswordMutation, useVerifyOTPMutation, useResetPasswordMutation, useVerifyEmailMutation, useGetAgeGateUuidMutation, useVerifyAgeGateMutation, useGetMeQuery, useLazyGetMeQuery, useVerifyProfileMutation } = authApi;
