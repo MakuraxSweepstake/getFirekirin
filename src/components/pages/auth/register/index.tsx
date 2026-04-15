@@ -162,7 +162,7 @@ export default function RegisterPage() {
 
                     dispatch(
                         showToast({
-                            message: response?.message || "User Registerd Successfully",
+                            message: response?.message || "User Register Successfully",
                             variant: ToastVariant.SUCCESS,
                             autoTime: true,
                         }),
@@ -265,7 +265,7 @@ export default function RegisterPage() {
                                 <OutlinedInput
                                     name='displayName'
                                     id='displayName'
-                                    placeholder='John doe'
+                                    placeholder='johndoe'
                                     value={values.displayName}
                                     onChange={handleChange}
                                     onBlur={handleBlur}
@@ -284,7 +284,7 @@ export default function RegisterPage() {
                                 fullWidth
                                 id="address"
                                 name="address"
-                                placeholder="Enter address"
+                                placeholder="123 Main St"
                                 value={values.address}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
@@ -300,7 +300,7 @@ export default function RegisterPage() {
                                 fullWidth
                                 id="address_line_two"
                                 name="address_line_two"
-                                placeholder="Enter address line 2"
+                                placeholder="Apt 4B"
                                 value={values.address_line_two}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
@@ -318,7 +318,7 @@ export default function RegisterPage() {
                                     fullWidth
                                     id="city"
                                     name="city"
-                                    placeholder="Enter city"
+                                    placeholder="New York"
                                     value={values.city}
                                     onChange={handleChange}
                                     onBlur={handleBlur}
@@ -397,7 +397,7 @@ export default function RegisterPage() {
                                     fullWidth
                                     id="postal_code"
                                     name="postal_code"
-                                    placeholder="Enter Postal code"
+                                    placeholder="00501"
                                     value={values.postal_code}
                                     onChange={handleChange}
                                     onBlur={handleBlur}
@@ -410,7 +410,7 @@ export default function RegisterPage() {
 
                         <div className="lg:col-span-3">
                             <div className="input__field">
-                                <InputLabel htmlFor="ssn">SSN<span className="text-red-500"> (last 4 Digit) *</span></InputLabel>
+                                <InputLabel htmlFor="ssn">SSN<span className="text-red-500"> (Last 4 Digit) *</span></InputLabel>
                                 <OutlinedInput
                                     fullWidth
                                     id="ssn"
@@ -446,7 +446,7 @@ export default function RegisterPage() {
                                         fullWidth
                                         id="phone"
                                         name="phone"
-                                        placeholder="Enter phone number"
+                                        placeholder="9195558247"
                                         value={values.phone}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
